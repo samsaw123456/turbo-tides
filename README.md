@@ -2,7 +2,7 @@
 
 ![Turbo Tides logo](src/main/resources/art/icon-128.png)
 
-A colourful **3D arcade racer written in Kotlin**. Race five friends through
+A colourful **3D arcade racer written in Kotlin**. Race five rivals through
 six coastal and city circuits, drift to charge nitro, hit turbo pads, and chase a
 three-lap personal best. Made from the [Phippy Gaming Workshop](https://github.com/Tingsters/Phippy-Gaming-Workshop)
 prompt, with the workshop's Phippy pit crew artwork.
@@ -11,14 +11,32 @@ prompt, with the workshop's Phippy pit crew artwork.
 
 ## Play the app
 
-Get the [latest Linux download](https://github.com/samsaw123456/turbo-tides/releases/latest).
+Install the latest **Linux x86-64** app with one command:
 
-On the computer where it is installed, open **Turbo Tides** from the application
-menu. The Linux app includes its own Java runtime and works offline.
+```sh
+(installer=$(mktemp) && trap 'rm -f -- "$installer"' EXIT && curl -fL https://github.com/samsaw123456/turbo-tides/releases/latest/download/install.sh -o "$installer" && sh "$installer")
+```
 
-For a portable download, extract `turbo-tides-1.1.0-linux-x86_64.tar.gz`, open the
-`TurboTides` folder, and run **Play Turbo Tides**. Requires a Linux x86-64 desktop
-with OpenGL 2.0 support, glibc, and X11 or XWayland. No account is needed.
+Or download **install.sh** from the [latest release](https://github.com/samsaw123456/turbo-tides/releases/latest)
+and run `sh install.sh`. This also works when curl is unavailable.
+Run it as your normal user. The script installs missing Python/certificates and
+desktop libraries through apt, dnf, pacman or zypper; your system requests
+administrator authentication only if it needs those system packages.
+
+The game includes **Java 25**, verifies the release archive's SHA-256, and installs
+**Turbo Tides** with its orange racing-wave icon in your application menu.
+No Git, Gradle, Kotlin or preinstalled Java is needed to play. After installation,
+open the icon or run `~/.local/bin/turbo-tides`. The game works offline.
+Run the same installer again to update; your records and settings are preserved.
+
+Requires a Linux x86-64 desktop with glibc 2.28+, OpenGL 2.0 and X11/XWayland.
+The installer needs a distribution whose `python3` package provides Python 3.9+;
+it installs that package if missing.
+For portable play, extract `turbo-tides-1.2.0-linux-x86_64.tar.gz` and run
+**Play Turbo Tides** inside the `TurboTides` folder. **Install Turbo Tides.sh**
+in that folder adds the same application-menu icon without downloading the app
+again. See [installation and troubleshooting](docs/INSTALLATION.md) for offline
+installation, custom locations and launch logs.
 
 Choose a circuit, one of five paint colours, and **Cruise** or **Race** rival pace.
 Click a named route or browse with Left/Right to preview its actual 3D scene.
@@ -31,10 +49,10 @@ route or activates the focused setting.
 | --- | --- |
 | Sunset Run | Palm-lined ocean bends |
 | Cinder Ring | Red-rock climbs and tight corners |
-| San Francisco — Golden Gate Run | Suspension bridge, steep hills and pastel houses |
+| San Francisco — Golden Gate Run | Straight suspension span, hillside bay-window houses and Pyramid skyline |
 | Silicon Valley — Campus Sprint | Circular campus, solar roofs and broad bends |
-| New York City — Midtown Mile | Skyscrapers, yellow taxis and a park |
-| Chicago — Lakeshore Loop | Twin-antenna skyline, elevated train and lakefront |
+| New York City — Midtown Mile | Stepped Art Deco towers, yellow taxis and a park |
+| Chicago — Lakeshore Loop | Bundled-tube skyline, round twin towers, elevated train and lakefront |
 
 The city tracks are playful fictional routes inspired by their locations.
 
@@ -69,9 +87,12 @@ Release C to return immediately to the forward chase camera.
 
 ## Build and develop
 
-Requires JDK 17 or later. The checked-in Gradle wrapper downloads its pinned
-Gradle distribution and verifies its checksum. Kotlin, libGDX, and other build
-dependencies are fetched on the first build; the built game needs no network.
+Start the wrapper with JDK 17 or later. Gradle automatically provisions an
+Adoptium **Java 25** toolchain for compilation and running the game. The checked-in
+wrapper pins **Gradle 9.9.1** with its checksum; the project uses **Kotlin 2.4.21**,
+libGDX 1.14.2 and LWJGL 3.4.3. Dependencies are fetched on the first build;
+the built game needs no network. Kotlin's published fully tested Gradle range
+ends at 9.7; the newer pinned combination is checked locally and in this project's CI.
 Run the development commands below in a source checkout.
 
 ```sh
@@ -83,16 +104,20 @@ ruff check tools && ruff format --check tools
 python3 tools/package_linux.py --install
 ```
 
-The packager needs a complete JDK with `jpackage` and desktop modules in `jmods`.
+The packager needs a complete JDK 25+ with `jpackage` and desktop-capable `jlink`.
+Both traditional JMOD-based JDKs and Temurin 25 runtime-image linking work.
 It creates a portable app with a bundled
 runtime and, with `--install`, a per-user application-menu entry. Set
 `TURBO_JAVA_HOME` to select a packaging JDK. A project launcher, `turbo-tides`,
-and a **Play Turbo Tides** task for Zed are also included. Rebuild/package after
-source edits to refresh these launchers' packaged app.
+and a **Play Turbo Tides** task for Zed are also included. The source launcher
+builds and runs the current checkout with the configured toolchain; repackage to
+update the separately installed app.
 
 Rendering, input and audio use libGDX/LWJGL3. The game rules and tracks are plain
 Kotlin, tested independently at fixed 120 Hz. See [design and checklist](docs/DESIGN.md)
 and [verification](docs/PLAYTEST.md), including the [complete control audit](docs/CONTROLS.md).
+The [quality review](docs/QUALITY-REVIEW.md) records the adversarial findings,
+city references, installer checks and remaining platform limits.
 All scenery, cars, sound and the SVG logo
 are original code-generated assets; imported artwork and fonts are credited in
 [THIRD_PARTY.md](THIRD_PARTY.md).
@@ -105,7 +130,8 @@ APK, touch controls or controller support.
 Preferences and records use libGDX's `turbo-tides` preferences file under
 `~/.prefs/`. An opt-in `--telemetry PATH` mode writes diagnostics for native
 playtests and uses separate `turbo-tides-playtest` preferences. Nothing is sent
-over the network.
+over the network. The rebuilt San Francisco route has a separate record key;
+its older records remain in the file and the other five circuits keep their records.
 
 The city update includes screen-space steering regressions and a native-input
 audit in `tools/city_playtest.py`: `menu`, `mechanics`, and `circuits` scenarios.
@@ -117,4 +143,6 @@ game-only audio; `--holds-only` checks held shortcuts and menu key repeat.
 `--states-only` finishes a race and checks individual disabled bindings and
 menu focus in each state. `--focus-only` verifies release of every driving key
 while unfocused, including latent modifier recovery. See the verification
-document for required tools and environment options.
+document for required tools and environment options. The separate
+[audio cue audit](docs/AUDIO-AUDIT.md) verifies GO, resume and repeated turbo-pad
+sounds against actual game-only PCM output.

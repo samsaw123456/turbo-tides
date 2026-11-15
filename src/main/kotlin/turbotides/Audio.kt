@@ -9,6 +9,9 @@ class Audio : Disposable {
     private var engineId = -1L
     private var musicId = -1L
     private var wasMuted = false
+    private var previousPhase = Phase.GARAGE
+    private var previousMessageSequence = 0
+    private var previousRace: Race? = null
 
     init {
         for (name in listOf("engine", "music", "go", "bonus", "bump", "finish")) {
@@ -20,16 +23,33 @@ class Audio : Disposable {
         }
     }
 
-    fun cue(name: String, muted: Boolean) {
+    private fun cue(name: String, muted: Boolean) {
         if (!muted) sounds[name]?.play(0.3f)
     }
 
     fun update(race: Race, muted: Boolean) {
-        if (muted && !wasMuted) {
+        if (race !== previousRace) {
+            // A retry replaces the race immediately, including its short cues.
+            for (name in listOf("go", "bonus", "bump", "finish")) sounds[name]?.stop()
+            previousRace = race
+            previousPhase = Phase.GARAGE
+            previousMessageSequence = 0
+        }
+        if ((muted && !wasMuted) || (race.phase == Phase.PAUSED && previousPhase != Phase.PAUSED)) {
             sounds.values.forEach { it.stop() }
             engineId = -1L
             musicId = -1L
         }
+        // Resuming is not another start, and GO already has its own cue.
+        if (race.phase == Phase.RACING && previousPhase == Phase.COUNTDOWN) cue("go", muted)
+        if (race.phase == Phase.FINISHED && previousPhase != Phase.FINISHED) cue("finish", muted)
+        if (race.messageSequence != previousMessageSequence) {
+            previousMessageSequence = race.messageSequence
+            if (race.messageTime > 0 && race.phase != Phase.PAUSED && race.message != "GO!") {
+                cue(if (race.message.contains("bump") || race.message.contains("paint")) "bump" else "bonus", muted)
+            }
+        }
+        previousPhase = race.phase
         wasMuted = muted
         val active = race.phase == Phase.RACING && !muted
         val engine = sounds["engine"]

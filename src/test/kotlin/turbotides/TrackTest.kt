@@ -4,6 +4,28 @@ import kotlin.math.abs
 import kotlin.test.*
 
 class TrackTest {
+    @Test fun `Golden Gate main span is straight level and continuous into the hills`() {
+        val track = Track(Circuit.SAN_FRANCISCO)
+        val start = track.frame(track.bridgeStart)
+        val end = track.frame(track.bridgeEnd)
+        assertEquals(track.bridgeEnd - track.bridgeStart, (end.center - start.center).length(), 0.01f)
+        for (distance in 12..228) {
+            val frame = track.frame(distance.toFloat())
+            assertTrue(track.isBridge(distance.toFloat()))
+            assertEquals(start.center.x, frame.center.x, 0.001f)
+            assertEquals(start.center.y, frame.center.y, 0.001f)
+            assertTrue((frame.forward - Point3(0f, 0f, 1f)).length() < 0.001f)
+        }
+        assertFalse(track.isBridge(250f))
+        assertFalse(Track(Circuit.CHICAGO).isBridge(100f))
+        for (distance in 230..270) {
+            val before = track.frame(distance - 0.5f)
+            val after = track.frame(distance + 0.5f)
+            assertTrue((after.center - before.center).length() in 0.99f..1.01f)
+            assertTrue((after.forward - before.forward).length() < 0.02f)
+        }
+    }
+
     @Test fun `positive lane appears to the right in the chase camera`() {
         com.badlogic.gdx.utils.GdxNativesLoader.load()
         val camera = com.badlogic.gdx.graphics.PerspectiveCamera(67f, 1280f, 800f)

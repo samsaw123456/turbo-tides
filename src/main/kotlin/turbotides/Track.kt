@@ -28,6 +28,8 @@ enum class Circuit(val title: String, val route: String, val description: String
 }
 
 class Track(val circuit: Circuit) {
+    val bridgeStart = 36f
+    val bridgeEnd = 204f
     val roadHalfWidth = 9f
     val barrier = 13f
     private val points: List<Point3>
@@ -57,11 +59,7 @@ class Track(val circuit: Circuit) {
                     12f + 8f * sin(3f * angle),
                     133f * sin(angle) + 24f * sin(2f * angle),
                 )
-                Circuit.SAN_FRANCISCO -> Point3(
-                    182f * cos(angle) + 20f * cos(2f * angle),
-                    12f + 30f * ((1f - cos(angle)) / 2f).pow(2),
-                    146f * sin(angle) + 10f * sin(3f * angle),
-                )
+                Circuit.SAN_FRANCISCO -> sanFranciscoPoint(i / 1024f)
                 Circuit.SILICON_VALLEY -> Point3(
                     207f * cos(angle) + 22f * cos(2f * angle),
                     8f + 3f * sin(2f * angle),
@@ -90,6 +88,32 @@ class Track(val circuit: Circuit) {
         center = Point3((minX + maxX) / 2f, points.map { it.y }.average().toFloat(), (minZ + maxZ) / 2f)
         radius = max(maxX - minX, maxZ - minZ) / 2f
     }
+
+    private fun sanFranciscoPoint(fraction: Float): Point3 {
+        // The main suspension span is straight and level. Smooth tangent joins
+        // lead to the hill district; arc-length sampling preserves driving speed.
+        val radius = 130f
+        val straight = 240f
+        val arc = PI.toFloat() * radius
+        val perimeter = 2f * (straight + arc)
+        val d = fraction * perimeter
+        val point = when {
+            d < straight -> Point3(radius, 12f, d - straight / 2f)
+            d < straight + arc -> {
+                val angle = (d - straight) / radius
+                Point3(radius * cos(angle), 12f, straight / 2f + radius * sin(angle))
+            }
+            d < 2f * straight + arc -> Point3(-radius, 12f, straight / 2f - (d - straight - arc))
+            else -> {
+                val angle = PI.toFloat() + (d - 2f * straight - arc) / radius
+                Point3(radius * cos(angle), 12f, -straight / 2f + radius * sin(angle))
+            }
+        }
+        val hills = ((d - straight) / (perimeter - straight)).coerceIn(0f, 1f)
+        return point.copy(y = 12f + 30f * sin(PI.toFloat() * hills).pow(2))
+    }
+
+    fun isBridge(distance: Float): Boolean = circuit == Circuit.SAN_FRANCISCO && wrap(distance) in 12f..228f
 
     fun wrap(distance: Float): Float = ((distance % length) + length) % length
 

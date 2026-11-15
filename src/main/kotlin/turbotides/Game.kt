@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics
+import org.lwjgl.glfw.GLFW
 import java.io.File
 
 class Game(private val telemetry: File? = null) : ApplicationAdapter() {
@@ -32,10 +34,11 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
     private lateinit var preferences: Preferences
     private var saved = false
     private var telemetryClock = 0f
-    private var previousPhase = Phase.GARAGE
-    private var previousMessage = ""
     private var windowWidth = 1280
     private var windowHeight = 800
+    private var windowX = 0
+    private var windowY = 0
+    private var restoreWindowUntil = 0L
 
     override fun create() {
         Gdx.app.log("Turbo Tides", "Renderer: ${Gdx.graphics.glVersion.rendererString}")
@@ -90,7 +93,6 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         race.start()
         saved = false
         newBest = false
-        previousMessage = ""
         world.resetCamera()
     }
 
@@ -99,7 +101,11 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         world.resetCamera()
     }
 
-    fun bestTime(): Float? = preferences.getFloat("best-${circuit.name}-${difficulty.name}", -1f).takeIf { it > 0f && it.isFinite() }
+    // Keep the old San Francisco record intact; the new bridge route has a
+    // different length, so its times must not compete with the 1.1 layout.
+    private val bestKey get() = "best-${circuit.name}-${difficulty.name}" + if (circuit == Circuit.SAN_FRANCISCO) "-v2" else ""
+
+    fun bestTime(): Float? = preferences.getFloat(bestKey, -1f).takeIf { it > 0f && it.isFinite() }
 
     private fun saveSettings() {
         preferences.putBoolean("muted", muted).putBoolean("reducedMotion", reducedMotion)
@@ -127,15 +133,7 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
             reducedMotion = !reducedMotion
             saveSettings()
         }
-        if (pressed(Input.Keys.F11)) {
-            if (Gdx.graphics.isFullscreen) {
-                Gdx.graphics.setWindowedMode(windowWidth, windowHeight)
-            } else {
-                windowWidth = Gdx.graphics.width
-                windowHeight = Gdx.graphics.height
-                Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
-            }
-        }
+        if (pressed(Input.Keys.F11)) toggleFullscreen()
         if (pressed(Input.Keys.ESCAPE)) {
             when (race.phase) {
                 Phase.GARAGE -> Gdx.app.exit()
@@ -146,6 +144,42 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         }
         if (pressed(Input.Keys.R) && race.phase != Phase.GARAGE) startRace()
         if (pressed(Input.Keys.P) && race.phase == Phase.GARAGE) togglePreview()
+    }
+
+    private fun toggleFullscreen() {
+        val graphics = Gdx.graphics as Lwjgl3Graphics
+        if (graphics.isFullscreen) {
+            graphics.setWindowedMode(windowWidth, windowHeight)
+            restoreWindowUntil = System.nanoTime() + 1_000_000_000L
+        } else {
+            // A rapid second toggle must not save an intermediate window-manager resize.
+            if (restoreWindowUntil == 0L) {
+                windowWidth = graphics.width
+                windowHeight = graphics.height
+                windowX = graphics.window.positionX
+                windowY = graphics.window.positionY
+            }
+            restoreWindowUntil = 0L
+            graphics.setFullscreenMode(graphics.displayMode)
+        }
+    }
+
+    private fun restoreWindowBounds() {
+        if (restoreWindowUntil == 0L) return
+        if (System.nanoTime() >= restoreWindowUntil || Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            restoreWindowUntil = 0L
+            return
+        }
+        val graphics = Gdx.graphics as Lwjgl3Graphics
+        // XWayland can apply decorations after the fullscreen transition and subtract
+        // their height from the client area. Reconcile actual bounds briefly, without
+        // assuming a border size or overriding subsequent mouse-driven window resizing.
+        if (graphics.width != windowWidth || graphics.height != windowHeight) {
+            GLFW.glfwSetWindowSize(graphics.window.windowHandle, windowWidth, windowHeight)
+        }
+        if (graphics.window.positionX != windowX || graphics.window.positionY != windowY) {
+            graphics.window.setPosition(windowX, windowY)
+        }
     }
 
     private fun controls(): Controls {
@@ -162,23 +196,15 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
     override fun render() {
         val delta = Gdx.graphics.deltaTime.coerceAtMost(0.1f)
         keys()
+        restoreWindowBounds()
         race.advance(delta, controls())
         if (race.phase == Phase.FINISHED && !saved) {
             saved = true
             newBest = race.elapsed < (bestTime() ?: Float.MAX_VALUE)
             if (newBest) {
-                preferences.putFloat("best-${circuit.name}-${difficulty.name}", race.elapsed)
+                preferences.putFloat(bestKey, race.elapsed)
                 flushPreferences()
             }
-        }
-        if (race.phase != previousPhase) {
-            if (race.phase == Phase.RACING) audio.cue("go", muted)
-            if (race.phase == Phase.FINISHED) audio.cue("finish", muted)
-            previousPhase = race.phase
-        }
-        if (race.messageTime > 0 && race.message != previousMessage) {
-            previousMessage = race.message
-            audio.cue(if (race.message.contains("bump") || race.message.contains("paint")) "bump" else "bonus", muted)
         }
         audio.update(race, muted)
         world.render(

@@ -1,4 +1,4 @@
-# Control coverage for 1.1
+# Control coverage for 1.2
 
 Inventory checked against `Game.keys`, `Game.controls`, `Hud.menuInput`,
 the garage help and README. The game supports a desktop keyboard and primary
@@ -7,11 +7,12 @@ mouse button. Controller and touch input are not implemented or advertised.
 The final-build audit uses actual native input handlers, screenshots, read-only
 diagnostics and direct capture of the game's PipeWire output. It never writes
 race state. All 49 rows below passed their assertions and visual/audio evidence
-review on the final 1.1.0 JAR; no inventory row remains failed or unverified.
+review on the final 1.2.0 JAR; no inventory row remains failed or unverified.
 The tested JAR SHA-256 is recorded in [verification.json](evidence/verification.json).
 Screenshots and JSON live in `build/playtest`; scripts reproduce them.
 
-Keyboard input uses XTest. Mouse input uses XTest on Xvfb; the hardware-rendered
+Keyboard input uses XTest, with XQueryKeymap acknowledgement of every physical
+press/release before the next edge. Mouse input uses XTest on Xvfb; the hardware-rendered
 XWayland pass uses native X11 MotionNotify/ButtonPress/ButtonRelease events to
 the game window because XTest pointer events did not reach GLFW there. Both
 methods exercise the real GLFW/libGDX input handlers and rendered UI.
@@ -29,8 +30,8 @@ using the actual game window’s process ID, including the packaged app.
 
 | Physical binding | Context and expected cause/effect | Observed result | Status | Evidence |
 | --- | --- | --- | --- | --- |
-| W | Racing: speed and travel rise; release coasts; disabled before GO/after finish | Car accelerated from rest; visible speed fell 138→86 km/h after release; countdown/result gating passed. | Passed | `control-w-*` |
-| Up | Racing: accelerate; menus: focus moves up; countdown gates driving | Accelerated from rest and coasted 146→92 km/h; menu focus moved upward. | Passed | `control-Up-*`, menu/result focus frames |
+| W | Racing: speed and travel rise; release coasts; disabled before GO/after finish | Car accelerated from rest; visible speed fell 141→70 km/h after release; countdown/result gating passed. | Passed | `control-w-*` |
+| Up | Racing: accelerate; menus: focus moves up; countdown gates driving | Accelerated from rest and coasted 146→75 km/h; menu focus moved upward. | Passed | `control-Up-*`, menu/result focus frames |
 | S | Racing: brake to zero without reversing; wins over W | Speed reached 0 km/h despite W held; car stayed stopped without reversing. | Passed | `control-s-stopped`, opposing-inputs |
 | Down | Racing: brake; menus: focus moves down; countdown gates driving | Speed reached 0 km/h; menu focus advanced downward. | Passed | `control-Down-stopped`, menu/result focus frames |
 | A | Racing: move screen-left; release removes steering; stopped input cannot move car | Car moved to the visible left edge; neutral steering recovered; stopped car stayed still. | Passed | steering-a, city-mechanics JSON |

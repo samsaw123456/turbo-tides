@@ -4,10 +4,13 @@ import argparse
 import hashlib
 import os
 import platform
+import re
 import shutil
 import subprocess
 import tarfile
 from pathlib import Path
+
+from install_linux import InstallError, ensure_dependencies, install_app, launcher_text
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -16,72 +19,83 @@ MARKER = ".turbo-tides-managed"
 VERSION = (ROOT / "VERSION").read_text().strip()
 
 
+def complete_jdk(packager):
+    java = packager.parent / "java"
+    linker = packager.parent / "jlink"
+    if not all(path.is_file() for path in (packager, java, linker)):
+        return False
+    modules = subprocess.run(
+        [str(java), "--list-modules"], capture_output=True, text=True, check=False
+    )
+    major = re.search(r"^java.base@(\d+)", modules.stdout, re.MULTILINE)
+    if (
+        modules.returncode
+        or not major
+        or int(major.group(1)) < 25
+        or "java.desktop@" not in modules.stdout
+    ):
+        return False
+    if (packager.resolve().parents[1] / "jmods/java.desktop.jmod").is_file():
+        return True
+    # JEP 493 lets complete JDK 25 distributions link directly from their image.
+    # Stabilize this textual capability probe independently of the user's locale.
+    help_result = subprocess.run(
+        [str(linker), "-J-Duser.language=en", "-J-Duser.country=US", "--help"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return (
+        help_result.returncode == 0
+        and "Linking from run-time image enabled" in help_result.stdout
+    )
+
+
 def jpackage():
     configured = os.environ.get("TURBO_JAVA_HOME") or os.environ.get("JAVA_HOME")
-    candidates = [Path(configured) / "bin/jpackage"] if configured else []
-    if configured and not (Path(configured) / "jmods/java.desktop.jmod").is_file():
-        raise SystemExit(
-            "The selected JDK lacks desktop modules. Select a complete JDK with TURBO_JAVA_HOME."
-        )
-    candidates.extend(
-        sorted(Path("/usr/lib/jvm").glob("java-*-openjdk-*/bin/jpackage"), reverse=True)
-    )
+    if configured:
+        candidate = Path(configured) / "bin/jpackage"
+        if not complete_jdk(candidate):
+            raise SystemExit(
+                "The selected JDK lacks desktop modules, jlink/jpackage, or Java 25. Select a complete JDK 25+ with TURBO_JAVA_HOME."
+            )
+        return candidate
+    candidates = sorted(Path("/usr/lib/jvm").glob("*/bin/jpackage"), reverse=True)
     available = shutil.which("jpackage")
     if available:
         candidates.append(Path(available))
     for candidate in candidates:
-        if (
-            candidate.is_file()
-            and (candidate.resolve().parents[1] / "jmods/java.desktop.jmod").is_file()
-        ):
+        if complete_jdk(candidate):
             return candidate
-    raise SystemExit("A JDK with jpackage is required (OpenJDK 17 or later).")
-
-
-def quoted(path):
-    return (
-        '"'
-        + str(path)
-        .replace("\\", "\\\\")
-        .replace('"', '\\"')
-        .replace("`", "\\`")
-        .replace("$", "\\$")
-        + '"'
+    raise SystemExit(
+        "A complete JDK 25+ with jpackage and desktop-capable jlink is required."
     )
 
 
 def install(app):
-    destination = Path.home() / ".local/opt/turbo-tides"
-    if destination.exists():
-        if not (destination / MARKER).exists():
-            raise SystemExit(
-                f"Refusing to replace an unmanaged directory: {destination}"
-            )
-        shutil.rmtree(destination)
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(app, destination, symlinks=True)
-    (destination / MARKER).write_text("Managed by Turbo Tides installer\n")
-    applications = Path.home() / ".local/share/applications"
-    icons = Path.home() / ".local/share/icons/hicolor/512x512/apps"
-    applications.mkdir(parents=True, exist_ok=True)
-    icons.mkdir(parents=True, exist_ok=True)
-    icon = icons / "turbo-tides.png"
-    shutil.copy2(ROOT / "src/main/resources/art/icon-512.png", icon)
-    entry = applications / "turbo-tides.desktop"
-    entry.write_text(
-        "[Desktop Entry]\nType=Application\nName=Turbo Tides\n"
-        "Comment=Drift and boost through six coastal and city circuits\n"
-        f"Exec={quoted(destination / 'bin/TurboTides')}\n"
-        f"Icon={icon}\nTerminal=false\nCategories=Game;SportsGame;\n"
-        "StartupWMClass=Turbo Tides\nStartupNotify=true\n"
+    try:
+        ensure_dependencies()
+        return install_app(app)
+    except InstallError as exception:
+        raise SystemExit(str(exception)) from exception
+
+
+def standalone_installer():
+    bootstrap = (ROOT / "tools/bootstrap_installer.sh").read_text()
+    payload = (ROOT / "tools/install_linux.py").read_text()
+    return (
+        bootstrap
+        + """
+ensure_installer_python
+installer_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+if [ "$#" -eq 0 ] && [ -f "$installer_dir/.turbo-tides-managed" ]; then
+    set -- --app "$installer_dir"
+fi
+python3 - "$@" <<'TURBO_TIDES_PYTHON_INSTALLER'
+"""
+        + payload
+        + "\nTURBO_TIDES_PYTHON_INSTALLER\n"
     )
-    for command in (
-        ["desktop-file-validate", str(entry)],
-        ["update-desktop-database", str(applications)],
-    ):
-        if shutil.which(command[0]):
-            subprocess.run(command, check=True)
-    print(f"Installed: {destination}\nApp menu entry: {entry}")
 
 
 def main():
@@ -136,6 +150,10 @@ def main():
             "java.base,java.desktop,java.logging,java.xml,jdk.unsupported",
             "--java-options",
             "-Xmx768m",
+            "--java-options",
+            "--enable-native-access=ALL-UNNAMED",
+            "--java-options",
+            "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED",
         ],
         check=True,
     )
@@ -146,10 +164,14 @@ def main():
     (app / MARKER).write_text("Managed by Turbo Tides installer\n")
     # The short launcher works from a file manager and from any working directory.
     play = app / "Play Turbo Tides"
-    play.write_text(
-        '#!/bin/sh\nset -eu\napp_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)\nexec "$app_dir/bin/TurboTides" "$@"\n'
-    )
+    play.write_text(launcher_text())
     play.chmod(0o755)
+    (app / "launch.sh").write_text(launcher_text())
+    (app / "launch.sh").chmod(0o755)
+    installer = standalone_installer()
+    for path in (app / "Install Turbo Tides.sh", DIST / "install.sh"):
+        path.write_text(installer)
+        path.chmod(0o755)
     archive = DIST / f"turbo-tides-{VERSION}-linux-{platform.machine()}.tar.gz"
     with tarfile.open(archive, "w:gz") as output:
         output.add(app, arcname=NAME)

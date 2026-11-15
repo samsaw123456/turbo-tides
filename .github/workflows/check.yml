@@ -5,22 +5,49 @@ permissions:
 jobs:
   desktop:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '25'
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew check fatJar
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - run: python3 -m pip install ruff==0.17.5
+      - run: python3 -m pip install ruff==0.17.5 Pillow==12.1.1
       - run: ruff check tools && ruff format --check tools
       - run: python3 -m py_compile tools/*.py
       - run: python3 -m unittest discover -s tools -p 'test_*.py'
       - run: python3 tools/package_linux.py --skip-build
+      - name: Install virtual display for native smoke test
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth x11-utils libxtst6 libgl1 libgl1-mesa-dri
+      - name: Exercise the packaged native game
+        env:
+          LIBGL_ALWAYS_SOFTWARE: 'true'
+          ALSOFT_DRIVERS: 'null'
+          # A Wayland desktop with DISPLAY available must keep using X11/XWayland.
+          XDG_SESSION_TYPE: 'wayland'
+          TURBO_TEST_TELEMETRY: ${{ runner.temp }}/turbo-tides-native-ci.json
+          TURBO_TEST_OUTPUT: build/native-smoke
+        run: |
+          xvfb-run -a -s '-screen 0 1280x800x24' bash -euo pipefail <<'SH'
+          dist/TurboTides/bin/TurboTides --telemetry "$TURBO_TEST_TELEMETRY" >build/native-ci.log 2>&1 &
+          game_pid=$!
+          trap 'kill "$game_pid" 2>/dev/null || true; wait "$game_pid" 2>/dev/null || true' EXIT
+          python3 tools/playtest.py checks
+          SH
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-smoke-evidence
+          path: |
+            build/native-ci.log
+            build/native-smoke/
       - uses: actions/upload-artifact@v4
         with:
           name: turbo-tides-linux

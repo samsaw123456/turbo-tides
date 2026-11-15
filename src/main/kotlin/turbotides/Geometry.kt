@@ -25,6 +25,12 @@ class Geometry(private val part: MeshPartBuilder) {
         part.cone(w, h, d, sides)
     }
 
+    fun cylinder(shade: String, p: Point3, diameter: Float, height: Float, sides: Int = 16) {
+        part.setColor(color(shade))
+        part.setVertexTransform(Matrix4().translate(p.vector()))
+        part.cylinder(diameter, height, diameter, sides)
+    }
+
     fun beam(shade: String, a: Point3, b: Point3, width: Float) {
         val difference = b.vector().sub(a.vector())
         part.setColor(color(shade))
@@ -57,12 +63,14 @@ class Geometry(private val part: MeshPartBuilder) {
         box("dcd4bd", p + Point3(0f, h, 0f), w + 0.7f, 0.7f, d + 0.7f, yaw)
         if (!windows) return
         val rotation = Matrix4().rotate(Vector3.Y, yaw)
-        val floors = (h / 6f).toInt().coerceIn(1, 12)
+        val floors = (h / 6f).toInt().coerceIn(1, 8)
         for (floor in 1..floors) {
             val y = floor * h / (floors + 1)
             for (side in listOf(-1f, 1f)) {
                 val local = Vector3(0f, y, side * (d / 2f + 0.08f)).mul(rotation)
                 box("9ebcbd", p + Point3(local.x, local.y, local.z), w * 0.8f, 1.5f, 0.12f, yaw)
+                val sideFace = Vector3(side * (w / 2f + 0.08f), y, 0f).mul(rotation)
+                box("9ebcbd", p + Point3(sideFace.x, sideFace.y, sideFace.z), 0.12f, 1.5f, d * 0.8f, yaw)
             }
         }
     }

@@ -25,6 +25,7 @@ difficulty. Workshop characters appear as the pit crew, with MIT attribution.
 
 - `Track.kt`: closed, arc-length sampled 3D circuits and surface geometry.
 - `Race.kt`: deterministic fixed-step racing rules, independent of rendering.
+- `CarShape.kt`: shared visible dimensions and yaw/roll-aware contact bounds.
 - `World.kt`: meshes, cars, scenery, camera and rendering resources.
 - `CityScenery.kt` / `Geometry.kt`: original city landmarks and shared mesh primitives.
 - `Game.kt` / `Hud.kt`: state transitions, keyboard/mouse UI and persistence.
@@ -37,6 +38,9 @@ reverse gear, shortcut, falling off the island, or simulation of suspension.
 The road path is the single source for physics, rendering, minimap and AI.
 Positive lane means screen-right in the chase camera (`forward × up`). The
 surface winding, outward corner force and car yaw use that same convention.
+Contacts separate overlapping cars even while feedback is cooling down. Rivals
+choose a clear passing lane around slower cars and retain rear-bumper clearance.
+Car shadows follow the road grade and exhaust follows the entire car transform.
 Turbo pads can trigger once per pad per lap, while moving. Finished rivals
 leave the course and cannot collide with a later finisher.
 
@@ -46,7 +50,7 @@ Only the selected scene is rendered. Six bounded cached worlds are disposed
 on exit. Rendering is capped at 120 FPS without waiting for native vertical
 synchronization, which stalled buffer swaps on the tested desktop. Simulation
 remains fixed at 120 Hz, independent of rendering frequency. New circuits are appended to the saved enum order for compatibility.
-See [city update checklist](CITY-UPDATE.md) for the current verification scope.
+See [current verification](PLAYTEST.md) and the [control inventory](CONTROLS.md).
 
 ## Acceptance and playtest checklist
 
@@ -63,3 +67,11 @@ See [city update checklist](CITY-UPDATE.md) for the current verification scope.
 Jumping, enemies, combat, inventory, online services and account login are not
 part of the game. The app runs offline. Android packaging is out of scope for
 this Linux desktop build.
+
+## 1.2 review
+
+The [quality review](QUALITY-REVIEW.md) records city design references, adversarial
+physics/audio findings and the installer/toolchain changes. The six circuit
+previews and final runnable build are audited again after these changes; older
+1.1 raw evidence is kept separately. The San Francisco span is straight and
+level, with smooth joins into the hill district and a separate best-time key.

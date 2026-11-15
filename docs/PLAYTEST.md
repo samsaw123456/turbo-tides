@@ -1,124 +1,125 @@
-# Verification for the city update
+# Verification for 1.2.0
 
-## Steering failure and regression
+The final native audit used the unchanged JAR at
+`build/playtest/final-audit.jar`, SHA-256
+`62ce617d3d4484c1f6fa37c268cb5b9a3c23f19644b070a84a281c0608267443`.
+The installed app's JAR was checked against that same hash.
 
-The initial 1.0 playtests drove complete races but did not establish the visible
-direction of each steering key. Their lane-value checks missed a reversed road
-basis. That was a verification failure, not evidence that steering worked.
+The original 1.0 verification missed reversed visible steering because it
+checked lane values and completed races without proving each key's rendered
+effect. That was a verification failure. Regression tests now independently
+check screen projection at 24 positions on every circuit; the native audit
+presses A, Left, D and Right separately and inspects their actual motion.
 
-The new perspective-camera regression was run against the old implementation
-and failed: positive lane projected left of the road center. The corrected
-basis is forward crossed with world-up. Camera projection is checked at 24
-positions on each of six circuits. Corner force, car yaw, surface winding and
-pad rendering now use the same convention.
+## Checks and corrections
 
-The native audit separately presses A, D, Left and Right and captures the actual
-rendered result. It reads diagnostic output but does not teleport cars, modify
-fuel, skip laps or write simulation state. The complete coverage inventory is
-[CONTROLS.md](CONTROLS.md). Both key bindings must work; a successful race alone
-does not establish that.
+`./gradlew check fatJar` passes Kotlin lint, compilation and **30 tests**.
+Coverage includes all six circuits at both rival paces, complete wins and a
+losing finish/retry, steering authority, drift rewards, pad latching, pause,
+contact recovery, track continuity, bridge geometry and camera direction.
+Fixed-step outcomes agree at 10/240 FPS as well as 30/144 FPS.
 
-Other corrections found during this work:
+Python passes Ruff lint/format checks, `python3 -m py_compile tools/*.py`, and
+**31 installer/packaging tests**. Installer fixtures exercise missing Python,
+shared libraries and `flock`, offline installation, checksum/archive rejection,
+failed downloads, interrupted upgrades, rollback, running-app protection,
+paths containing spaces and special characters, and save preservation.
+The shell entry points pass syntax checks.
 
-- Pads require movement and trigger once per pad per lap; parking on a pad
-  cannot repeatedly award boosts.
-- Finished opponents leave the course and cannot collide with later finishers.
-- Corner force is bounded so full steering remains effective during nitro.
-- Rear view returns immediately on release, avoiding a camera sweep through the
-  car. The temporary view explicitly explains car-relative steering.
-- Only primary mouse clicks activate menus.
-- Hovering one route and pressing Enter now starts that focused route. The
-  native regression reproduced the previous behavior: San Francisco had focus,
-  but Enter started the previously selected Sunset Run. Left/Right browsing
-  now uses that same focus, including after pointer movement.
-- Native buffer synchronization stalled at 1–2 FPS on the tested desktop.
-  Disabling that wait restored responsive rendering; the app retains its
-  120 FPS render cap and independent fixed-step physics.
-- Bridge cable segments share correctly oriented endpoint transforms; a
-  regression checks uphill, downhill and vertical anchors.
-- Circuit maps fit their actual bounds, and menu labels clear focus indicators.
+Review found and fixed undersized car contacts, angled-car barrier clipping,
+collision cooldown allowing overlap, rivals driving through each other, and
+rivals queuing indefinitely behind a parked player. Contacts now cover the
+visible chassis/wheels and their angle, with clearance maintained during the
+feedback cooldown. Rivals choose passing lanes. All opponents finish around a
+parked player on all six circuits at both paces. An independent 48-scenario
+contact probe found no meaningful overlap or backwards corrections; its
+largest residual overlap was 0.000087 m, within floating-point tolerance.
 
-## Automated checks
+Other fixes include duplicated/missed audio cues, GO replay on resume,
+transient sounds surviving pause/retry, fullscreen restoration, straight and
+level SF bridge geometry, roadside gantry clearance, shadows on slopes and
+exhaust that follows the car's transform. The changed SF route uses new record
+keys while preserving old saved values.
 
-`./gradlew ktlintFormat`, followed by `./gradlew check fatJar`, passes lint,
-compilation and 20 tests. Coverage includes countdown gating, pause/resume,
-30/144 FPS equivalence, braking and grass drag, barrier/contact recovery, moving
-drift rewards, pad latching and nitro consumption, boost speed limits, complete
-wins on all six circuits at both rival paces, a losing finish and clean restart,
-continuous/wrapped track geometry, road widths, grades and separated road
-sections, steering at boost speed, screen-space direction, and cable anchors.
+## Native controls and presentation
 
-Python tools pass `ruff check tools`, `ruff format --check tools`,
-`python3 -m py_compile tools/*.py`, and two packaging unittests.
-The launcher passes `bash -n turbo-tides`.
+The real GLFW/libGDX interface was exercised on Mesa Intel UHD Graphics
+(CML GT2) through XWayland, with isolated test preferences. Keyboard events use
+XTest with X-server acknowledgement of press/release; hardware pointer tests
+use native X11 window events where XWayland drops synthetic pointer input.
+Telemetry is read-only: the scripts do not teleport cars, set fuel or skip laps.
 
-## Native runs
+The main audit passed **32 evidence groups**, followed by held-key,
+presentation, per-state and focus-release audits. The
+[49-row control inventory](CONTROLS.md) covers alternate keys, opposing chords,
+menu actions, disabled inputs, focus loss, restart and camera recovery.
+An independent reviewer inspected all 72 requested moving-control frames:
+normal-view left/right directions, documented mirrored rear-view steering,
+boost/drift appearance and release, braking, stopped inputs and opposing keys.
+W and Up visibly accelerated from 0 to 141/146 km/h, then coasted to 70/75 km/h;
+S and Down stopped at 0. All four drift bindings showed a release bonus.
 
-The final source JAR and the installed app share SHA-256
-`2d4325bcfff4bd4a2ed0430d7afe69c4657f4ba0fa59225c151d386895bc01fe`.
-The actual LWJGL window is driven with XTest on an isolated Xvfb display,
-then tested on Intel UHD hardware graphics through XWayland. Keyboard events
-use XTest in both. The hardware mouse pass uses native X11 window events because
-XTest pointer events did not reach GLFW on this desktop. Both exercise real input
-handlers, menus, simulation and rendering.
-Telemetry uses separate `turbo-tides-playtest` preferences and local JSON.
-No game data leaves the computer. Rendering is inspected at 1280×800,
-960×640 and fullscreen.
+All six circuit previews and grids, paint/pace controls and menus were inspected
+at 1280×800 and 960×640. Fullscreen reached 4096×2304 and returned to the
+previous window size. City landmarks remain stylized miniature race circuits,
+not geographic street-map replicas.
 
-The final six-race sweep on the installed app finished first on every circuit.
-It alternated rival paces and exercised every result-menu action (keyboard,
-shortcut and mouse):
+## Complete races
 
-| Circuit | Pace | Three-lap time | Pads | Contacts |
+Every circuit finished first in the final native sweep, alternating rival paces:
+
+| Circuit | Pace | Measured time | Pads | Contacts |
 | --- | --- | ---: | ---: | ---: |
-| Sunset Run | Cruise | 40.81 s | 9 | 0 |
-| Cinder Ring | Race | 38.68 s | 9 | 0 |
-| San Francisco | Cruise | 43.41 s | 9 | 0 |
-| Silicon Valley | Race | 45.14 s | 9 | 0 |
-| New York City | Cruise | 45.25 s | 9 | 0 |
-| Chicago | Race | 45.09 s | 9 | 0 |
+| Sunset Run | Cruise | 41.29 s | 9 | 1 |
+| Cinder Ring | Race | 38.87 s | 9 | 1 |
+| San Francisco | Cruise | 55.16 s | 9 | 1 |
+| Silicon Valley | Race | 45.19 s | 9 | 0 |
+| New York City | Cruise | 45.92 s | 9 | 1 |
+| Chicago | Race | 45.69 s | 9 | 1 |
 
-New York ran at 960×640 with reduced motion; the other final races used 1280×800.
-The test scripts drove complete races using real held keys and read-only
-diagnostics. The losing-race and packaged-app results are recorded below.
+New York used 960×640 with reduced motion; the other races used 1280×800.
+Chicago retained reduced motion. All six result screens and the available lap
+frames were visually inspected. The later loss run replaced Chicago's three
+lap captures; those are now explicitly named `loss-chicago-lap-*`, while
+`finish-chicago.png` and `city-races.json` retain its winning result.
 
-A separate Chicago run deliberately waited for the rivals, then finished
-sixth in 131.92 seconds with nine pads. R reset the completed race to a fresh
-countdown; pause-menu navigation returned to the garage. The 960×640 result
-screen was inspected. Esc from the garage closed the actual native window.
+The deliberate Chicago loss waited for opponents, then completed three laps
+in sixth place in **131.82 s**, collected nine pads, retried with R and returned
+to the garage. Its 960×640 result screen showed the correct rank, time and retry
+controls. During the six-race sweep, 1,086 racing samples measured **120–121 FPS,
+median 121**, on this machine. The nominal cap is 120; libGDX's reporting window
+can read 121. These measurements do not predict other hardware's performance.
 
-The menu audit covers all six city/natural scenes and grid views, mouse and
-keyboard selection, wraparound, paint and pace changes, sound/motion toggles,
-rapid repeated selection, resizing, and fullscreen. The mechanics audit covers
-steering in both directions through both bindings, opposing inputs, braking,
-moving drift/release, nitro, shoulder/wall recovery, rear view, freeze/resume,
-focus loss, and reset during countdown.
+## Audio and installed entry
 
-The main control audit passed 32 evidence groups, followed by held-key,
-presentation, per-state and extended focus-release passes. All 49 rows in the
-control inventory passed; their observed outcomes and evidence are recorded. Every W/Up, S/Down, A/Left, D/Right and Shift alternative is
-exercised separately. The [steering frames](screenshots/steering-check.png) show
-left/right road-relative movement; [rear-view frames](screenshots/rear-view-check.png)
-show the documented mirrored convention and restoration of forward chase view.
-W and Up release frames show visible speeds falling from 138 to 86 km/h and
-146 to 92 km/h respectively.
+Game-only PipeWire PCM confirmed sound→silence→sound for menu and race mute
+controls. Mute, pause and mute-through-resume produced zero samples. A separate
+Xvfb run on the same final JAR matched the actual GO waveform with correlation
+0.9990, found no GO replay on resume, and matched three consecutive pad cues at
+0.9994, 0.9997 and 0.9671. A labelled generated duplicate-cue fixture checks that
+the detector rejects the earlier bug. No microphone or system mix was captured;
+this is output verification, not subjective speaker/headphone listening.
+See [audio reproduction and detector limits](AUDIO-AUDIT.md).
 
-The isolated [drift-release frames](screenshots/drift-release-check.png) show
-Space+A, Space+D, Space+Left and Space+Right each displaying the release bonus.
-Each run had zero bonuses while held and exactly one after release. Nitro rose
-61.65→82.84, 61.29→81.43, 60.39→81.64 and 62.34→81.58 respectively, with no pad
-or contact during the measured sequence. Earlier captures that let a drift run
-off-road or showed a delayed framebuffer were rejected and recaptured; passing
-an internal assertion was not accepted as sufficient visual evidence.
+After installed-app relaunch, settings and all 12 circuit/pace record slots
+(including empty slots) matched exactly. The bundled runtime was confirmed in
+the running process, and Esc closed the app normally. GIO loaded the installed
+desktop entry in normal mode, launched the game and exited successfully without
+changing production preferences. GTK's icon theme loaded the actual installed
+64-pixel game icon. Published-download validation is not claimed by these checks.
 
-Audio was captured directly from the game's two output ports, in 48,000-frame
-PCM segments. Menu sound had RMS 200.69, mute had RMS/peak 0, and restoration
-had RMS 173.60. Racing measured RMS 302.74→0→310.39. Pause and mute-through-resume
-also produced zero samples. Held M/N/P/F11, R, Esc, Enter, navigation and both
-Shift+Tab bindings were checked for repeated activation.
+The installed app also ran inside a separate network namespace using
+`bwrap --unshare-net`. A connection probe in that same namespace failed with
+`ENETUNREACH`; the game then completed Chicago/Race first in **45.50 s**, collected
+nine pads, returned to the garage and exited normally. All three lap frames,
+the result and garage were inspected. Evidence is in `build/offline-playtest/`.
 
-Reproduce with the app running using
-`--telemetry /tmp/turbo-tides-playtest.json` and DISPLAY pointing to its X server:
+## Reproduction and evidence
+
+Launch the game with `--telemetry /absolute/path/state.json`, isolated
+preferences, and an X display. Set `TURBO_TEST_TELEMETRY` to that file and
+`TURBO_TEST_OUTPUT` to a separate evidence directory. Use
+`TURBO_TEST_NATIVE_POINTER=1` for the XWayland pointer fallback.
 
 ```sh
 python3 tools/city_playtest.py menu
@@ -131,44 +132,15 @@ python3 tools/city_playtest.py circuits
 python3 tools/playtest.py loss
 ```
 
-For the XWayland pointer fallback, set `TURBO_TEST_NATIVE_POINTER=1`.
-Set `TURBO_TEST_TELEMETRY` if the app writes diagnostics to a non-default path.
+Native input tools require X11/XTest, libX11, libXtst, xwininfo and xprop;
+frame capture uses Pillow or ImageMagick. Audio capture requires PipeWire tools.
+Raw logs, frames and measurements are retained in ignored `build/playtest/`,
+including `city-races.json`, `loss.json`, `fps-samples.json`, control-audit JSON,
+and `review-final/{physics-review,races-review}.json` with reviewed image hashes.
+Final audio evidence is in `build/audio-review-native/`. Earlier failed
+regressions and the corrected silence-normalization detector trace were retained.
 
-Native scripts require X11/XTest, libX11, libXtst, xwininfo and xprop; screenshots
-use Pillow or ImageMagick.
-The complete control audit also uses Pillow and PipeWire’s pw-dump, pw-record
-and pw-link to compare
-rendered pixels and capture only the game's output ports. It never connects to
-a microphone or records the system-wide mix. Screenshots, PCM and measurements
-are retained under ignored `build/playtest/`.
-
-## Packaging and limits
-
-The Linux package includes a runtime built using a complete Eclipse Temurin
-21.0.13+9 JDK whose download was checked against its upstream SHA-256.
-The installed 1.1.0 app was relaunched and every circuit/pace best-time slot
-was compared, along with paint, sound, reduced motion, selected route and pace.
-The bundled runtime was confirmed in the running process's mapped libraries.
-`gtk-launch turbo-tides` loaded the actual desktop entry in normal mode, showed
-the six-route menu and exited through Esc. Production preferences retained their
-original SHA-256 throughout testing.
-
-A final hardware run with all six scenes cached completed New York/Race in
-44.98 seconds and Sunset/Race in 40.86 seconds, both first with nine pads and
-zero contacts. Sampled FPS was 120–121 (median 121) on Mesa Intel UHD Graphics
-(CML GT2); wall times including countdown were 48.28 and 44.15 seconds.
-The nominal render cap is 120; libGDX's once-per-second counter can read 121.
-This is one machine's measurement, not a guarantee for other hardware.
-
-The relocatable package is also exercised from a directory containing spaces,
-with a different working directory. Release archives include a SHA-256 file.
-Selected screenshots and [measurements](evidence/verification.json) are committed;
-raw JSON, PCM, screenshots and run logs remain in ignored `build/playtest/`.
-
-Only Linux desktop is exercised. No Android, touch, gamepad, Windows or macOS
-playtest is claimed. The isolated software renderer shares CPU with other work;
-observed frame rates vary with host load, so physical input durations are
-measured against simulation time. The game clamps stalled frames rather than
-fast-forwarding physics. Hardware rendering and package launch are checked
-separately. Audio mute is assessed through captured PCM levels; this does not
-constitute a subjective sound-quality review.
+Only Linux desktop was exercised. No Android, touch, gamepad, Windows or macOS
+playtest is claimed. Software rendering was also exercised, but its frame rate
+varied with shared host load; stalled frames are clamped instead of advancing
+physics through unobserved time.

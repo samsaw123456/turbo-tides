@@ -17,7 +17,14 @@ from city_playtest import drive_for, garage, launch, mechanics, select
 from playtest import OUTPUT, Driver
 
 
-def record_game_audio(driver, name):
+def record_game_audio(
+    driver,
+    name,
+    *,
+    seconds=1,
+    action=None,
+    node_name="TurboTidesAuditCapture",
+):
     """Connect only the game's two output ports to an isolated recording node."""
     window_pid = subprocess.check_output(
         ["xprop", "-id", hex(driver.window), "_NET_WM_PID"], text=True
@@ -50,13 +57,14 @@ def record_game_audio(driver, name):
             raise RuntimeError(f"Expected one {side} output port for game PID {pid}")
         outputs[side] = ports[0]
     path = OUTPUT / f"{name}.wav"
+    frames = round(48000 * seconds)
     process = subprocess.Popen(
         [
             "pw-record",
             "--target",
             "0",
             "--properties",
-            '{ node.name = "TurboTidesAuditCapture" node.autoconnect = false }',
+            f'{{ node.name = "{node_name}" node.autoconnect = false }}',
             "--rate",
             "48000",
             "--channels",
@@ -64,7 +72,7 @@ def record_game_audio(driver, name):
             "--format",
             "s16",
             "--sample-count",
-            "48000",
+            str(frames),
             str(path),
         ],
         stdout=subprocess.DEVNULL,
@@ -73,7 +81,7 @@ def record_game_audio(driver, name):
     try:
         for _ in range(60):
             ports = subprocess.check_output(["pw-link", "-i"], text=True)
-            if "TurboTidesAuditCapture:input_FL" in ports:
+            if f"{node_name}:input_FL" in ports:
                 break
             time.sleep(0.05)
         else:
@@ -83,15 +91,17 @@ def record_game_audio(driver, name):
                 [
                     "pw-link",
                     str(outputs[side]),
-                    f"TurboTidesAuditCapture:input_{side}",
+                    f"{node_name}:input_{side}",
                 ],
                 check=True,
             )
-        _, error = process.communicate(timeout=10)
+        if action is not None:
+            action()
+        _, error = process.communicate(timeout=seconds + 10)
         # This pw-record build returns 1 on reaching --sample-count. Validate
         # the actual PCM payload, not that unusual exit status alone.
         with wave.open(str(path)) as wav:
-            assert wav.getnframes() == 48000, error.decode()
+            assert wav.getnframes() == frames, error.decode()
             samples = array.array("h", wav.readframes(wav.getnframes()))
         return {
             "rms": math.sqrt(sum(sample * sample for sample in samples) / len(samples)),
@@ -360,7 +370,7 @@ def states(driver):
     if driver.state()["phase"] != "FINISHED":
         garage(driver)
         launch(driver)
-        result = driver.pilot(seconds=180)
+        result = driver.pilot(seconds=180, capture_prefix="state-")
         assert result["phase"] == "FINISHED", result
     result = driver.state()
     evidence["completed-race"] = result
@@ -910,5 +920,11 @@ if __name__ == "__main__":
             holds(instance)
         else:
             audit(instance)
+    except AssertionError:
+        (OUTPUT / "control-audit-failure.json").write_text(
+            json.dumps(instance.state(), indent=2) + "\n"
+        )
+        instance.screenshot("control-audit-failure")
+        raise
     finally:
         instance.release()

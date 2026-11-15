@@ -103,25 +103,32 @@ class World(var track: Track) : Disposable {
             Circuit.SAN_FRANCISCO -> "b3bd94"
             else -> "91ab78"
         }
-        // Fog is evaluated at vertices. Subdivide the sea so its near surface
-        // keeps its colour instead of inheriting fog from far-away corners.
+        // Subdivided ground keeps vertex fog local. City regions meet their
+        // waterfronts instead of sharing the coastal circuit's island silhouette.
         for (x in -10 until 10) {
             for (z in -10 until 10) {
-                val a = Point3(x * 100f, -5f, z * 100f)
-                quad(
-                    part,
-                    a,
-                    a + Point3(0f, 0f, 100f),
-                    a + Point3(100f, 0f, 100f),
-                    a + Point3(100f, 0f, 0f),
-                    if (sunset) {
-                        "329f9d"
-                    } else if (track.circuit == Circuit.CHICAGO) {
-                        "428fa7"
-                    } else {
-                        "568d91"
-                    },
-                )
+                val water = when (track.circuit) {
+                    Circuit.CHICAGO -> x >= 2
+                    Circuit.SILICON_VALLEY -> false
+                    Circuit.NEW_YORK -> x < -3 || x >= 3
+                    Circuit.SAN_FRANCISCO -> x >= 1 && z in -2..1
+                    else -> true
+                }
+                val shade = if (!water) {
+                    when (track.circuit) {
+                        Circuit.NEW_YORK -> "a0a89b"
+                        Circuit.CHICAGO -> "829b7f"
+                        else -> "9daa80"
+                    }
+                } else if (sunset) {
+                    "329f9d"
+                } else if (track.circuit == Circuit.CHICAGO) {
+                    "428fa7"
+                } else {
+                    "568d91"
+                }
+                val a = Point3(x * 100f, if (water) -5f else -3f, z * 100f)
+                quad(part, a, a + Point3(0f, 0f, 100f), a + Point3(100f, 0f, 100f), a + Point3(100f, 0f, 0f), shade)
             }
         }
         val segments = 360
@@ -129,6 +136,8 @@ class World(var track: Track) : Disposable {
         for (i in 0 until segments) {
             val a = track.frame(i * step)
             val b = track.frame((i + 1) * step)
+            val bridge = track.isBridge((i + 0.5f) * step)
+            val shoulderShade = if (bridge) "8b9491" else land
             quad(part, a.at(-9f), b.at(-9f), b.at(9f), a.at(9f), if (i % 7 == 0) "465159" else "424d55")
             for (side in listOf(-1f, 1f)) {
                 val edge = 9f * side
@@ -144,20 +153,22 @@ class World(var track: Track) : Disposable {
                         b.at(curb, -0.05f),
                         b.at(shoulder, -0.05f),
                         a.at(shoulder, -0.05f),
-                        land,
+                        shoulderShade,
                     )
-                    quad(
-                        part,
-                        a.at(shoulder, -0.1f),
-                        b.at(shoulder, -0.1f),
-                        b.at(shore).copy(y = -3f),
-                        a.at(shore).copy(y = -3f),
-                        if (natural) {
-                            if (sunset) "d7ab79" else "b57356"
-                        } else {
-                            land
-                        },
-                    )
+                    if (!bridge) {
+                        quad(
+                            part,
+                            a.at(shoulder, -0.1f),
+                            b.at(shoulder, -0.1f),
+                            b.at(shore).copy(y = -3f),
+                            a.at(shore).copy(y = -3f),
+                            if (natural) {
+                                if (sunset) "d7ab79" else "b57356"
+                            } else {
+                                land
+                            },
+                        )
+                    }
                 } else {
                     quad(part, a.at(curb, 0.04f), b.at(curb, 0.04f), b.at(edge, 0.04f), a.at(edge, 0.04f), curbColor)
                     quad(
@@ -166,16 +177,18 @@ class World(var track: Track) : Disposable {
                         b.at(shoulder, -0.05f),
                         b.at(curb, -0.05f),
                         a.at(curb, -0.05f),
-                        land,
+                        shoulderShade,
                     )
-                    quad(
-                        part,
-                        Point3(0f, 1f, 0f),
-                        b.at(shoulder, -0.1f),
-                        a.at(shoulder, -0.1f),
-                        Point3(0f, 1f, 0f),
-                        land,
-                    )
+                    if (!bridge) {
+                        quad(
+                            part,
+                            Point3(0f, 1f, 0f),
+                            b.at(shoulder, -0.1f),
+                            a.at(shoulder, -0.1f),
+                            Point3(0f, 1f, 0f),
+                            shoulderShade,
+                        )
+                    }
                 }
                 if (i % 2 == 0) {
                     val p = a.at(13.4f * side, 0.65f)
@@ -228,11 +241,11 @@ class World(var track: Track) : Disposable {
         }
         val start = track.frame(0f)
         for (side in listOf(-1f, 1f)) {
-            val p = start.at(side * 11.5f, 5f)
+            val p = start.at(side * 15f, 5f)
             box(part, "f3e2c5", p.x, p.y, p.z, 0.7f, 10f, 0.7f)
         }
         val banner = start.at(0f, 10f)
-        box(part, "ff6a42", banner.x, banner.y, banner.z, 24f, 2f, 0.7f, start.heading)
+        box(part, "ff6a42", banner.x, banner.y, banner.z, 32f, 2f, 0.7f, start.heading)
         for (i in -5..5) {
             val p = start.at(i * 1.9f, 10f)
             box(part, if (i % 2 == 0) "fff0cd" else "273b43", p.x, p.y, p.z, 1.5f, 0.7f, 0.74f, start.heading)
@@ -388,7 +401,7 @@ class World(var track: Track) : Disposable {
         if (race.boosting) {
             for (i in 0..1) {
                 val flame = flames[i]
-                flame.transform.setToTranslation(p.vector()).rotate(Vector3.Y, frame.heading)
+                flame.transform.set(playerCar.transform)
                     .translate(if (i == 0) -0.65f else 0.65f, 0.65f, -2.7f)
                     .scale(1f, 1f, 0.7f + sin(clock * 48f) * 0.2f)
                 batch.render(flame, environment)
@@ -402,10 +415,10 @@ class World(var track: Track) : Disposable {
         val p = frame.at(racer.lane, 0.12f)
         val pitch =
             -atan2(frame.forward.y, sqrt(frame.forward.x * frame.forward.x + frame.forward.z * frame.forward.z)) * 180f / PI.toFloat()
-        shadow.transform.setToTranslation(frame.at(racer.lane, 0.05f).vector()).rotate(Vector3.Y, frame.heading)
+        shadow.transform.setToTranslation(frame.at(racer.lane, 0.06f).vector()).rotate(Vector3.Y, frame.heading).rotate(Vector3.X, pitch)
         batch.render(shadow, environment)
-        instance.transform.setToTranslation(p.vector()).rotate(Vector3.Y, frame.heading - racer.lateralSpeed * if (drift) 2.7f else 0.7f)
-            .rotate(Vector3.X, pitch).rotate(Vector3.Z, racer.lateralSpeed * 0.25f)
+        instance.transform.setToTranslation(p.vector()).rotate(Vector3.Y, frame.heading + CarShape.yawOffset(racer.lateralSpeed, drift))
+            .rotate(Vector3.X, pitch).rotate(Vector3.Z, CarShape.rollOffset(racer.lateralSpeed))
         batch.render(instance, environment)
     }
 

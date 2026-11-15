@@ -1,5 +1,9 @@
 # City circuits working checklist
 
+Historical 1.1 city update. See the [1.2 quality review](QUALITY-REVIEW.md) and
+[current playtest report](PLAYTEST.md) for the rebuilt bridge, collision/audio fixes
+and current verification.
+
 The 1.1 update adds four fictional circuits inspired by San Francisco, Silicon
 Valley, New York City and Chicago. Their real 3D scenery is the menu background;
 the selector should be useful before the player starts a race. Keep the existing

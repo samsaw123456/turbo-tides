@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "build/playtest"
+OUTPUT = Path(os.environ.get("TURBO_TEST_OUTPUT", ROOT / "build/playtest"))
 TELEMETRY = Path(
     os.environ.get("TURBO_TEST_TELEMETRY", "/tmp/turbo-tides-playtest.json")
 )
@@ -93,6 +93,8 @@ class Driver:
             ctypes.c_uint,
         ]
         self.x.XFlush.argtypes = [ctypes.c_void_p]
+        self.x.XSync.argtypes = [ctypes.c_void_p, ctypes.c_int]
+        self.x.XQueryKeymap.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
         self.x.XDefaultRootWindow.argtypes = [ctypes.c_void_p]
         self.x.XDefaultRootWindow.restype = ctypes.c_ulong
         self.x.XSendEvent.argtypes = [
@@ -172,11 +174,27 @@ class Driver:
         code = self.x.XKeysymToKeycode(
             self.display, self.x.XStringToKeysym(name.encode())
         )
-        self.xt.XTestFakeKeyEvent(self.display, code, int(down), 0)
-        self.x.XFlush(self.display)
         if down:
+            # Even a late delivery after an acknowledgement timeout needs cleanup.
             self.held.add(name)
-        else:
+        # Wait until each injected edge reaches X11 before issuing the next one.
+        # Deferred XTest requests can be dropped when a short-lived driver exits.
+        self.xt.XTestFakeKeyEvent(self.display, code, int(down), 0)
+        self.x.XSync(self.display, False)
+        deadline = time.monotonic() + 2
+        keymap = ctypes.create_string_buffer(32)
+        while True:
+            self.x.XQueryKeymap(self.display, keymap)
+            native_down = bool(keymap.raw[code // 8] & (1 << (code % 8)))
+            if native_down == down:
+                break
+            if time.monotonic() >= deadline:
+                raise RuntimeError(
+                    f"X11 did not acknowledge {name} {'press' if down else 'release'}"
+                )
+            time.sleep(0.005)
+        time.sleep(0.005)
+        if not down:
             self.held.discard(name)
 
     def tap(self, name):
@@ -197,8 +215,14 @@ class Driver:
                 time.sleep(0.03)
 
     def release(self):
+        errors = []
         for key in list(self.held):
-            self.key(key, False)
+            try:
+                self.key(key, False)
+            except RuntimeError as error:
+                errors.append(str(error))
+        if errors:
+            raise RuntimeError("Could not release injected keys: " + "; ".join(errors))
 
     def state(self):
         for _ in range(100):
@@ -289,6 +313,14 @@ class Driver:
         self.x.XFlush(self.display)
         time.sleep(0.4)
 
+    def window_bounds(self):
+        """Read the actual client rectangle, independently of game telemetry."""
+        info = subprocess.check_output(["xwininfo", "-id", hex(self.window)], text=True)
+        labels = ("Absolute upper-left X", "Absolute upper-left Y", "Width", "Height")
+        return tuple(
+            int(re.search(label + r":\s+(-?\d+)", info)[1]) for label in labels
+        )
+
     def click(self, x, y, button=1):
         if self.native_pointer:
             self.pointer_event(6, x, y)  # MotionNotify, then press/hold/release.
@@ -372,7 +404,7 @@ class Driver:
         self.key("a", False)
         self.key("d", False)
 
-    def pilot(self, seconds=100, capture=True):
+    def pilot(self, seconds=100, capture=True, capture_prefix=""):
         deadline = time.monotonic() + seconds
         boost = True
         seen = set()
@@ -399,7 +431,9 @@ class Driver:
             self.key("Shift_L", boost)
             if capture and state["lap"] not in seen and state["time"] > 7:
                 seen.add(state["lap"])
-                self.screenshot(f"{state['circuit'].lower()}-lap-{state['lap']}")
+                self.screenshot(
+                    f"{capture_prefix}{state['circuit'].lower()}-lap-{state['lap']}"
+                )
                 print(json.dumps(state), flush=True)
             time.sleep(0.05)
         self.release()
@@ -464,7 +498,7 @@ def loss(driver):
         "Rivals crossed the line while player waited; now driving to a sixth-place finish.",
         flush=True,
     )
-    result = driver.pilot(seconds=180)
+    result = driver.pilot(seconds=180, capture_prefix="loss-")
     assert result["phase"] == "FINISHED" and result["position"] == 6, result
     driver.screenshot("sixth-place")
     (OUTPUT / "loss.json").write_text(json.dumps(result, indent=2) + "\n")

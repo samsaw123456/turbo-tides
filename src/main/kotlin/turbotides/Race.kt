@@ -49,6 +49,8 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
         private set
     var messageTime = 0f
         private set
+    var messageSequence = 0
+        private set
     var bumps = 0
         private set
     var pads = 0
@@ -164,8 +166,9 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
         val targetLateral = steering + cornerForce
         player.lateralSpeed += (targetLateral - player.lateralSpeed) * min(1f, STEP * if (drifting) 3f else 8f)
         player.lane += player.lateralSpeed * STEP
-        if (abs(player.lane) > track.barrier - 1f) {
-            player.lane = player.lane.coerceIn(-track.barrier + 1f, track.barrier - 1f)
+        val laneLimit = track.barrier - CarShape.lateralExtent(player, drifting)
+        if (abs(player.lane) > laneLimit) {
+            player.lane = player.lane.coerceIn(-laneLimit, laneLimit)
             player.lateralSpeed *= -0.4f
             if (contactCooldown <= 0f) {
                 player.speed *= 0.65f
@@ -201,28 +204,83 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
         val target = (pace - bend * 190f).coerceAtLeast(34f) + if (sin(elapsed * 0.65f + index * 2f) > 0.85f) 11f else 0f
         rival.speed += (target - rival.speed) * STEP * 0.8f
         val preferredLane = (if (index % 2 == 0) 3.8f else -3.8f) + sin(elapsed * 0.4f + index) * 1.1f
-        rival.lane += (preferredLane - rival.lane) * STEP
+        val laneTarget = passingLane(rival, preferredLane)
+        rival.lateralSpeed = (laneTarget - rival.lane) * 2f
+        rival.lane += rival.lateralSpeed * STEP
         rival.distance += rival.speed * STEP
         if (rival.distance >= track.length * LAPS) rival.finishTime = elapsed
     }
 
+    private fun passingLane(rival: Racer, preferredLane: Float): Float {
+        // Begin moving aside before braking distance closes. Keep clearance
+        // until the rear bumper is past, so a lapped parked car cannot trap AI.
+        val nearby = (rivals + player).filter { other ->
+            val gap = track.relativeDistance(other.distance, rival.distance)
+            other !== rival &&
+                other.finishTime == null &&
+                gap > -7f &&
+                gap < 16f + max(0f, rival.speed - other.speed) * 1.5f
+        }
+        fun clear(lane: Float) = nearby.none { abs(lane - it.lane) < CarShape.HALF_WIDTH * 2f + 0.6f }
+        if (clear(preferredLane)) return preferredLane
+        return listOf(-7f, -3.5f, 0f, 3.5f, 7f)
+            .filter { clear(it) }
+            .minByOrNull { abs(it - rival.lane) }
+            ?: rival.lane
+    }
+
     private fun resolveContacts() {
-        if (contactCooldown > 0f) return
-        for (rival in rivals) {
-            if (rival.finishTime != null) continue
-            if (abs(track.relativeDistance(rival.distance, player.distance)) < 3.5f && abs(rival.lane - player.lane) < 2f) {
-                player.speed *= 0.8f
-                player.lateralSpeed += if (player.lane < rival.lane) -5f else 5f
-                contactCooldown = 0.8f
-                bumps++
-                say("Trading paint!", 0.8f)
-                break
+        val cars = rivals.filter { it.finishTime == null } + player
+        // A second pass resolves a car pressed between neighbours. The small
+        // fixed step keeps penetration corrections below one frame of travel.
+        repeat(2) {
+            for (i in cars.indices) {
+                for (j in i + 1 until cars.size) {
+                    val a = cars[i]
+                    val b = cars[j]
+                    val driftA = a === player && drifting
+                    val driftB = b === player && drifting
+                    val distance = track.relativeDistance(a.distance, b.distance)
+                    val longitudinalOverlap =
+                        CarShape.longitudinalExtent(a, driftA) + CarShape.longitudinalExtent(b, driftB) - abs(distance)
+                    val lateralOverlap = CarShape.lateralExtent(a, driftA) + CarShape.lateralExtent(b, driftB) - abs(a.lane - b.lane)
+                    if (longitudinalOverlap <= 0f || lateralOverlap <= 0f) continue
+                    if ((a === player || b === player) && contactCooldown <= 0f) {
+                        player.speed *= 0.8f
+                        contactCooldown = 0.8f
+                        bumps++
+                        say("Trading paint!", 0.8f)
+                    }
+                    val behind = if (distance < 0f) a else b
+                    val ahead = if (distance < 0f) b else a
+                    if (longitudinalOverlap < lateralOverlap && behind.distance >= longitudinalOverlap) {
+                        behind.distance -= longitudinalOverlap
+                        behind.speed = min(behind.speed, ahead.speed)
+                    } else {
+                        val side = if (a.lane < b.lane) -1f else 1f
+                        val movedA = abs(moveAside(a, side * lateralOverlap / 2f, driftA))
+                        val movedB = abs(moveAside(b, -side * (lateralOverlap - movedA), driftB))
+                        moveAside(a, side * (lateralOverlap - movedA - movedB).coerceAtLeast(0f), driftA)
+                        // Cancel only velocity into the neighbour, retaining a
+                        // player's immediate ability to steer away and recover.
+                        if (a.lateralSpeed * side < 0f) a.lateralSpeed = 0f
+                        if (b.lateralSpeed * side > 0f) b.lateralSpeed = 0f
+                    }
+                }
             }
         }
+    }
+
+    private fun moveAside(racer: Racer, distance: Float, drift: Boolean): Float {
+        val before = racer.lane
+        val limit = track.barrier - CarShape.lateralExtent(racer, drift)
+        racer.lane = (before + distance).coerceIn(-limit, limit)
+        return racer.lane - before
     }
 
     private fun say(text: String, duration: Float = 1.8f) {
         message = text
         messageTime = duration
+        messageSequence++
     }
 }

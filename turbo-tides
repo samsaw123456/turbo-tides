@@ -1,11 +1,21 @@
 #!/bin/sh
-# Turbo Tides: six 3D circuits, four cities, live previews, drifting and nitro.
+# Source entry point: always build/run this checkout with its Java 25 toolchain.
+# Installed releases have their own command and application-menu icon.
 set -eu
-project_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-if [ -x "$project_dir/dist/TurboTides/bin/TurboTides" ]; then
-    exec "$project_dir/dist/TurboTides/bin/TurboTides" "$@"
+project_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
+if [ "$#" -eq 0 ]; then
+    exec "$project_dir/gradlew" -p "$project_dir" run
 fi
-if [ ! -f "$project_dir/build/libs/turbo-tides.jar" ]; then
-    "$project_dir/gradlew" -p "$project_dir" fatJar
-fi
-exec java -jar "$project_dir/build/libs/turbo-tides.jar" "$@"
+for utility in base64 tr; do
+    command -v "$utility" >/dev/null 2>&1 || { printf 'Source launcher requires %s. Install coreutils or use the bundled app.\n' "$utility" >&2; exit 1; }
+done
+# Gradle's --args parser is not a shell parser. Encoding each argument avoids
+# losing spaces, empty values, quotes or newlines in diagnostic paths.
+encoded=
+separator=
+for argument in "$@"; do
+    value=$(printf '%s' "$argument" | base64 | tr -d '\n')
+    encoded=$encoded$separator$value
+    separator=,
+done
+exec "$project_dir/gradlew" -p "$project_dir" run "-PturboArgs64=$encoded"

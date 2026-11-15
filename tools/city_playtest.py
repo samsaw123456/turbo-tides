@@ -98,10 +98,19 @@ def menu(driver):
     for index, circuit in enumerate(CIRCUITS):
         select(driver, index)
         driver.screenshot(f"preview-{circuit.lower()}-960")
-    driver.tap("F11")
-    time.sleep(0.5)
-    driver.screenshot("city-fullscreen")
-    driver.tap("F11")
+    windowed_bounds = driver.window_bounds()
+    for cycle in range(3):
+        driver.tap("F11")
+        time.sleep(0.5)
+        if cycle == 0:
+            driver.screenshot("city-fullscreen")
+        driver.tap("F11")
+        time.sleep(1.1)
+        assert driver.window_bounds() == windowed_bounds, (
+            "Fullscreen must restore the client size and position on every toggle",
+            windowed_bounds,
+            driver.window_bounds(),
+        )
     driver.resize(1280, 800)
     save("city-menu", results)
 
@@ -177,8 +186,8 @@ def mechanics(driver):
     driver.key("w", True)
     fuel = driver.state()["nitro"]
     drive_for(driver, 0.35)
-    assert driver.state()["boosting"]
-    assert driver.state()["nitro"] < fuel
+    assert driver.state()["boosting"], driver.state()
+    assert driver.state()["nitro"] < fuel, driver.state()
     driver.screenshot("city-boost")
     driver.release()
     driver.key("w", True)
