@@ -3,7 +3,16 @@ package turbotides
 import kotlin.math.*
 
 enum class Phase { GARAGE, COUNTDOWN, RACING, PAUSED, FINISHED }
-enum class Difficulty(val title: String, val pace: Float) { CRUISE("Cruise", 0.91f), RACE("Race", 1f) }
+enum class Difficulty(val title: String, val recordId: String, val pace: Float, val cornerCaution: Float, val response: Float) {
+    // Keep the first two saved indices and record IDs compatible with 1.2.
+    EASY("Easy", "CRUISE", 0.88f, 250f, 0.8f),
+    MEDIUM("Medium", "RACE", 1.05f, 190f, 1f),
+    HARD("Hard", "HARD", 1.20f, 150f, 1.4f),
+    SUPER_HARD("Super Hard", "SUPER_HARD", 1.31f, 110f, 1.8f),
+    ;
+
+    fun next(direction: Int): Difficulty = entries[Math.floorMod(ordinal + direction, entries.size)]
+}
 
 data class Controls(
     val throttle: Boolean = false,
@@ -19,7 +28,7 @@ class Racer(val name: String, val paint: Int, var distance: Float, var lane: Flo
     var finishTime: Float? = null
 }
 
-class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, paint: Int = 0) {
+class Race(val track: Track, val difficulty: Difficulty = Difficulty.EASY, paint: Int = 0) {
     companion object {
         const val STEP = 1f / 120f
         const val LAPS = 3
@@ -201,8 +210,12 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
         if (rival.finishTime != null) return
         val bend = abs(track.curvature(rival.distance))
         val pace = (54.5f + index * 1.4f) * difficulty.pace
-        val target = (pace - bend * 190f).coerceAtLeast(34f) + if (sin(elapsed * 0.65f + index * 2f) > 0.85f) 11f else 0f
-        rival.speed += (target - rival.speed) * STEP * 0.8f
+        val surge = if (sin(elapsed * 0.65f + index * 2f) > 0.85f) 11f else 0f
+        // Difficulty changes opponent pace and corner confidence, never the
+        // player's controls or a hidden catch-up multiplier. Even Super Hard
+        // stays below the player's 87 m/s boosted limit.
+        val target = ((pace - bend * difficulty.cornerCaution).coerceAtLeast(34f) + surge).coerceAtMost(87f)
+        rival.speed += (target - rival.speed) * STEP * difficulty.response
         val preferredLane = (if (index % 2 == 0) 3.8f else -3.8f) + sin(elapsed * 0.4f + index) * 1.1f
         val laneTarget = passingLane(rival, preferredLane)
         rival.lateralSpeed = (laneTarget - rival.lane) * 2f

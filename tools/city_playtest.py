@@ -19,6 +19,7 @@ CIRCUITS = (
     "NEW_YORK",
     "CHICAGO",
 )
+DIFFICULTIES = ("EASY", "MEDIUM", "HARD", "SUPER_HARD")
 
 
 def save(name, result):
@@ -45,6 +46,15 @@ def select(driver, index):
         if time.monotonic() > deadline:
             raise AssertionError(driver.state())
         time.sleep(0.1)
+
+
+def select_difficulty(driver, name):
+    assert name in DIFFICULTIES
+    for _ in DIFFICULTIES:
+        if driver.state()["difficulty"] == name:
+            return
+        driver.ui_click(180, 590)
+    assert driver.state()["difficulty"] == name, driver.state()
 
 
 def menu(driver):
@@ -252,9 +262,8 @@ def circuits(driver):
     garage(driver)
     for index, circuit in enumerate(CIRCUITS):
         select(driver, index)
-        expected_pace = "CRUISE" if index % 2 == 0 else "RACE"
-        if driver.state()["difficulty"] != expected_pace:
-            driver.ui_click(180, 590)
+        expected_pace = "EASY" if index % 2 == 0 else "MEDIUM"
+        select_difficulty(driver, expected_pace)
         if index == 4:
             driver.resize(960, 640)
             if not driver.state()["reducedMotion"]:

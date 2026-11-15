@@ -13,7 +13,7 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         private set
     var paint = 0
         private set
-    var difficulty = Difficulty.CRUISE
+    var difficulty = Difficulty.EASY
         private set
     var muted = false
         private set
@@ -47,7 +47,7 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         reducedMotion = preferences.getBoolean("reducedMotion", false)
         paint = preferences.getInteger("paint", 0).coerceIn(0, PAINTS.lastIndex)
         circuit = Circuit.entries.getOrElse(preferences.getInteger("circuit", 0)) { Circuit.SUNSET }
-        difficulty = Difficulty.entries.getOrElse(preferences.getInteger("difficulty", 0)) { Difficulty.CRUISE }
+        difficulty = Difficulty.entries.getOrElse(preferences.getInteger("difficulty", 0)) { Difficulty.EASY }
         race = Race(Track(circuit), difficulty, paint)
         world = World(race.track)
         worlds[circuit] = world
@@ -82,8 +82,9 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         world.resetCamera()
     }
 
-    fun changeDifficulty() {
-        difficulty = if (difficulty == Difficulty.CRUISE) Difficulty.RACE else Difficulty.CRUISE
+    fun changeDifficulty(direction: Int) {
+        if (race.phase != Phase.GARAGE) return
+        difficulty = difficulty.next(direction)
         race = Race(race.track, difficulty, paint)
         saveSettings()
     }
@@ -103,7 +104,7 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
 
     // Keep the old San Francisco record intact; the new bridge route has a
     // different length, so its times must not compete with the 1.1 layout.
-    private val bestKey get() = "best-${circuit.name}-${difficulty.name}" + if (circuit == Circuit.SAN_FRANCISCO) "-v2" else ""
+    private val bestKey get() = "best-${circuit.name}-${difficulty.recordId}" + if (circuit == Circuit.SAN_FRANCISCO) "-v2" else ""
 
     fun bestTime(): Float? = preferences.getFloat(bestKey, -1f).takeIf { it > 0f && it.isFinite() }
 
@@ -236,9 +237,12 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         val frame = race.track.frame(player.distance)
         val middle = world.camera.project(frame.at(0f).vector(), 0f, 0f, 1280f, 800f)
         val right = world.camera.project(frame.at(3f).vector(), 0f, 0f, 1280f, 800f)
+        val opponents = race.rivals.joinToString(",") {
+            """{"name":"${it.name}","distance":${it.distance},"speed":${it.speed},"finishTime":${it.finishTime}}"""
+        }
         val contents = """{"phase":"${race.phase}","time":${race.elapsed},"countdown":${race.countdown},"distance":${player.distance},"lane":${player.lane},"speed":${player.speed},"lateralSpeed":${player.lateralSpeed},"curvature":${race.track.curvature(
             player.distance,
-        )},"cornerForce":${race.cornerForce()},"screenRight":${right.x - middle.x},"cameraFov":${world.camera.fieldOfView},"inputSteer":${input.steer},"inputThrottle":${input.throttle},"inputBrake":${input.brake},"overview":$overview,"difficulty":"$difficulty","length":${race.track.length},"lap":${race.lap},"position":${race.position},"nitro":${race.nitro},"drifting":${race.drifting},"boosting":${race.boosting},"pads":${race.pads},"bumps":${race.bumps},"driftBonuses":${race.driftBonuses},"fps":${Gdx.graphics.framesPerSecond},"circuit":"$circuit","paint":$paint,"muted":$muted,"reducedMotion":$reducedMotion,"best":${bestTime()},"saveError":$saveError}"""
+        )},"cornerForce":${race.cornerForce()},"screenRight":${right.x - middle.x},"cameraFov":${world.camera.fieldOfView},"inputSteer":${input.steer},"inputThrottle":${input.throttle},"inputBrake":${input.brake},"overview":$overview,"difficulty":"$difficulty","length":${race.track.length},"lap":${race.lap},"position":${race.position},"nitro":${race.nitro},"drifting":${race.drifting},"boosting":${race.boosting},"pads":${race.pads},"bumps":${race.bumps},"driftBonuses":${race.driftBonuses},"fps":${Gdx.graphics.framesPerSecond},"circuit":"$circuit","paint":$paint,"muted":$muted,"reducedMotion":$reducedMotion,"best":${bestTime()},"saveError":$saveError,"rivals":[$opponents]}"""
         try {
             telemetry?.writeText(contents)
         } catch (exception: Exception) {

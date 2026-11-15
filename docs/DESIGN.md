@@ -18,8 +18,11 @@ Pick one of six circuits, a paint colour, and a difficulty. Race five opponents
 for three laps. Steer, brake into corners, drift to earn nitro, and use nitro on
 the straights. Boost pads reward driving the racing line. Off-road slows the car;
 barriers and cars cause recoverable bumps. Finish in any place, see your result,
-then retry or choose another circuit. Best race times are stored per circuit and
-difficulty. Workshop characters appear as the pit crew, with MIT attribution.
+then retry or choose another circuit. Four rival levels increase pace, corner
+confidence and acceleration response.
+Player physics stays the same at every level; there is no position-based catch-up
+multiplier. Best race times are stored per circuit and difficulty. Workshop
+characters appear as the pit crew, with MIT attribution.
 
 ## Architecture
 

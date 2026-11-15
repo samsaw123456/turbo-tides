@@ -1,4 +1,4 @@
-# Control coverage for 1.2
+# Control coverage for 1.3
 
 Inventory checked against `Game.keys`, `Game.controls`, `Hud.menuInput`,
 the garage help and README. The game supports a desktop keyboard and primary
@@ -7,15 +7,16 @@ mouse button. Controller and touch input are not implemented or advertised.
 The final-build audit uses actual native input handlers, screenshots, read-only
 diagnostics and direct capture of the game's PipeWire output. It never writes
 race state. All 49 rows below passed their assertions and visual/audio evidence
-review on the final 1.2.0 JAR; no inventory row remains failed or unverified.
+review on the final 1.3.0 JAR; no inventory row remains failed or unverified.
 The tested JAR SHA-256 is recorded in [verification.json](evidence/verification.json).
-Screenshots and JSON live in `build/playtest`; scripts reproduce them.
+Screenshots and JSON live in `build/difficulty-playtest`; scripts reproduce them.
 
-Keyboard input uses XTest, with XQueryKeymap acknowledgement of every physical
-press/release before the next edge. Mouse input uses XTest on Xvfb; the hardware-rendered
-XWayland pass uses native X11 MotionNotify/ButtonPress/ButtonRelease events to
-the game window because XTest pointer events did not reach GLFW there. Both
-methods exercise the real GLFW/libGDX input handlers and rendered UI.
+The complete 1.3 audit uses XTest on an isolated Xvfb display, with
+XQueryKeymap acknowledgement of every physical press/release before the next
+edge. This exercises the real GLFW/libGDX input handlers and rendered UI.
+The initial migration rendered on hardware through XWayland, but desktop key
+injection later failed acknowledgement; the full audit therefore used software
+rendering. The tools also support native X11 mouse events as an XWayland fallback.
 Set `TURBO_TEST_NATIVE_POINTER=1` for that fallback and `TURBO_TEST_TELEMETRY`
 to the app's diagnostic JSON path when using a non-default path. `control_audit.py` also requires Pillow, xprop and PipeWire’s
 `pw-dump`/`pw-record`/`pw-link`.
@@ -30,8 +31,8 @@ using the actual game window’s process ID, including the packaged app.
 
 | Physical binding | Context and expected cause/effect | Observed result | Status | Evidence |
 | --- | --- | --- | --- | --- |
-| W | Racing: speed and travel rise; release coasts; disabled before GO/after finish | Car accelerated from rest; visible speed fell 141→70 km/h after release; countdown/result gating passed. | Passed | `control-w-*` |
-| Up | Racing: accelerate; menus: focus moves up; countdown gates driving | Accelerated from rest and coasted 146→75 km/h; menu focus moved upward. | Passed | `control-Up-*`, menu/result focus frames |
+| W | Racing: speed and travel rise; release coasts; disabled before GO/after finish | Car accelerated from rest; visible speed fell 146→75 km/h after release; countdown/result gating passed. | Passed | `control-w-*` |
+| Up | Racing: accelerate; menus: focus moves up; countdown gates driving | Accelerated from rest and coasted 159→89 km/h; menu focus moved upward. | Passed | `control-Up-*`, menu/result focus frames |
 | S | Racing: brake to zero without reversing; wins over W | Speed reached 0 km/h despite W held; car stayed stopped without reversing. | Passed | `control-s-stopped`, opposing-inputs |
 | Down | Racing: brake; menus: focus moves down; countdown gates driving | Speed reached 0 km/h; menu focus advanced downward. | Passed | `control-Down-stopped`, menu/result focus frames |
 | A | Racing: move screen-left; release removes steering; stopped input cannot move car | Car moved to the visible left edge; neutral steering recovered; stopped car stayed still. | Passed | steering-a, city-mechanics JSON |
@@ -75,7 +76,7 @@ using the actual game window’s process ID, including the packaged app.
 | Left Shift + Tab | Move menu focus backward | Visible focus moved backward in garage, pause and results. | Passed | pause/result focus sequences |
 | Right Shift + Tab | Same reverse-focus action through separate Shift binding | The alternate Shift produced the same backward focus movement. | Passed | pause/result focus sequences |
 | Mouse movement | Menus: move focus without activation; arrows and Enter follow the focused item | Hover underlined the target without activating it; arrows and Enter then used that focused route. | Passed | control-hover-route-before-enter/after-enter, control-hover-route-Left/Right |
-| Primary mouse click | Select each circuit, all paints, both paces, preview; start/resume/retry/garage buttons | Each named route changed the scene/map; all five paints changed the car; pace/preview and race/pause/result buttons worked. | Passed | city-menu, all paint frames, result/pause actions |
+| Primary mouse click | Select each circuit, all paints, all four difficulty levels, preview; start/resume/retry/garage buttons | Each named route changed the scene/map; all five paints changed the car; all four difficulty levels, preview and race/pause/result buttons worked. | Passed | city-menu, all paint frames, result/pause actions |
 | Middle mouse click | No menu activation | Menu action stayed unactivated. | Passed | nonprimary click assertions |
 | Right mouse click | No menu activation | Menu action stayed unactivated. | Passed | nonprimary click assertions |
 | Release while unfocused | Entire driving chord clears; automatic pause; resume has no stuck throttle, steering, drift, boost or rear view | All 12 driving keys cleared; normal acceleration/steering after resume showed no latent brake, drift, boost or rear view. | Passed | control-focus-all-recovered, control-focus-normal-driving; focus-release-audit.json |

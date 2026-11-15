@@ -65,7 +65,7 @@ Remove the app, menu entry, command and unmodified installed icons with:
 sh install.sh --uninstall
 ```
 
-Or use the installer bundled with the installed 1.2.0 app:
+Or use the installer bundled with the installed 1.3.0 app:
 
 ```sh
 sh "$HOME/.local/opt/turbo-tides/Install Turbo Tides.sh" --uninstall
@@ -84,8 +84,8 @@ On a machine with the installer dependencies already available, download
 
 ```sh
 sh install.sh \
-  --archive turbo-tides-1.2.0-linux-x86_64.tar.gz \
-  --checksum turbo-tides-1.2.0-linux-x86_64.tar.gz.sha256 \
+  --archive turbo-tides-1.3.0-linux-x86_64.tar.gz \
+  --checksum turbo-tides-1.3.0-linux-x86_64.tar.gz.sha256 \
   --no-system-deps
 ```
 
@@ -108,7 +108,7 @@ installation must be absolute and contain no control characters.
 
 | Option | Effect |
 | --- | --- |
-| `--version 1.2.0` | Download that release instead of the latest one. |
+| `--version 1.3.0` | Download that release instead of the latest one. |
 | `--app /absolute/path/TurboTides` | Install a built or extracted local bundle. |
 | `--archive FILE --checksum FILE.sha256` | Verify and install a local release archive. |
 | `--prefix /absolute/app/path` | Choose a dedicated managed app directory. |

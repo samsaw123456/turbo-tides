@@ -157,7 +157,7 @@ class Hud : Disposable {
         }
         button("Paint: ${PAINT_NAMES[game.paint]}", 24f, 239f, 330f, { game.changePaint(it) }, h = 45f, cycle = true)
         rect(260f, 252f, 18f, 18f, color(PAINTS[game.paint]))
-        button("Rivals: ${game.difficulty.title}", 24f, 185f, 330f, { game.changeDifficulty() }, h = 45f, cycle = true)
+        button("Rivals: ${game.difficulty.title}", 24f, 185f, 330f, { game.changeDifficulty(it) }, h = 45f, cycle = true)
         button("Start race                Enter", 24f, 113f, 330f, { game.startRace() }, true, 57f)
         text("Arrows  Browse     Tab  Focus", 26f, 90f, small, muted)
         text(
@@ -179,7 +179,7 @@ class Hud : Disposable {
         button(if (game.overview) "P  View starting grid" else "P  View whole circuit", 406f, 590f, 280f, { game.togglePreview() }, h = 45f)
 
         rect(406f, 24f, 850f, 134f, Color(ink.r, ink.g, ink.b, 0.94f))
-        text("Three laps · Best ${formatTime(game.bestTime())}", 428f, 139f, body)
+        text("Three laps · ${game.difficulty.title} · Best ${formatTime(game.bestTime())}", 428f, 139f, body)
         text("W / Up   Accelerate      S / Down   Brake      A / D or Left / Right   Steer", 429f, 102f, small)
         text("Space + steer   Drift       Shift   Nitro       C   Rear view", 429f, 72f, small)
         text("Release a drift to earn nitro. Mint strips give a free boost.", 429f, 42f, small, mint)
@@ -199,7 +199,7 @@ class Hud : Disposable {
         rect(1012f, 677f, 244f, 100f, Color(ink.r, ink.g, ink.b, 0.92f))
         text("Lap ${race.lap} / ${Race.LAPS}", 1032f, 756f, heading)
         text(formatTime(race.elapsed), 1033f, 708f, body, mint)
-        centered(game.circuit.title, 769f, body, ink)
+        centered("${game.circuit.title} · ${game.difficulty.title}", 769f, body, ink)
         if (race.phase == Phase.RACING && Gdx.input.isKeyPressed(Input.Keys.C)) {
             rect(419f, 705f, 442f, 37f, Color(ink.r, ink.g, ink.b, 0.94f))
             centered("Rear view · steering stays with the car", 731f, small)
@@ -271,7 +271,7 @@ class Hud : Disposable {
         rect(0f, 0f, 1280f, 800f, Color(0.06f, 0.13f, 0.16f, 0.65f))
         rect(405f, 183f, 470f, 448f, ink)
         text("Race paused", 442f, 597f, large)
-        text("Take a breath. Your race is waiting.", 442f, 521f, small, muted)
+        text("${game.difficulty.title} rivals · Three laps", 442f, 521f, small, muted)
         button("Resume                       Esc", 443f, 429f, 394f, { game.race.resume() }, true)
         button("Restart race                   R", 443f, 358f, 394f, { game.startRace() })
         button("Back to garage", 443f, 287f, 394f, { game.garage() })
@@ -294,7 +294,7 @@ class Hud : Disposable {
             else -> "Finish line crossed!"
         }
         text(title, 368f, 678f, large, if (race.position == 1) mint else cream)
-        text("${race.position} of 6  ·  ${game.circuit.title}", 370f, 604f, body)
+        text("${race.position} of 6  ·  ${game.circuit.title} · ${game.difficulty.title}", 370f, 604f, body)
         text(formatTime(race.elapsed), 368f, 558f, large, orange)
         text(if (game.newBest) "New personal best!" else "Best  ${formatTime(game.bestTime())}", 651f, 540f, body, mint)
         text("Best lap  ${formatTime(race.bestLap)}", 370f, 474f, small, muted)

@@ -40,6 +40,7 @@ jobs:
           game_pid=$!
           trap 'kill "$game_pid" 2>/dev/null || true; wait "$game_pid" 2>/dev/null || true' EXIT
           python3 tools/playtest.py checks
+          python3 tools/difficulty_playtest.py menu
           SH
       - uses: actions/upload-artifact@v4
         if: always()

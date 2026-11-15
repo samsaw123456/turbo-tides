@@ -13,7 +13,7 @@ import subprocess
 import time
 import wave
 
-from city_playtest import drive_for, garage, launch, mechanics, select
+from city_playtest import DIFFICULTIES, drive_for, garage, launch, mechanics, select
 from playtest import OUTPUT, Driver
 
 
@@ -116,8 +116,9 @@ def record_game_audio(
             process.wait(timeout=5)
 
 
-def snap(driver, name):
-    driver.settle()
+def snap(driver, name, *, settle=True):
+    if settle:
+        driver.settle()
     before = driver.state()
     driver.screenshot(f"control-{name}")
     after = driver.state()
@@ -224,7 +225,14 @@ def drift_release(driver, key, direction):
     assert during["drifting"] and during["driftBonuses"] == 0, during
     assert abs(during["lane"]) < 8, during
     driver.key("space", False)
-    after = snap(driver, f"drift-{key}-released")
+    # Observe the release on its first diagnostic frame. Waiting for three more
+    # frames with steering held can reach the wall on a slow renderer, obscuring
+    # the isolated Space-release effect with an unrelated collision.
+    deadline = time.monotonic() + 5
+    while driver.state()["driftBonuses"] == during["driftBonuses"]:
+        assert time.monotonic() < deadline, driver.state()
+        time.sleep(0.01)
+    after = snap(driver, f"drift-{key}-released", settle=False)
     assert not after["drifting"] and after["driftBonuses"] == 1, after
     # Keep steering held: Space release itself must cause the bonus.
     assert after["inputSteer"] == direction
@@ -607,9 +615,19 @@ def audit(driver):
     driver.tap("Left")
     assert driver.state()["paint"] == paint
     pace = driver.state()["difficulty"]
+    pace_index = DIFFICULTIES.index(pace)
+    for step in range(1, 5):
+        driver.ui_click(180, 590)
+        expected = DIFFICULTIES[(pace_index + step) % 4]
+        assert driver.state()["difficulty"] == expected
+        snap(driver, f"difficulty-{expected}")
     driver.ui_click(180, 590)
-    assert driver.state()["difficulty"] != pace
+    assert driver.state()["difficulty"] == DIFFICULTIES[(pace_index + 1) % 4]
     driver.tap("Return")
+    assert driver.state()["difficulty"] == DIFFICULTIES[(pace_index + 2) % 4]
+    driver.tap("Left")
+    assert driver.state()["difficulty"] == DIFFICULTIES[(pace_index + 1) % 4]
+    driver.tap("Left")
     assert driver.state()["difficulty"] == pace
     driver.ui_click(530, 186)
     assert driver.state()["overview"]

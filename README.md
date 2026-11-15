@@ -32,13 +32,20 @@ Run the same installer again to update; your records and settings are preserved.
 Requires a Linux x86-64 desktop with glibc 2.28+, OpenGL 2.0 and X11/XWayland.
 The installer needs a distribution whose `python3` package provides Python 3.9+;
 it installs that package if missing.
-For portable play, extract `turbo-tides-1.2.0-linux-x86_64.tar.gz` and run
+For portable play, extract `turbo-tides-1.3.0-linux-x86_64.tar.gz` and run
 **Play Turbo Tides** inside the `TurboTides` folder. **Install Turbo Tides.sh**
 in that folder adds the same application-menu icon without downloading the app
 again. See [installation and troubleshooting](docs/INSTALLATION.md) for offline
 installation, custom locations and launch logs.
 
-Choose a circuit, one of five paint colours, and **Cruise** or **Race** rival pace.
+Choose a circuit, one of five paint colours, and **Easy**, **Medium**, **Hard**,
+or **Super Hard** rivals. Click the Rivals setting to cycle forward, or focus it
+and use Left/Right to move backward/forward. Easy leaves room for mistakes;
+Medium rewards turbo-pad use; Hard needs quick lines and boosts; Super Hard
+challenges you to combine clean drifting, pads and nitro. The level stays visible
+during the race and each level keeps a separate best time. Existing Cruise
+records become Easy records, and Race records become Medium records.
+See the [difficulty guide and measured balance](docs/DIFFICULTY.md).
 Click a named route or browse with Left/Right to preview its actual 3D scene.
 Press **P** to switch between the whole circuit and your car on the starting grid.
 Choosing a paint colour also shows the car. Tab moves between menu controls;

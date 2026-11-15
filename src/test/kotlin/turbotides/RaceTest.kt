@@ -16,7 +16,7 @@ class RaceTest {
         repeat((seconds * 120).roundToInt()) { race.advance(Race.STEP, input) }
     }
 
-    private fun racing(circuit: Circuit = Circuit.SUNSET, difficulty: Difficulty = Difficulty.CRUISE): Race =
+    private fun racing(circuit: Circuit = Circuit.SUNSET, difficulty: Difficulty = Difficulty.EASY): Race =
         Race(Track(circuit), difficulty).also {
             it.start()
             runFor(it, 3.5f)
@@ -128,7 +128,7 @@ class RaceTest {
         assertTrue(race.nitro >= 0)
     }
 
-    @Test fun `every circuit can be won by driving three complete laps`() {
+    @Test fun `every circuit completes three laps and freezes the result at every difficulty`() {
         for (circuit in Circuit.entries) {
             for (difficulty in Difficulty.entries) {
                 val race = racing(circuit, difficulty)
@@ -137,7 +137,8 @@ class RaceTest {
                 }
                 assertEquals(Phase.FINISHED, race.phase, circuit.title)
                 assertEquals(3, race.lap)
-                assertEquals(1, race.position, circuit.title)
+                if (difficulty == Difficulty.EASY) assertEquals(1, race.position, circuit.title)
+                assertTrue(race.position in 1..6)
                 assertTrue(race.bestLap!! > 10)
                 assertEquals(race.elapsed, race.player.finishTime)
                 val time = race.elapsed
@@ -215,7 +216,7 @@ class RaceTest {
     }
 
     @Test fun `waiting loses race and restarting creates clean state`() {
-        val race = racing(difficulty = Difficulty.RACE)
+        val race = racing(difficulty = Difficulty.MEDIUM)
         runFor(race, 95f)
         assertEquals(6, race.position)
         assertTrue(race.rivals.all { it.finishTime != null })

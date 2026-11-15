@@ -1,5 +1,8 @@
 # Quality review — 1.2.0
 
+This is the retained 1.2 review. The [1.3 difficulty guide](DIFFICULTY.md) and
+[current playtest report](PLAYTEST.md) describe the four-level update.
+
 This review applies the recurring requirements from the user's recent local
 Codex sessions: literal control coverage, independent adversarial review,
 physics and state consistency, visible/audible feedback, current JVM tooling,
@@ -27,7 +30,8 @@ session transcripts are not included here.
 
 The complete physical-binding inventory and per-state results are in
 [CONTROLS.md](CONTROLS.md). Commands, measurements, screenshots and limitations
-are in [PLAYTEST.md](PLAYTEST.md) and [verification.json](evidence/verification.json).
+are retained in [the 1.2 measurements](evidence/verification-1.2.0.json).
+The [current playtest report](PLAYTEST.md) covers the later difficulty update.
 Installation behavior is documented in [INSTALLATION.md](INSTALLATION.md).
 
 ## Installation verification
