@@ -11,6 +11,8 @@ prompt, with the workshop's Phippy pit crew artwork.
 
 ## Play the app
 
+Get the [latest Linux download](https://github.com/samsaw123456/turbo-tides/releases/latest).
+
 On the computer where it is installed, open **Turbo Tides** from the application
 menu. The Linux app includes its own Java runtime and works offline.
 

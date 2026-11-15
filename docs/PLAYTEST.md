@@ -84,5 +84,5 @@ Only Linux desktop has been exercised. No Android APK, touch input, gamepad,
 Windows or macOS playtest is claimed. Software rendering on the isolated
 display ran around 33–40 FPS at 1280x800 with 4x antialiasing; fixed-step tests
 cover 30 and 144 FPS. Audio resources loaded without engine errors and mute was
-exercised; no subjective listening review is claimed. GitHub CI is configured,
-but its execution requires publishing the repository.
+exercised; no subjective listening review is claimed. The repository's GitHub
+Actions workflow runs the checks and Linux packaging on pushes and pull requests.
