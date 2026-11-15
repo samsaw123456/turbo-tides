@@ -1,0 +1,11 @@
+#!/bin/sh
+# Turbo Tides: two 3D circuits, drifting, nitro, five rivals and local records.
+set -eu
+project_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ -x "$project_dir/dist/TurboTides/bin/TurboTides" ]; then
+    exec "$project_dir/dist/TurboTides/bin/TurboTides" "$@"
+fi
+if [ ! -f "$project_dir/build/libs/turbo-tides.jar" ]; then
+    "$project_dir/gradlew" -p "$project_dir" fatJar
+fi
+exec java -jar "$project_dir/build/libs/turbo-tides.jar" "$@"

@@ -1,0 +1,3 @@
+# Preserve upstream license notices byte-for-byte, including their whitespace.
+src/main/resources/licenses/** -whitespace
+src/main/resources/fonts/*.txt -whitespace
