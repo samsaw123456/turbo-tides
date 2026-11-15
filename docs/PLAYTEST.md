@@ -7,6 +7,14 @@ Earlier 1.2 evidence is retained in [verification-1.2.0.json](evidence/verificat
 
 ## Difficulty and gameplay
 
+The installed 1.3.0 app now has **24 verified native first-place finishes**:
+every circuit on Easy, Medium, Hard and Super Hard. All races completed three
+laps using real keyboard input, with the selected menu, each lap and the visible
+victory screen inspected. The [complete results](NATIVE-WINS.md) include times,
+screenshots, the retained interrupted attempt and reproducible commands. The
+JAR and difficulty tuning are unchanged. All 24 test records matched the results;
+normal player records remained untouched.
+
 Four named levels now change rival pace, corner confidence and acceleration
 response. The [difficulty guide](DIFFICULTY.md) contains measured times for all
 24 circuit/level combinations. Every position in the AI field finishes at least
@@ -85,7 +93,14 @@ python3 tools/city_playtest.py circuits
 python3 tools/playtest.py loss
 python3 tools/difficulty_playtest.py races
 python3 tools/difficulty_playtest.py skill
+python3 tools/difficulty_playtest.py matrix
 ```
+
+Use a fresh output directory for each matrix run; it refuses to overwrite earlier
+matrix results. Optional `--circuit CHICAGO --difficulty SUPER_HARD` filters run
+a specific combination. The matrix uses pads and boost on Easy/Medium, adding
+controlled drifts on Hard/Super Hard. It retains unsuccessful finishes and fails
+if any selected combination was not won.
 
 Native tools require X11/XTest, libX11, libXtst, xwininfo, xprop and Pillow or
 ImageMagick. Audio capture requires PipeWire tools and connects only the game's

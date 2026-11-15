@@ -4,7 +4,15 @@ import argparse
 import json
 import time
 
-from city_playtest import DIFFICULTIES, garage, launch, save, select, select_difficulty
+from city_playtest import (
+    CIRCUITS,
+    DIFFICULTIES,
+    garage,
+    launch,
+    save,
+    select,
+    select_difficulty,
+)
 from playtest import OUTPUT, Driver
 
 
@@ -48,7 +56,7 @@ def menu(driver):
     )
 
 
-def skilled_pilot(driver):
+def skilled_pilot(driver, capture_prefix="difficulty-skilled-"):
     deadline = time.monotonic() + 160
     captured = set()
     try:
@@ -69,7 +77,7 @@ def skilled_pilot(driver):
             driver.steer_toward(state, target)
             if state["lap"] not in captured and state["time"] > 7:
                 captured.add(state["lap"])
-                driver.screenshot(f"difficulty-skilled-lap-{state['lap']}")
+                driver.screenshot(f"{capture_prefix}lap-{state['lap']}")
             time.sleep(0.035)
     finally:
         driver.release()
@@ -115,13 +123,93 @@ def skill(driver):
     select_difficulty(driver, "EASY")
 
 
+def matrix(driver, circuits=CIRCUITS, difficulties=DIFFICULTIES):
+    """Finish every selected combination through the native interface.
+
+    Keep failed finishes as evidence and continue the other combinations. Use
+    a separate output directory for retries so no earlier capture is replaced.
+    """
+    path = OUTPUT / "matrix-results.json"
+    if path.exists():
+        raise RuntimeError("Use a new TURBO_TEST_OUTPUT directory for each matrix run")
+    results = []
+    garage(driver)
+    driver.resize(1280, 800)
+    for circuit in circuits:
+        select(driver, CIRCUITS.index(circuit))
+        for difficulty in difficulties:
+            select_difficulty(driver, difficulty)
+            assert driver.state()["circuit"] == circuit
+            prefix = f"matrix-{difficulty.lower()}-{circuit.lower()}-"
+            driver.screenshot(prefix + "menu")
+            launch(driver)
+            start = driver.state()
+            assert start["time"] == 0 and start["distance"] == 0, start
+            wall_start = time.monotonic()
+            if difficulty in ("HARD", "SUPER_HARD"):
+                finish = skilled_pilot(driver, capture_prefix=prefix)
+                strategy = "digital steering, drifting, pads and boost"
+            else:
+                finish = driver.pilot(
+                    seconds=180,
+                    capture_prefix=f"matrix-{difficulty.lower()}-",
+                )
+                strategy = "digital steering, pads and boost"
+            driver.release()
+            driver.settle()
+            driver.screenshot(prefix + "result")
+            passed = (
+                finish["phase"] == "FINISHED"
+                and finish["circuit"] == circuit
+                and finish["difficulty"] == difficulty
+                and finish["position"] == 1
+                and finish["lap"] == 3
+                and finish["distance"] >= finish["length"] * 3
+                and not finish["saveError"]
+            )
+            results.append(
+                {
+                    "circuit": circuit,
+                    "difficulty": difficulty,
+                    "status": "passed" if passed else "failed",
+                    "strategy": strategy,
+                    "wallSeconds": round(time.monotonic() - wall_start, 2),
+                    "framePrefix": prefix,
+                    "start": start,
+                    "finish": finish,
+                }
+            )
+            path.write_text(json.dumps(results, indent=2) + "\n")
+            print(
+                f"{'PASS' if passed else 'FAIL'} {circuit} {difficulty}: "
+                f"position {finish['position']}, time {finish['time']:.2f}s, "
+                f"drifts {finish['driftBonuses']}, pads {finish['pads']}",
+                flush=True,
+            )
+            garage(driver)
+    assert all(row["status"] == "passed" for row in results), (
+        "Matrix contains failed finishes; inspect matrix-results.json"
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("scenario", choices=("menu", "races", "skill"))
+    parser.add_argument("scenario", choices=("menu", "races", "skill", "matrix"))
+    parser.add_argument("--circuit", choices=CIRCUITS, action="append")
+    parser.add_argument("--difficulty", choices=DIFFICULTIES, action="append")
     args = parser.parse_args()
+    if args.scenario != "matrix" and (args.circuit or args.difficulty):
+        parser.error("Track/difficulty filters apply only to matrix")
     driver = Driver()
     try:
-        globals()[args.scenario](driver)
+        if args.scenario == "matrix":
+            matrix(
+                driver,
+                tuple(dict.fromkeys(args.circuit or CIRCUITS)),
+                tuple(dict.fromkeys(args.difficulty or DIFFICULTIES)),
+            )
+        else:
+            globals()[args.scenario](driver)
     except AssertionError:
         (OUTPUT / "difficulty-failure.json").write_text(
             json.dumps(driver.state(), indent=2)

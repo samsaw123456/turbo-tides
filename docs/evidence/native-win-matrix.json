@@ -1,0 +1,3738 @@
+{
+  "version": "1.3.0",
+  "gameSourceCommit": "655860a5d96db7e9019df559099eadbc1061527a",
+  "jarSha256": "cfd8fd13e4f2625b053914a289c7ed5d397594f8ce8b463fca038d8d0cc3d882",
+  "installedBundledRuntimeUsed": true,
+  "cleanup": {
+    "recordsWrittenAndMatched": 24,
+    "evidenceOverwriteGuardPassed": true,
+    "normalPlayerPreferencesUnchanged": true,
+    "nativeWindowClosedUsingGarageEscape": true,
+    "ownedDisplayStopped": true,
+    "installedJarUnchanged": true,
+    "jarSha256": "cfd8fd13e4f2625b053914a289c7ed5d397594f8ce8b463fca038d8d0cc3d882",
+    "qaPreferencesSha256": "b01c558642f93eedd88bc90c5dfe741edd3deafd59ae1a6ecc62a5ace961fc8b"
+  },
+  "nativeInput": "XTest keyboard/mouse via the actual GLFW/libGDX window; read-only diagnostics",
+  "display": "1280x800 native window on isolated X11 with software rendering",
+  "firstPlaceCombinations": 24,
+  "attempts": [
+    {
+      "run": "pass-1",
+      "circuit": "SUNSET",
+      "difficulty": "EASY",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 45.17,
+      "framePrefix": "matrix-easy-sunset-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.174997,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.013973271,
+        "cornerForce": -0.0,
+        "screenRight": 145.86017,
+        "cameraFov": 67.0,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 992.04047,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 20,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 41.534966,
+        "countdown": -1.691468e-05,
+        "distance": 2976.6125,
+        "lane": 0.26608542,
+        "speed": 87.0,
+        "lateralSpeed": -2.625347,
+        "curvature": -0.01366242,
+        "cornerForce": -4.5,
+        "screenRight": 129.42896,
+        "cameraFov": 74.46395,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 992.04047,
+        "lap": 3,
+        "position": 1,
+        "nitro": 16.049671,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 0,
+        "fps": 30,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 41.534966,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 1954.7303,
+            "speed": 53.12778,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 1998.6478,
+            "speed": 47.43365,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2051.6204,
+            "speed": 47.81516,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2104.0398,
+            "speed": 55.086452,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2165.5242,
+            "speed": 52.66696,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-easy-sunset-menu.png": "55276c62929841f699c017d26e07ca1a6b87e61621201999c9b18ed434440709",
+          "matrix-easy-sunset-lap-1.png": "e9f610448a3a01db24166eeaf5e9d4a09dec2082b1bf0b9a2ff1b0f55c0aacd5",
+          "matrix-easy-sunset-lap-2.png": "db80b3b6920a529014b0f4a222cbbf2a69ebd7b0ba022f524232a0b842af7c51",
+          "matrix-easy-sunset-lap-3.png": "4cc24fd92aa904177427ed0d0937d49a8bf7f9d9c4316c659561a8dc95f090d4",
+          "matrix-easy-sunset-result.png": "9ae8d5f35e962ebf208558ce2a625ea0fa644b78207d14cd5b3a78b65a9e9eb2"
+        },
+        "observed": "Circuit and difficulty match in menu, three lap frames and final result. Visible lap progression, pad/boost feedback, complete three-lap race and Victory / 1 of 6 confirmed."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "SUNSET",
+      "difficulty": "MEDIUM",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 44.36,
+      "framePrefix": "matrix-medium-sunset-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1333299,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.013973271,
+        "cornerForce": -0.0,
+        "screenRight": 145.84119,
+        "cameraFov": 67.00695,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 992.04047,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 21,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 40.74313,
+        "countdown": -1.691468e-05,
+        "distance": 2976.1785,
+        "lane": 0.77168095,
+        "speed": 87.0,
+        "lateralSpeed": -0.46381953,
+        "curvature": -0.013974644,
+        "cornerForce": -4.5,
+        "screenRight": 131.34949,
+        "cameraFov": 73.25737,
+        "inputSteer": 0.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 992.04047,
+        "lap": 3,
+        "position": 1,
+        "nitro": 5.458091,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 29,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 40.74313,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2307.3875,
+            "speed": 61.053387,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2366.2659,
+            "speed": 59.184616,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2431.4595,
+            "speed": 58.91504,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2489.5417,
+            "speed": 60.492897,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2559.0984,
+            "speed": 63.27294,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-medium-sunset-menu.png": "7636970b3f51098c34964fb1919264f81ad8667d943e38be528aa39c70fa29c4",
+          "matrix-medium-sunset-lap-1.png": "c725de4dd8198c65071b6cb10e58ed807cd1c977c1048dc28a5db428fc3cc2c7",
+          "matrix-medium-sunset-lap-2.png": "ea8ba9d6a887dca753eb4f035c331bd61ffed4123a4b70fdbadad3243560223e",
+          "matrix-medium-sunset-lap-3.png": "e2f4f679b1d1aa017113668ddc48178c175d9d23624ffa874ac897aca435a895",
+          "matrix-medium-sunset-result.png": "a5cb28ef66248dbf886ae0dda1eb745ec48a45c235d899fa6d0e21acc35829cf"
+        },
+        "observed": "Circuit and difficulty match in menu, three lap frames and final result. Visible lap progression, pad/boost feedback, complete three-lap race and Victory / 1 of 6 confirmed."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "SUNSET",
+      "difficulty": "HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 39.59,
+      "framePrefix": "matrix-hard-sunset-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2083309,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.013973271,
+        "cornerForce": -0.0,
+        "screenRight": 145.8468,
+        "cameraFov": 67.004814,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 992.04047,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 20,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 35.892094,
+        "countdown": -1.691468e-05,
+        "distance": 2976.2842,
+        "lane": -2.7116802,
+        "speed": 83.56669,
+        "lateralSpeed": -4.597353,
+        "curvature": -0.013974629,
+        "cornerForce": -4.5,
+        "screenRight": 143.01208,
+        "cameraFov": 70.34593,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 992.04047,
+        "lap": 3,
+        "position": 1,
+        "nitro": 18.807945,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 29,
+        "fps": 30,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 35.892094,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2348.656,
+            "speed": 64.81937,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2391.3215,
+            "speed": 66.271736,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2467.8608,
+            "speed": 75.81606,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2532.317,
+            "speed": 68.822014,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2586.4893,
+            "speed": 70.795815,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-hard-sunset-menu.png": "67aa1c25fc6ecce52b508406805b106dd7ad6b82133f668a4117d4466b2020bf",
+          "matrix-hard-sunset-lap-1.png": "af88271cc7942b2468b27bf7426da62a4a0651d2e26f14b71ed889228a8f0e11",
+          "matrix-hard-sunset-lap-2.png": "233ed16f12e58c699d65eefee7bdedd2ba6ee67c9efb1a14ac17d6dbfe2aca26",
+          "matrix-hard-sunset-lap-3.png": "e49b185edf979d8be9084e2b5abeea3c32cbeae052517e52a4356315b1b5f285",
+          "matrix-hard-sunset-result.png": "8096d862f1041f8aa2358b2be0ff37e70a21d0c60d625e5b83d9bcd9283907ae"
+        },
+        "observed": "Hard selected in garage; three lap frames show visible drifting and boost effects, lap progression and fuel feedback. Result visibly says Victory / 1 of 6 / Sunset Run / Hard, time 35.89s, 29 drift bonuses and 9 pads."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "SUNSET",
+      "difficulty": "SUPER_HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 39.57,
+      "framePrefix": "matrix-super_hard-sunset-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2083309,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.013973271,
+        "cornerForce": -0.0,
+        "screenRight": 145.84595,
+        "cameraFov": 67.005455,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 992.04047,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 23,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 35.90043,
+        "countdown": -1.691468e-05,
+        "distance": 2976.4766,
+        "lane": -2.43867,
+        "speed": 87.0,
+        "lateralSpeed": -6.1227193,
+        "curvature": -0.013886015,
+        "cornerForce": -4.5,
+        "screenRight": 134.07568,
+        "cameraFov": 74.67457,
+        "inputSteer": 0.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 992.04047,
+        "lap": 3,
+        "position": 1,
+        "nitro": 18.449848,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 5,
+        "driftBonuses": 30,
+        "fps": 31,
+        "circuit": "SUNSET",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 35.90043,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2579.8223,
+            "speed": 70.43554,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2628.0164,
+            "speed": 72.51678,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2712.0642,
+            "speed": 83.04166,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2780.1714,
+            "speed": 76.64263,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2830.6968,
+            "speed": 78.29107,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-super_hard-sunset-menu.png": "594dc4381d41894ad866e3bb23ffb8c3d1a8d46dfcac57c136281941ba2c5353",
+          "matrix-super_hard-sunset-lap-1.png": "28bb6c008456958e9f9b8d9ef44b01e66d34c20a6920457652cb4eb5ff56928a",
+          "matrix-super_hard-sunset-lap-2.png": "128bcd33d8706d185b92290a05ce620e9b8777fdfa872139483da324193d2c64",
+          "matrix-super_hard-sunset-lap-3.png": "8d5aa0bbdb1645c18b618cb7203885fde0e908851c6acee86426254a24a4204d",
+          "matrix-super_hard-sunset-result.png": "c6b72ea8ded97897cfa9efbdfd0f27af8b0e53218bcbfd80e7865b9a5cb57ea8"
+        },
+        "observed": "Selected circuit and difficulty match menu and race HUD. All three laps visibly advance; drift/boost effects and rival positions are coherent. Result clearly confirms Victory, 1 of 6 and the selected circuit/difficulty. Sunset Super Hard is 35.90s with 30 drifts/9 pads; Cinder Easy is 39.26s with 9 pads."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "CINDER",
+      "difficulty": "EASY",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 43.04,
+      "framePrefix": "matrix-easy-cinder-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1583302,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.008569411,
+        "cornerForce": -0.0,
+        "screenRight": 151.49274,
+        "cameraFov": 67.0,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 943.3132,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 23,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 39.267815,
+        "countdown": -1.691468e-05,
+        "distance": 2830.3206,
+        "lane": -0.07045014,
+        "speed": 62.666664,
+        "lateralSpeed": -4.242293,
+        "curvature": -0.008462783,
+        "cornerForce": -2.1602283,
+        "screenRight": 152.25098,
+        "cameraFov": 67.000015,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 943.3132,
+        "lap": 3,
+        "position": 1,
+        "nitro": 34.866314,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 0,
+        "fps": 30,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 39.267815,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 1843.6097,
+            "speed": 46.286415,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 1885.075,
+            "speed": 53.1907,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 1942.7933,
+            "speed": 48.943527,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 1990.0205,
+            "speed": 49.83726,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2040.7714,
+            "speed": 59.380867,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-easy-cinder-menu.png": "01fd516cf87d73757351049bc9e23b4f1ef3fe55b90152bcc546d5d9a5f1688a",
+          "matrix-easy-cinder-lap-1.png": "376a8371059e7ccaceef9bf5edf823ba595b2fab2bde0d67cd352b1455d3040a",
+          "matrix-easy-cinder-lap-2.png": "d4fdc3eb9442d190f92d0b90f5ea17bd9d2b17c3e8ca1cb837253152e025896f",
+          "matrix-easy-cinder-lap-3.png": "f1d79c930460829fa837681581b139ce5508ae714dc0bd95e5c8b19ce2473726",
+          "matrix-easy-cinder-result.png": "bd85675e284b7da53ab178416d6f72662575210670190c6cec85fe49700c5881"
+        },
+        "observed": "Selected circuit and difficulty match menu and race HUD. All three laps visibly advance; drift/boost effects and rival positions are coherent. Result clearly confirms Victory, 1 of 6 and the selected circuit/difficulty. Sunset Super Hard is 35.90s with 30 drifts/9 pads; Cinder Easy is 39.26s with 9 pads."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "CINDER",
+      "difficulty": "MEDIUM",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 42.44,
+      "framePrefix": "matrix-medium-cinder-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1416633,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.008569411,
+        "cornerForce": -0.0,
+        "screenRight": 151.49274,
+        "cameraFov": 67.00001,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 943.3132,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 19,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 38.759373,
+        "countdown": -1.691468e-05,
+        "distance": 2830.1326,
+        "lane": 0.064006604,
+        "speed": 87.0,
+        "lateralSpeed": 0.90991145,
+        "curvature": -0.008525698,
+        "cornerForce": -4.1945157,
+        "screenRight": 139.19824,
+        "cameraFov": 71.95516,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 943.3132,
+        "lap": 3,
+        "position": 1,
+        "nitro": 17.874493,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 0,
+        "fps": 29,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 38.759373,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2196.1047,
+            "speed": 56.12721,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2243.847,
+            "speed": 66.21302,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2313.4102,
+            "speed": 59.109432,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2369.3901,
+            "speed": 60.63193,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2425.8308,
+            "speed": 69.58265,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-medium-cinder-menu.png": "e83a876f39c105e99c2b276fd1ae344b5b248e3cd07ccb12ff3d86078a57d091",
+          "matrix-medium-cinder-lap-1.png": "3ac3b62314f93d4011e3f4bcad3a7a02ce99827ebdd2a7c8cb6bf463d0793bce",
+          "matrix-medium-cinder-lap-2.png": "10469dd3edd2f64a1d2b90bfcc3d6781947310bec0ef5265b054378df666040d",
+          "matrix-medium-cinder-lap-3.png": "aad75054ba75a6c25bc6dfcf5fcc22188dc3860cc7295bb28d9789acbb24f5ae",
+          "matrix-medium-cinder-result.png": "8e60883f8cf7378679386c603997d303fa5a70caaeaf60a5ce9090b24450a6ad"
+        },
+        "observed": "Inspected menu, all three lap frames and Victory 1 of 6. Cinder Medium shows boost and 9 pads, finishing 0:38.75; Hard shows drift bonus feedback, 29 drift bonuses and 8 pads, finishing 0:34.27."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "CINDER",
+      "difficulty": "HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 37.94,
+      "framePrefix": "matrix-hard-cinder-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1416633,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.008569411,
+        "cornerForce": -0.0,
+        "screenRight": 151.48059,
+        "cameraFov": 67.004326,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 943.3132,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 22,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 34.27508,
+        "countdown": -1.691468e-05,
+        "distance": 2830.0356,
+        "lane": -3.6017764,
+        "speed": 79.50002,
+        "lateralSpeed": -3.2596242,
+        "curvature": -0.008571862,
+        "cornerForce": -3.5214622,
+        "screenRight": 149.9989,
+        "cameraFov": 68.59529,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 943.3132,
+        "lap": 3,
+        "position": 1,
+        "nitro": 0.44128096,
+        "drifting": false,
+        "boosting": false,
+        "pads": 8,
+        "bumps": 1,
+        "driftBonuses": 29,
+        "fps": 30,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 34.27508,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2243.9656,
+            "speed": 64.924934,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2284.223,
+            "speed": 65.87312,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2345.299,
+            "speed": 70.58601,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2419.9514,
+            "speed": 70.651276,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2472.0928,
+            "speed": 70.97703,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-hard-cinder-menu.png": "57c0b447a50be9740a91d28e45bee9170cf55ddffd41612002fb4d3dc22c262d",
+          "matrix-hard-cinder-lap-1.png": "0f87802355441f7cb339d50b49f5ca86fe975b843c5535afd932192c41acc5e8",
+          "matrix-hard-cinder-lap-2.png": "948d2ce2fbe4ebaeb161c504a74a339c0dfe1c3d877634f8462373fc74036df7",
+          "matrix-hard-cinder-lap-3.png": "95e8ecc7966abe30619099d78e22e665e31ddf4d4e64fa6719100a338dcca26e",
+          "matrix-hard-cinder-result.png": "71e5a58c8c2856c6742c6df3ae35356c958523abf4946d78296e82ae4da6bc71"
+        },
+        "observed": "Inspected menu, all three lap frames and Victory 1 of 6. Cinder Medium shows boost and 9 pads, finishing 0:38.75; Hard shows drift bonus feedback, 29 drift bonuses and 8 pads, finishing 0:34.27."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "CINDER",
+      "difficulty": "SUPER_HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 38.68,
+      "framePrefix": "matrix-super_hard-cinder-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1499968,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.008569411,
+        "cornerForce": -0.0,
+        "screenRight": 151.48871,
+        "cameraFov": 67.00149,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 943.3132,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 25,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 34.92522,
+        "countdown": -1.691468e-05,
+        "distance": 2829.955,
+        "lane": 1.7829589,
+        "speed": 85.3,
+        "lateralSpeed": 8.933134,
+        "curvature": -0.00857396,
+        "cornerForce": -4.055019,
+        "screenRight": 139.95563,
+        "cameraFov": 71.26084,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 943.3132,
+        "lap": 3,
+        "position": 1,
+        "nitro": 0.44952148,
+        "drifting": false,
+        "boosting": false,
+        "pads": 8,
+        "bumps": 8,
+        "driftBonuses": 29,
+        "fps": 32,
+        "circuit": "CINDER",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 34.92522,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2511.565,
+            "speed": 70.61924,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2557.874,
+            "speed": 72.48693,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2630.3433,
+            "speed": 83.14267,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2706.615,
+            "speed": 76.47512,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2754.815,
+            "speed": 78.03788,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-super_hard-cinder-menu.png": "fbb8b9b7b7dceb2c88652c465b46530c925462f22b6d8fea7c514b2016ca2cfc",
+          "matrix-super_hard-cinder-lap-1.png": "94549301971a62785e5078161810d9a6c7d41fb927362cbd758d494ae372c36f",
+          "matrix-super_hard-cinder-lap-2.png": "302ef4dd7c30d261fa53f5880bd5ec904bb3d96ec1b356b6043552eaf63f8111",
+          "matrix-super_hard-cinder-lap-3.png": "eb486e1afbab22590bfdcab40918a478e9a0b859810c58392b02734459b783cd",
+          "matrix-super_hard-cinder-result.png": "dd335ea314912d9990014fcb76cc28447c88da993011250a37f123516b7ada06"
+        },
+        "observed": "Inspected selected menu, three lap frames and Victory 1 of 6. Cinder Super Hard advances from 4th at lap 1 to 3rd at lap 2, wins 0:34.92 with 29 drifts and 8 pads; full-size result confirms all text. SF Easy shows city houses and bridge laps, wins 0:55.02 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "SAN_FRANCISCO",
+      "difficulty": "EASY",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 58.84,
+      "framePrefix": "matrix-easy-san_francisco-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2749984,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0038784137,
+        "cornerForce": -0.0,
+        "screenRight": 142.34601,
+        "cameraFov": 67.0,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1298.9083,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 23,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 55.029514,
+        "countdown": -1.691468e-05,
+        "distance": 3897.146,
+        "lane": 0.018244416,
+        "speed": 62.0,
+        "lateralSpeed": -1.1941367,
+        "curvature": -0.0033097675,
+        "cornerForce": -0.8269785,
+        "screenRight": 143.07898,
+        "cameraFov": 67.000015,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1298.9083,
+        "lap": 3,
+        "position": 1,
+        "nitro": 14.474844,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 0,
+        "fps": 27,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 55.029514,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2634.894,
+            "speed": 47.455975,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2686.161,
+            "speed": 48.793327,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2766.3071,
+            "speed": 58.29873,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2843.7656,
+            "speed": 52.185337,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2906.4631,
+            "speed": 51.681866,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-easy-san_francisco-menu.png": "7908b1fd2404ab71073955f27068582cef4621e45e79d8ffa16299ad23b05c9d",
+          "matrix-easy-san_francisco-lap-1.png": "75a03f12e9c16c92ad790498ddca25f945a9d0277fe1edb412a9f83b1184f42e",
+          "matrix-easy-san_francisco-lap-2.png": "48a90a0cef6766b7511379fc4138bd2c187a4a44d8335b60586679f01cd3663e",
+          "matrix-easy-san_francisco-lap-3.png": "c5b109cc8be35dc6814841dcdf32d3136ec3d97fa8340136dc488cb99d80f99e",
+          "matrix-easy-san_francisco-result.png": "c8f0e6e8a5c7b3418d2f0d5be6d9ed43888d48c19cc467a78dc9b9db0d1e42c4"
+        },
+        "observed": "Inspected selected menu, three lap frames and Victory 1 of 6. Cinder Super Hard advances from 4th at lap 1 to 3rd at lap 2, wins 0:34.92 with 29 drifts and 8 pads; full-size result confirms all text. SF Easy shows city houses and bridge laps, wins 0:55.02 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "SAN_FRANCISCO",
+      "difficulty": "MEDIUM",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 58.74,
+      "framePrefix": "matrix-medium-san_francisco-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2583315,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0038784137,
+        "cornerForce": -0.0,
+        "screenRight": 142.34564,
+        "cameraFov": 67.000015,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1298.9083,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 21,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 54.821136,
+        "countdown": -1.691468e-05,
+        "distance": 3897.1836,
+        "lane": 0.038793232,
+        "speed": 62.0,
+        "lateralSpeed": -4.8052382,
+        "curvature": -0.003258912,
+        "cornerForce": -0.8142717,
+        "screenRight": 143.21027,
+        "cameraFov": 67.00001,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1298.9083,
+        "lap": 3,
+        "position": 1,
+        "nitro": 17.958054,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 22,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 54.821136,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 3152.158,
+            "speed": 56.14006,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 3214.8494,
+            "speed": 57.26638,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 3304.9006,
+            "speed": 67.909485,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 3395.4546,
+            "speed": 62.047993,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 3472.2727,
+            "speed": 63.089783,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-medium-san_francisco-menu.png": "c8ab7ed31c9ac3ecdd060741b040207158c4409a7085ea9331cd0fa8b2b958c4",
+          "matrix-medium-san_francisco-lap-1.png": "8a3d021cf7c1920accbf9910d355bdd98f060c660b52078828f9cbda73595e2c",
+          "matrix-medium-san_francisco-lap-2.png": "9a333038a29d0d1021ffff42aa7c74035317763d25755e63cd069badcf573af2",
+          "matrix-medium-san_francisco-lap-3.png": "9a6285c190059d5271a4636088ffb98bcd58506f2201fef04a52d9e701d4d025",
+          "matrix-medium-san_francisco-result.png": "a3ff7e2081d88235f76c8af09398e999d38ad10fd638b0fb0c4be9c8b004a36a"
+        },
+        "observed": "SF Medium menu and HUD agree; inspected city driving, bridge crossings on laps 2 and 3, boost flames and Victory 1 of 6 at 0:54.82 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-1",
+      "circuit": "SAN_FRANCISCO",
+      "difficulty": "HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 50.12,
+      "framePrefix": "matrix-hard-san_francisco-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.174997,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0038784137,
+        "cornerForce": -0.0,
+        "screenRight": 142.34564,
+        "cameraFov": 67.00001,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1298.9083,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 16,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 46.386,
+        "countdown": -1.691468e-05,
+        "distance": 3897.3867,
+        "lane": -0.7883991,
+        "speed": 87.0,
+        "lateralSpeed": -11.449504,
+        "curvature": -0.002983449,
+        "cornerForce": -1.4678122,
+        "screenRight": 130.51105,
+        "cameraFov": 72.22834,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1298.9083,
+        "lap": 3,
+        "position": 1,
+        "nitro": 5.366573,
+        "drifting": false,
+        "boosting": false,
+        "pads": 8,
+        "bumps": 2,
+        "driftBonuses": 42,
+        "fps": 24,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 46.386,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 3056.2058,
+            "speed": 64.28556,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 3116.6653,
+            "speed": 65.94225,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 3214.876,
+            "speed": 70.27545,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 3293.2024,
+            "speed": 70.02009,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 3364.682,
+            "speed": 72.00597,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-hard-san_francisco-menu.png": "23175eb818559e2232060804bce5096e94094d2620030ee526b885af321ab324",
+          "matrix-hard-san_francisco-lap-1.png": "567f932b4f48277886b16139a69277a935abf8abf721c8c76aa9cc0dae76721f",
+          "matrix-hard-san_francisco-lap-2.png": "cdd23109d5e8a67b53b10703924221818490a5869669270d3f96d1c2c4ed7c36",
+          "matrix-hard-san_francisco-lap-3.png": "62286c564299a3c8827de83fd901f06af1d6e2dd9c3b66992c691a8a2e1e2ed1",
+          "matrix-hard-san_francisco-result.png": "9d82f3b55c63fb3ee21e2c3c78cf5ad20b7fe6421565d706a4eda1af6d9699d3"
+        },
+        "observed": "SF Hard menu and HUD agree. Inspected three laps, visible drift reward and nitro flames, bridge crossings, and Victory 1 of 6 at 0:46.38 with 42 drift bonuses and 8 pads."
+      }
+    },
+    {
+      "run": "pass-2",
+      "circuit": "SAN_FRANCISCO",
+      "difficulty": "SUPER_HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 51.04,
+      "framePrefix": "matrix-super_hard-san_francisco-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1666636,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0038784137,
+        "cornerForce": -0.0,
+        "screenRight": 142.34564,
+        "cameraFov": 67.00001,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1298.9083,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 20,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 47.286194,
+        "countdown": -1.691468e-05,
+        "distance": 3897.298,
+        "lane": -0.59396696,
+        "speed": 86.15,
+        "lateralSpeed": 7.984687,
+        "curvature": -0.003104246,
+        "cornerForce": -1.4975455,
+        "screenRight": 131.52948,
+        "cameraFov": 71.66415,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1298.9083,
+        "lap": 3,
+        "position": 1,
+        "nitro": 0.48302004,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 6,
+        "driftBonuses": 42,
+        "fps": 26,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 47.286194,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 3414.1428,
+            "speed": 71.38359,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 3484.869,
+            "speed": 79.57825,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 3592.332,
+            "speed": 74.66745,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 3676.2168,
+            "speed": 76.07428,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 3722.2937,
+            "speed": 78.43207,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-super_hard-san_francisco-menu.png": "df31ba733feec2f35cebc15568dffc23004efdc813c9a2060915a0adcede98b5",
+          "matrix-super_hard-san_francisco-lap-1.png": "889bcd394c3c5388e1795904528e3ecde8e0ea77ede8cf1f352d03697ee99557",
+          "matrix-super_hard-san_francisco-lap-2.png": "a84cddb38dfdf58d32080e870fbc744f53e3f167130b30a5550c115546a87f15",
+          "matrix-super_hard-san_francisco-lap-3.png": "570c29a321c31a098a02d272bf21ca1f1132dc383dc850d1609f32c1358c1f68",
+          "matrix-super_hard-san_francisco-result.png": "95a1416f252f1c1d00ff3f32b4ebc054241b11f1165fc7de040495a71b8e09bd"
+        },
+        "observed": "SF Super Hard selected and visible in all HUDs. Fourth on lap 1, first on laps 2 and 3; inspected drifts, nitro effects, bridge crossings and Victory 1 of 6 at 0:47.28, 42 drift bonuses and 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "SILICON_VALLEY",
+      "difficulty": "EASY",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 49.61,
+      "framePrefix": "matrix-easy-silicon_valley-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2249978,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0117174825,
+        "cornerForce": -0.0,
+        "screenRight": 144.84943,
+        "cameraFov": 67.0,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1093.9545,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 19,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 45.869225,
+        "countdown": -1.691468e-05,
+        "distance": 3282.0518,
+        "lane": 0.81917566,
+        "speed": 62.0,
+        "lateralSpeed": 4.173881,
+        "curvature": -0.011717204,
+        "cornerForce": -2.9276605,
+        "screenRight": 145.76355,
+        "cameraFov": 67.00001,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1093.9545,
+        "lap": 3,
+        "position": 1,
+        "nitro": 15.758287,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 0,
+        "fps": 23,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 45.869225,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2176.7917,
+            "speed": 46.073368,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2213.6467,
+            "speed": 46.67151,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2283.7275,
+            "speed": 53.905807,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2346.2405,
+            "speed": 50.508266,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2397.3645,
+            "speed": 51.811455,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-easy-silicon_valley-menu.png": "c30e3df0a8dc4f83a5d9a9b255dec6d16e4a431a444c42f613b274642fa38332",
+          "matrix-easy-silicon_valley-lap-1.png": "d4c8c27039d616ac8fe2f225905dd0a9842eebeb1e1450e2dc794901b77d5a8e",
+          "matrix-easy-silicon_valley-lap-2.png": "26f95531be5ccf85796ab32d154480715b0924a39b2f14fa74c8332ce13f8963",
+          "matrix-easy-silicon_valley-lap-3.png": "f5f8616b1409db3ad504af28766776e0f94e6b66d56b0b690441bbb84e7671b0",
+          "matrix-easy-silicon_valley-result.png": "76bc887c7c367b371954a0b11c5ffc8fe9b9fc18ca18369cc3aaf0f7f15a6fa4"
+        },
+        "observed": "Silicon Valley Easy selected with circular campus preview. Inspected city road, turbo strip, three distinct lap HUDs, and Victory 1 of 6 at 0:45.86 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "SILICON_VALLEY",
+      "difficulty": "MEDIUM",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 50.3,
+      "framePrefix": "matrix-medium-silicon_valley-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.191664,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0117174825,
+        "cornerForce": -0.0,
+        "screenRight": 144.84943,
+        "cameraFov": 67.00001,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1093.9545,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 19,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 45.660847,
+        "countdown": -1.691468e-05,
+        "distance": 3282.084,
+        "lane": 0.32236043,
+        "speed": 62.0,
+        "lateralSpeed": 3.0027354,
+        "curvature": -0.011715092,
+        "cornerForce": -2.9271328,
+        "screenRight": 145.96063,
+        "cameraFov": 67.000015,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1093.9545,
+        "lap": 3,
+        "position": 1,
+        "nitro": 17.30768,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 30,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 45.660847,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2607.9167,
+            "speed": 56.534515,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2657.7554,
+            "speed": 56.947567,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2738.876,
+            "speed": 66.09947,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2810.6099,
+            "speed": 60.601406,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2871.6807,
+            "speed": 61.212837,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-medium-silicon_valley-menu.png": "48704fcf8a774c3bdd2bc30327faddb4576d19e1dea931890ad9daf5d8b2cc79",
+          "matrix-medium-silicon_valley-lap-1.png": "6c0b00693d5fe925d3b0b119b4f7e009e5bce7539451beead967ceac25a7442a",
+          "matrix-medium-silicon_valley-lap-2.png": "2b90e4ebd5a6e7118d919cd8352e2478b569f33da73e95839884893bf7c1a583",
+          "matrix-medium-silicon_valley-lap-3.png": "56e81d1c0fc0e90d0480e99cbc092e3e1a550843249f026d7528bdb128da20d0",
+          "matrix-medium-silicon_valley-result.png": "c8040b7d1099327c9e1137a3b611793de66b528bb3a57c9a13e61eb2acbd69c3"
+        },
+        "observed": "Silicon Valley Medium menu/HUD match. Inspected turbo-pad feedback and nitro flames, all three lap HUDs, and Victory 1 of 6 at 0:45.66 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "SILICON_VALLEY",
+      "difficulty": "HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 42.98,
+      "framePrefix": "matrix-hard-silicon_valley-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2249978,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0117174825,
+        "cornerForce": -0.0,
+        "screenRight": 144.85028,
+        "cameraFov": 67.000015,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1093.9545,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 20,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 39.217804,
+        "countdown": -1.691468e-05,
+        "distance": 3282.538,
+        "lane": -0.09433768,
+        "speed": 87.0,
+        "lateralSpeed": -11.8834505,
+        "curvature": -0.011738657,
+        "cornerForce": -4.5,
+        "screenRight": 131.51587,
+        "cameraFov": 72.93685,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1093.9545,
+        "lap": 3,
+        "position": 1,
+        "nitro": 3.43301,
+        "drifting": false,
+        "boosting": false,
+        "pads": 8,
+        "bumps": 2,
+        "driftBonuses": 37,
+        "fps": 29,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 39.217804,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2567.4766,
+            "speed": 65.06431,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2630.1946,
+            "speed": 71.93439,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2703.6497,
+            "speed": 67.57541,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2768.274,
+            "speed": 69.542244,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2839.1213,
+            "speed": 80.61383,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-hard-silicon_valley-menu.png": "7f0e1200f51794c11581ab8795254898d1827d5ade6f9f3c1e3c715af787e0c9",
+          "matrix-hard-silicon_valley-lap-1.png": "2f6fb1c070629dc09cf6c59e7ef177b55089a2ca92fa08d0ee903cb1944aa26d",
+          "matrix-hard-silicon_valley-lap-2.png": "3d6a4439bd73939921f2c69498e896379d27bcb21a060ae26341a023fb0f793b",
+          "matrix-hard-silicon_valley-lap-3.png": "569b1b2cc7d27804097e836fa329f6651ca323b5343877e78a3b0e05824e9e3f",
+          "matrix-hard-silicon_valley-result.png": "0ba6329109706d6f742d525d03faf9d60f1708cee09f76f4f8e874455a7b5a0a"
+        },
+        "observed": "Silicon Valley Hard preview/selection matches HUD. All three lap frames show road progress, drift/nitro feedback; Victory 1 of 6 at 0:39.21, 37 drift bonuses and 8 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "SILICON_VALLEY",
+      "difficulty": "SUPER_HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 43.12,
+      "framePrefix": "matrix-super_hard-silicon_valley-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2166643,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.0117174825,
+        "cornerForce": -0.0,
+        "screenRight": 144.83386,
+        "cameraFov": 67.0056,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1093.9545,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 21,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 39.39284,
+        "countdown": -1.691468e-05,
+        "distance": 3282.584,
+        "lane": -1.4795514,
+        "speed": 87.0,
+        "lateralSpeed": -14.750452,
+        "curvature": -0.011713348,
+        "cornerForce": -4.5,
+        "screenRight": 131.59546,
+        "cameraFov": 74.40003,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1093.9545,
+        "lap": 3,
+        "position": 1,
+        "nitro": 0.44962358,
+        "drifting": false,
+        "boosting": false,
+        "pads": 8,
+        "bumps": 4,
+        "driftBonuses": 35,
+        "fps": 29,
+        "circuit": "SILICON_VALLEY",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 39.39284,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2830.4836,
+            "speed": 70.359146,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2901.302,
+            "speed": 76.25833,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2979.545,
+            "speed": 74.787964,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 3048.1392,
+            "speed": 76.72145,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 3117.7588,
+            "speed": 85.24321,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-super_hard-silicon_valley-menu.png": "cbfc103644ac7b70cd1fceeb47a40391d9cc0a1c644a41501ebbc3733fe7bf2c",
+          "matrix-super_hard-silicon_valley-lap-1.png": "21b218d0eed36e1c6e32f4f057322ad8dcb745aba88867f0d60a9594374824f1",
+          "matrix-super_hard-silicon_valley-lap-2.png": "47d13419d15f4aa4164ba0690834b7331cd92183b2e8d17c155cf3550fe601a5",
+          "matrix-super_hard-silicon_valley-lap-3.png": "c16c55b2d21473ffd009b1d7e70c8c1d0b52c5f741bc2366d7f3d272effbc3aa",
+          "matrix-super_hard-silicon_valley-result.png": "db10930e6674ba1cfd7e7a48b1b379a404689040d57861ab499632f6b1b0d8e9"
+        },
+        "observed": "Silicon Valley Super Hard selected; fourth-place rivals ahead in lap 1, lead gained by lap 2, three lap frames and drift/boost effects inspected. Victory 1 of 6 at 0:39.39, 35 drift bonuses and 8 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "NEW_YORK",
+      "difficulty": "EASY",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 50.35,
+      "framePrefix": "matrix-easy-new_york-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.116663,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.00080530596,
+        "cornerForce": -0.0,
+        "screenRight": 143.10669,
+        "cameraFov": 67.0,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1097.6035,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 16,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 46.71107,
+        "countdown": -1.691468e-05,
+        "distance": 3292.8354,
+        "lane": 0.05854438,
+        "speed": 62.0,
+        "lateralSpeed": -4.4541426,
+        "curvature": -0.0008030233,
+        "cornerForce": -0.20064339,
+        "screenRight": 143.2345,
+        "cameraFov": 67.00001,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1097.6035,
+        "lap": 3,
+        "position": 1,
+        "nitro": 15.866296,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 0,
+        "fps": 19,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 46.71107,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2216.5562,
+            "speed": 47.407944,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2256.1533,
+            "speed": 48.602196,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2331.9592,
+            "speed": 50.950703,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2390.5854,
+            "speed": 49.727974,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2442.006,
+            "speed": 51.73151,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-easy-new_york-menu.png": "cc7c9f795377913975dd412e77c1316ce4d775f051acc24daa874ecb6b9ce107",
+          "matrix-easy-new_york-lap-1.png": "90782c1f84d9e880ad9bb6ca842997eb2707c2bc628bb0de5446fa3fbcd2b9cb",
+          "matrix-easy-new_york-lap-2.png": "bb50caa3f3005c29e203b0110cc7647a555751c34bd7600d5a186bbe82c7d69c",
+          "matrix-easy-new_york-lap-3.png": "f4f1d0ce47498979c5302d4be8da63f972803ed250634cf62f4e4b4ba1889c5c",
+          "matrix-easy-new_york-result.png": "aae222c9abcac7624bc9301447b806ea956b977d02fa17d93ab503a50776bd47"
+        },
+        "observed": "New York Easy selected with city towers and park preview. Inspected driving between towers and all three lap HUDs; Victory 1 of 6 at 0:46.71 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "NEW_YORK",
+      "difficulty": "MEDIUM",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 49.13,
+      "framePrefix": "matrix-medium-new_york-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1083295,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.00080530596,
+        "cornerForce": -0.0,
+        "screenRight": 143.10669,
+        "cameraFov": 67.00001,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1097.6035,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 15,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 45.46914,
+        "countdown": -1.691468e-05,
+        "distance": 3292.924,
+        "lane": 0.14192197,
+        "speed": 62.0,
+        "lateralSpeed": -3.9782302,
+        "curvature": -0.0008051416,
+        "cornerForce": -0.20117266,
+        "screenRight": 143.22339,
+        "cameraFov": 67.000015,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1097.6035,
+        "lap": 3,
+        "position": 1,
+        "nitro": 15.282969,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 20,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 45.46914,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2599.324,
+            "speed": 56.35985,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2646.2776,
+            "speed": 56.504864,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2726.561,
+            "speed": 67.94867,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2800.57,
+            "speed": 61.57478,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2861.6545,
+            "speed": 61.83571,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-medium-new_york-menu.png": "106a7b6d19dfb246927622b3ee8ac35ce915e6da3341fb29cbe7fccdc5581f10",
+          "matrix-medium-new_york-lap-1.png": "e6c5db83a4910f5b824c73a502d0d25990284307d715f24b0fbfe4c3f8fe97ed",
+          "matrix-medium-new_york-lap-2.png": "da03b7b3d56f609f0d3527c87a9d46c89102d3f9d9c03eda81e2e069eeca2023",
+          "matrix-medium-new_york-lap-3.png": "e03e85b37e3186413bf042d1043c7a1c0705491f4c146dc882c852265d20a021",
+          "matrix-medium-new_york-result.png": "e190ee92062ecd97888521a7a1a7399e4e1d2e1bc7c2bf34a6346d2f6b6a7433"
+        },
+        "observed": "New York Medium menu/HUD agree. Inspected turbo pad and boost flames, all three laps through the city, and Victory 1 of 6 at 0:45.46 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "NEW_YORK",
+      "difficulty": "HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 43.07,
+      "framePrefix": "matrix-hard-new_york-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.116663,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.00080530596,
+        "cornerForce": -0.0,
+        "screenRight": 143.10669,
+        "cameraFov": 67.00001,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1097.6035,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 15,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 39.367836,
+        "countdown": -1.691468e-05,
+        "distance": 3293.4646,
+        "lane": -0.1810653,
+        "speed": 87.0,
+        "lateralSpeed": -10.739455,
+        "curvature": -0.0007945458,
+        "cornerForce": -0.3909046,
+        "screenRight": 125.95154,
+        "cameraFov": 73.95739,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1097.6035,
+        "lap": 3,
+        "position": 1,
+        "nitro": 1.8495936,
+        "drifting": false,
+        "boosting": false,
+        "pads": 8,
+        "bumps": 2,
+        "driftBonuses": 35,
+        "fps": 22,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 39.367836,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2578.2375,
+            "speed": 64.88663,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2641.231,
+            "speed": 70.105316,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2713.7017,
+            "speed": 68.01552,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2779.3237,
+            "speed": 70.11506,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2852.0415,
+            "speed": 80.331635,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-hard-new_york-menu.png": "912b22a5944180fa0acefb9ac525fee89b015e34e283729f54d6a734e2d4fad0",
+          "matrix-hard-new_york-lap-1.png": "3693854e4afa97c92657f90d06a271b418d77eed263e4af0f1fbd2f0fba9cfd3",
+          "matrix-hard-new_york-lap-2.png": "a2818425b5156defac1fd5c631e5addb815bfa0dae6cb85ebf135eebcdb1543f",
+          "matrix-hard-new_york-lap-3.png": "862445d20e84a94d15105cebba1bdff4a6bd4c8a6126d401a05f8dabdb318968",
+          "matrix-hard-new_york-result.png": "1ab2deb79c4d86367043bc0274c1af43d7221f3bbc9f42e051900e776cad65e0"
+        },
+        "observed": "New York Hard selected; all three lap frames inspected with visible drifting, banked nitro feedback and changing road position. Victory 1 of 6 at 0:39.36 with 35 drift bonuses and 8 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "NEW_YORK",
+      "difficulty": "SUPER_HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 43.36,
+      "framePrefix": "matrix-super_hard-new_york-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1083295,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.00080530596,
+        "cornerForce": -0.0,
+        "screenRight": 143.1051,
+        "cameraFov": 67.00059,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1097.6035,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 15,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 39.626225,
+        "countdown": -1.691468e-05,
+        "distance": 3293.3083,
+        "lane": -3.6405714,
+        "speed": 87.0,
+        "lateralSpeed": 4.3647385,
+        "curvature": -0.0007945464,
+        "cornerForce": -0.39090487,
+        "screenRight": 133.021,
+        "cameraFov": 71.01918,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1097.6035,
+        "lap": 3,
+        "position": 1,
+        "nitro": 16.466457,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 7,
+        "driftBonuses": 34,
+        "fps": 20,
+        "circuit": "NEW_YORK",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 39.626225,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2848.049,
+            "speed": 70.79287,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2919.7253,
+            "speed": 74.593704,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2997.363,
+            "speed": 74.73804,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 3066.4468,
+            "speed": 76.75709,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 3137.716,
+            "speed": 82.64464,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-super_hard-new_york-menu.png": "4f84372ff0f2ec5bb33e3c1d6d48e80139c7ecc139db68167162f033625e3bb0",
+          "matrix-super_hard-new_york-lap-1.png": "80f11a27368c0d829781f4846b8f3b0bee2b8f94a4e845535eadf0b42ad33564",
+          "matrix-super_hard-new_york-lap-2.png": "f73ea501037f60ccdf3632f1d3a47dd4c63f35041a90a7561adf286d73a6300a",
+          "matrix-super_hard-new_york-lap-3.png": "8473b0caa9f94f988d21a0b50c9484fae37f9eab07323208f4375aeb1a052cab",
+          "matrix-super_hard-new_york-result.png": "bc4bea86f768392473c0fdb93d586e0b4a932c19895c9650385990bd20bff12e"
+        },
+        "observed": "New York Super Hard selected. Fourth on lap 1, second on lap 2 with rival visibly alongside, first on lap 3; drift and nitro effects inspected. Victory 1 of 6 at 0:39.62 with 34 drift bonuses and 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "CHICAGO",
+      "difficulty": "EASY",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 49.75,
+      "framePrefix": "matrix-easy-chicago-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2083309,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.005905448,
+        "cornerForce": -0.0,
+        "screenRight": 144.26007,
+        "cameraFov": 67.0,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1096.1337,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 16,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 45.969246,
+        "countdown": -1.691468e-05,
+        "distance": 3288.531,
+        "lane": 0.051085778,
+        "speed": 62.0,
+        "lateralSpeed": -6.115342,
+        "curvature": -0.0059042224,
+        "cornerForce": -1.4752289,
+        "screenRight": 144.81122,
+        "cameraFov": 67.000015,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "EASY",
+        "length": 1096.1337,
+        "lap": 3,
+        "position": 1,
+        "nitro": 13.399836,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 1,
+        "driftBonuses": 0,
+        "fps": 24,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 45.969246,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2180.8198,
+            "speed": 47.02645,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2220.337,
+            "speed": 47.875862,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2292.6445,
+            "speed": 54.595284,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2353.7205,
+            "speed": 51.14641,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2404.806,
+            "speed": 51.98679,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-easy-chicago-menu.png": "9aceb9dc4c57e52aef7798673abbc70092355875cebce94914d8bd33ba29744d",
+          "matrix-easy-chicago-lap-1.png": "a9ba493a0d1ce48a5f012770dccfec01c3dc847a3a14cd9d45baacc6c0e451fd",
+          "matrix-easy-chicago-lap-2.png": "fa6f859d753c132fa76e471a27c052cca976b66a7f2c516fc4354e7fdfc65413",
+          "matrix-easy-chicago-lap-3.png": "e1904ca3f9c1a97502c1c93704bd3e62fb57991a491ce0fbacfb82301951865d",
+          "matrix-easy-chicago-result.png": "abc96c063785ae414bbcf1d1a1aceabbcffd75f2ab5d51b3d85db6d7ba057f51"
+        },
+        "observed": "Chicago Easy selected with skyline, twin round towers and lakefront preview. Inspected all three laps, turbo strip and lakeside driving; Victory 1 of 6 at 0:45.96 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "CHICAGO",
+      "difficulty": "MEDIUM",
+      "status": "passed",
+      "strategy": "digital steering, pads and boost",
+      "wallSeconds": 49.11,
+      "framePrefix": "matrix-medium-chicago-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.2083309,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.005905448,
+        "cornerForce": -0.0,
+        "screenRight": 144.25928,
+        "cameraFov": 67.000015,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1096.1337,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 21,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 45.385788,
+        "countdown": -1.691468e-05,
+        "distance": 3288.8262,
+        "lane": 0.072169356,
+        "speed": 62.0,
+        "lateralSpeed": 4.9115033,
+        "curvature": -0.0058407,
+        "cornerForce": -1.4593573,
+        "screenRight": 144.8429,
+        "cameraFov": 67.00001,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "MEDIUM",
+        "length": 1096.1337,
+        "lap": 3,
+        "position": 1,
+        "nitro": 13.824633,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 15,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 45.385788,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2591.7554,
+            "speed": 56.497147,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2640.731,
+            "speed": 57.89563,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2720.268,
+            "speed": 68.15195,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2795.5347,
+            "speed": 61.052383,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2856.2805,
+            "speed": 62.256603,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-medium-chicago-menu.png": "63a7a08549b7f58a8a18e20fac974fe13def642eecb9a57d4cb032220ae99363",
+          "matrix-medium-chicago-lap-1.png": "5ccc01216b4749e32162527a62c1ca154cf58adc3ef209ce9fb4c50573bc196f",
+          "matrix-medium-chicago-lap-2.png": "18bf4db3426f5e2979dda7eb30a62d04f0e350e5ebe9f4e5faf28c952e1be733",
+          "matrix-medium-chicago-lap-3.png": "3e774df6b2641d42abf0c88c15492d83ef88a2f70676ad7355a49218ab6857c7",
+          "matrix-medium-chicago-result.png": "d465eee3ad0ad7d497a342be8da91ab8ae6ae34452974e8d7ce5d377b2e295a4"
+        },
+        "observed": "Chicago Medium menu/HUD match. Inspected turbo-pad feedback, changing speed/boost state, city and lakefront driving through three laps; Victory 1 of 6 at 0:45.38 with 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "CHICAGO",
+      "difficulty": "HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 43.67,
+      "framePrefix": "matrix-hard-chicago-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.3166656,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.005905448,
+        "cornerForce": -0.0,
+        "screenRight": 144.25928,
+        "cameraFov": 67.00001,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1096.1337,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 10,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 39.27615,
+        "countdown": -1.691468e-05,
+        "distance": 3288.7278,
+        "lane": -2.3573852,
+        "speed": 87.0,
+        "lateralSpeed": -5.255309,
+        "curvature": -0.0058385846,
+        "cornerForce": -2.872496,
+        "screenRight": 130.61414,
+        "cameraFov": 73.555405,
+        "inputSteer": 0.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "HARD",
+        "length": 1096.1337,
+        "lap": 3,
+        "position": 1,
+        "nitro": 0.9911895,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 2,
+        "driftBonuses": 35,
+        "fps": 13,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 39.27615,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2570.9585,
+            "speed": 64.51499,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2634.0647,
+            "speed": 71.93982,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 2707.5762,
+            "speed": 68.1312,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 2772.7979,
+            "speed": 69.62297,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 2844.3452,
+            "speed": 81.39161,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-hard-chicago-menu.png": "7df19b5365709ca4fe9c8ee3d0442d4cc2cb81f5726c7735da17353502b25200",
+          "matrix-hard-chicago-lap-1.png": "eb18fec5a4cb5f9a14795f5ddf2e3401306ed828e2a615f1b0889d9ad2859870",
+          "matrix-hard-chicago-lap-2.png": "e9b087e066a4756f947d4f2ea0cc0a66b55ac043edff570acf6aad517aa4c2a0",
+          "matrix-hard-chicago-lap-3.png": "bcafadd8d6e92bdd99f91ec891fe5ed65bb13705d0158302291e912eb7f14ca4",
+          "matrix-hard-chicago-result.png": "52d454f2ef60681b19fb58dec491b1c89ac5ff0f8d4f22370e50e11b01136d21"
+        },
+        "observed": "Chicago Hard selected. Inspected three-lap progress, drift bonus feedback and nitro flames with lakefront finish; Victory 1 of 6 at 0:39.27, 35 drift bonuses and 9 pads."
+      }
+    },
+    {
+      "run": "pass-3",
+      "circuit": "CHICAGO",
+      "difficulty": "SUPER_HARD",
+      "status": "passed",
+      "strategy": "digital steering, drifting, pads and boost",
+      "wallSeconds": 48.01,
+      "framePrefix": "matrix-super_hard-chicago-",
+      "start": {
+        "phase": "COUNTDOWN",
+        "time": 0.0,
+        "countdown": 3.1499968,
+        "distance": 0.0,
+        "lane": -3.0,
+        "speed": 0.0,
+        "lateralSpeed": 0.0,
+        "curvature": -0.005905448,
+        "cornerForce": -0.0,
+        "screenRight": 144.25464,
+        "cameraFov": 67.001595,
+        "inputSteer": 0.0,
+        "inputThrottle": false,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1096.1337,
+        "lap": 1,
+        "position": 6,
+        "nitro": 65.0,
+        "drifting": false,
+        "boosting": false,
+        "pads": 0,
+        "bumps": 0,
+        "driftBonuses": 0,
+        "fps": 9,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 7.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 14.0,
+            "speed": 0.0,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 21.0,
+            "speed": 0.0,
+            "finishTime": null
+          }
+        ]
+      },
+      "finish": {
+        "phase": "FINISHED",
+        "time": 40.00964,
+        "countdown": -1.691468e-05,
+        "distance": 3288.7095,
+        "lane": -2.1022596,
+        "speed": 87.0,
+        "lateralSpeed": 6.425557,
+        "curvature": -0.0058385856,
+        "cornerForce": -2.8724964,
+        "screenRight": 132.09998,
+        "cameraFov": 72.495804,
+        "inputSteer": 1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1096.1337,
+        "lap": 3,
+        "position": 1,
+        "nitro": 7.9246497,
+        "drifting": false,
+        "boosting": false,
+        "pads": 9,
+        "bumps": 7,
+        "driftBonuses": 33,
+        "fps": 24,
+        "circuit": "CHICAGO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": 40.00964,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 2874.715,
+            "speed": 70.95925,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 2948.6445,
+            "speed": 74.118065,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 3026.2798,
+            "speed": 73.68156,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 3096.1597,
+            "speed": 76.076096,
+            "finishTime": null
+          },
+          {
+            "name": "Zee",
+            "distance": 3167.7573,
+            "speed": 80.622986,
+            "finishTime": null
+          }
+        ]
+      },
+      "review": {
+        "frames": {
+          "matrix-super_hard-chicago-menu.png": "1c9d9750fcdfb6b0251e05fc8d896b0bd970ffd23dcf9cb797199a4212d5ec6b",
+          "matrix-super_hard-chicago-lap-1.png": "ce269ba35b9a6e16a3fc3c5161969033ca83bd157d6e1960a1e57a5d0c65f6dc",
+          "matrix-super_hard-chicago-lap-2.png": "bbd92ee050a1636716040a8f36fa49995d26c296c8f018e6d97844e539053c29",
+          "matrix-super_hard-chicago-lap-3.png": "57568c9d67507d66423cd88c3216cf8518af93a6d04dc7d740f8a256962e7a53",
+          "matrix-super_hard-chicago-result.png": "9f11b850ede0b136c25e506ef676ac66661f8af66fcc76ae21a5edb119a03f94"
+        },
+        "observed": "Chicago Super Hard selected. Sixth on lap 1, third on lap 2 with rivals ahead, first on lap 3; visible drift/nitro effects and lakeside progress inspected. Victory 1 of 6 at 0:40.00 with 33 drift bonuses and 9 pads."
+      }
+    }
+  ],
+  "inspectedFrames": 124,
+  "completedRuns": 24,
+  "driverSha256": "4fc281dbad4c9e0140b18072c4a51496fdecfc37db78dff417508bebc7e6873d",
+  "inputTools": {
+    "tools/playtest.py": "fa7776ebe63f28c51e6fb164da0daa04a5c8bf0778e95fabfce6c9683c44434e",
+    "tools/city_playtest.py": "9efb5f1aae2f17d45cbb930b2b04f696c677b4185aee608a3e59942b47b646f6"
+  },
+  "limits": [
+    "Automated native driving with read-only track feedback; not a human playtest",
+    "No new hardware performance, controller or touch claim",
+    "This matrix supplements the existing control-by-control audit on the identical JAR"
+  ],
+  "interruptions": [
+    {
+      "driverExitCode": 143,
+      "reason": "The tool command session terminated before the matrix completed; no game error was emitted.",
+      "state": {
+        "phase": "PAUSED",
+        "time": 50.886963,
+        "countdown": -1.691468e-05,
+        "distance": 2908.6929,
+        "lane": -11.647792,
+        "speed": 28.0,
+        "lateralSpeed": 0.6429549,
+        "curvature": -0.007650753,
+        "cornerForce": -0.38988236,
+        "screenRight": 149.96387,
+        "cameraFov": 67.00001,
+        "inputSteer": -1.0,
+        "inputThrottle": true,
+        "inputBrake": false,
+        "overview": true,
+        "difficulty": "SUPER_HARD",
+        "length": 1298.9083,
+        "lap": 3,
+        "position": 6,
+        "nitro": 88.461174,
+        "drifting": false,
+        "boosting": false,
+        "pads": 6,
+        "bumps": 38,
+        "driftBonuses": 25,
+        "fps": 25,
+        "circuit": "SAN_FRANCISCO",
+        "paint": 0,
+        "muted": true,
+        "reducedMotion": false,
+        "best": null,
+        "saveError": false,
+        "rivals": [
+          {
+            "name": "Phippy",
+            "distance": 3675.351,
+            "speed": 79.7454,
+            "finishTime": null
+          },
+          {
+            "name": "Goldie",
+            "distance": 3759.475,
+            "speed": 72.535355,
+            "finishTime": null
+          },
+          {
+            "name": "Hazel",
+            "distance": 3859.7817,
+            "speed": 74.21972,
+            "finishTime": null
+          },
+          {
+            "name": "Kube",
+            "distance": 3896.7825,
+            "speed": 76.062904,
+            "finishTime": 50.186813
+          },
+          {
+            "name": "Zee",
+            "distance": 3896.9841,
+            "speed": 84.230606,
+            "finishTime": 49.128254
+          }
+        ]
+      },
+      "completedRaces": 11,
+      "inspectedFrames": {
+        "matrix-super_hard-san_francisco-lap-1.png": "6b4366cedd35e5ac0eff87c92a1afddcafdf2dde2539759c49ae29441d3eb498",
+        "matrix-super_hard-san_francisco-lap-2.png": "ee18007aa83a00d0f5eaf854c44e5609e2ddc1dfd9134076c9cc8bf4f51a3303",
+        "matrix-super_hard-san_francisco-menu.png": "1ff4e07724f74601c250d17f6edb5e1d08f4b406a4ed0830c15d6efd7ca3b708",
+        "matrix-interrupted-sf-super-hard.png": "08241f87ae36c11a015d59d5ab80d057d67adfebf3a06a83504eec611238ec6c"
+      },
+      "observed": "Selected SF Super Hard; fourth on lap 1 and second on lap 2. Driver session returned 143, game continued with its last held inputs; paused recovery frame shows sixth at 0:50.88, not a completed race. This attempt does not count as a win.",
+      "run": "pass-1"
+    }
+  ]
+}

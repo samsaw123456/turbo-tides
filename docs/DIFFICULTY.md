@@ -46,6 +46,11 @@ These deterministic drivers check the tuning; they do not predict every player's
 experience. Native-input results and inspected frames are recorded in
 [the playtest report](PLAYTEST.md).
 
+An additional installed-app sweep won **all 24 circuit/difficulty combinations**
+through native keyboard input. All three laps and the victory screen were
+captured and inspected for every run. See the [native win matrix](NATIVE-WINS.md)
+for player times, screenshots, methods and the interrupted-run record.
+
 Run the focused regressions with:
 
 ```sh
@@ -58,9 +63,13 @@ With the native game running in diagnostic mode, use:
 python3 tools/difficulty_playtest.py menu
 python3 tools/difficulty_playtest.py races
 python3 tools/difficulty_playtest.py skill
+python3 tools/difficulty_playtest.py matrix
 ```
 
 The menu pass covers both directions, Enter, clicks, wraparound and a held key
 at 1280×800 and 960×640. The race pass uses the same ordinary driving strategy
 at every level, then checks retry and pause preserve the setting. The skill pass
 uses only real W/A/D/Space/Shift events to attempt a Super Hard win.
+The matrix runs all six circuits at every level, requiring first place each time.
+Use a new `TURBO_TEST_OUTPUT` directory for every run; optional `--circuit` and
+`--difficulty` filters support focused verification without replacing old evidence.

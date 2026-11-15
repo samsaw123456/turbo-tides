@@ -1736,5 +1736,14 @@
     "productionPreferencesUnchanged": true,
     "jarSha256": "cfd8fd13e4f2625b053914a289c7ed5d397594f8ce8b463fca038d8d0cc3d882",
     "inspectedFrameSha256": "59d494c6dd00ded471d876c0e3cf4d9a80a121eb896b34226c8004a3a515c336"
+  },
+  "nativeWinMatrix": {
+    "evidence": "native-win-matrix.json",
+    "report": "../NATIVE-WINS.md",
+    "firstPlaceCombinations": 24,
+    "completedRaces": 24,
+    "interruptedAttemptsRetained": 1,
+    "inspectedFrames": 124,
+    "gameJarUnchanged": true
   }
 }

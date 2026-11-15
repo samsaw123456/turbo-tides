@@ -46,6 +46,8 @@ challenges you to combine clean drifting, pads and nitro. The level stays visibl
 during the race and each level keeps a separate best time. Existing Cruise
 records become Easy records, and Race records become Medium records.
 See the [difficulty guide and measured balance](docs/DIFFICULTY.md).
+All six circuits have verified first-place finishes on all four difficulties in
+the installed app. See the [24-race results and screenshots](docs/NATIVE-WINS.md).
 Click a named route or browse with Left/Right to preview its actual 3D scene.
 Press **P** to switch between the whole circuit and your car on the starting grid.
 Choosing a paint colour also shows the car. Tab moves between menu controls;
