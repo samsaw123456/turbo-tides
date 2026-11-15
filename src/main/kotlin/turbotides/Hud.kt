@@ -38,7 +38,7 @@ class Hud : Disposable {
     private val muted = color("bbccc9")
     private data class Action(val rect: Rectangle, val action: (Int) -> Unit)
     private val actions = mutableListOf<Action>()
-    private var focus = 3
+    private var focus = 8
     private var lastPhase: Phase? = null
     private val mouse = Vector2()
     private var lastMouse = Vector2(-1000f, -1000f)
@@ -83,7 +83,16 @@ class Hud : Disposable {
         text(text, 640f - width / 2f, y, font, shade)
     }
 
-    private fun button(label: String, x: Float, y: Float, w: Float, action: (Int) -> Unit, primary: Boolean = false, h: Float = 54f) {
+    private fun button(
+        label: String,
+        x: Float,
+        y: Float,
+        w: Float,
+        action: (Int) -> Unit,
+        primary: Boolean = false,
+        h: Float = 54f,
+        cycle: Boolean = false,
+    ) {
         val index = actions.size
         val selected = focus == index
         val area = Rectangle(x, y, w, h)
@@ -94,7 +103,7 @@ class Hud : Disposable {
             rect(x, y, w, 3f, cream)
         }
         text(label, x + 17, y + h / 2 + 10, body, if (primary) ink else cream)
-        if (selected && !primary) text("<  >", x + w - 63, y + h / 2 + 9, small, mint)
+        if (selected && cycle) text("<  >", x + w - 63, y + h / 2 + 9, small, mint)
     }
 
     fun draw(game: Game) {
@@ -106,7 +115,7 @@ class Hud : Disposable {
         actions.clear()
         val race = game.race
         if (race.phase != lastPhase) {
-            focus = if (race.phase == Phase.GARAGE) 3 else 0
+            focus = if (race.phase == Phase.GARAGE) 8 else 0
             lastPhase = race.phase
         }
         mouse.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat())
@@ -122,59 +131,63 @@ class Hud : Disposable {
             }
             else -> Unit
         }
-        menuInput()
+        menuInput(game)
         Gdx.gl.glDisable(GL20.GL_BLEND)
     }
 
     private fun garage(game: Game) {
-        rect(0f, 0f, 494f, 800f, Color(ink.r, ink.g, ink.b, 0.97f))
-        rect(494f, 0f, 5f, 800f, orange)
+        rect(0f, 0f, 378f, 800f, Color(ink.r, ink.g, ink.b, 0.98f))
+        rect(378f, 0f, 4f, 800f, orange)
         batch.begin()
-        batch.draw(icon, 32f, 661f, 74f, 74f)
+        batch.draw(icon, 24f, 720f, 52f, 52f)
         batch.end()
-        text("TURBO TIDES", 122f, 725f, large)
-        text("Three laps. Six racers. Make your move.", 38f, 636f, small, muted)
-        text("Circuit", 38f, 585f, small, mint)
-        button(game.circuit.title, 38f, 514f, 414f, { game.changeCircuit(it) })
-        text(game.circuit.description, 39f, 497f, small, muted)
-        text("Paint", 38f, 447f, small, mint)
-        button(PAINT_NAMES[game.paint], 38f, 377f, 414f, { game.changePaint(it) })
-        rect(375f, 393f, 25f, 23f, color(PAINTS[game.paint]))
-        text("Rival pace", 38f, 349f, small, mint)
-        button(
-            game.difficulty.title + if (game.difficulty ==
-                Difficulty.CRUISE
-            ) {
-                "  ·  Learn the line"
-            } else {
-                "  ·  Chase the podium"
-            },
-            38f,
-            279f,
-            414f,
-            { game.changeDifficulty() },
-        )
-        button("Start race                  Enter", 38f, 194f, 414f, { game.startRace() }, true, 62f)
-        text("Best race  " + formatTime(game.bestTime()), 39f, 171f, small, muted)
-        text("Up / Down to choose · Left / Right to change", 38f, 116f, small, muted)
+        text("TURBO TIDES", 90f, 761f, heading)
+        text("Choose your circuit", 26f, 697f, body)
+        for (circuit in Circuit.entries) {
+            val y = 612f - circuit.ordinal * 62f
+            val selected = circuit == game.circuit
+            val focused = focus == actions.size
+            actions.add(Action(Rectangle(18f, y, 340f, 57f)) { game.selectCircuit(circuit) })
+            if (selected || focused) rect(18f, y, 340f, 57f, color(if (selected) "345359" else "2c444c"))
+            if (selected) rect(18f, y, 4f, 57f, color(circuit.accent))
+            if (focused) rect(25f, y + 2f, 326f, 2f, cream)
+            text(circuit.title, 33f, y + 43f, body, if (selected) cream else muted)
+            text(circuit.route, 34f, y + 22f, small, if (selected) color(circuit.accent) else muted)
+            if (selected) text("< >", 312f, y + 36f, small, cream)
+        }
+        button("Paint: ${PAINT_NAMES[game.paint]}", 24f, 239f, 330f, { game.changePaint(it) }, h = 45f, cycle = true)
+        rect(260f, 252f, 18f, 18f, color(PAINTS[game.paint]))
+        button("Rivals: ${game.difficulty.title}", 24f, 185f, 330f, { game.changeDifficulty() }, h = 45f, cycle = true)
+        button("Start race                Enter", 24f, 113f, 330f, { game.startRace() }, true, 57f)
+        text("Arrows  Browse     Tab  Focus", 26f, 90f, small, muted)
         text(
-            "M  Sound: ${if (game.muted) "off" else "on"}     N  Motion: ${if (game.reducedMotion) "reduced" else "full"}",
-            38f,
-            84f,
+            "M  Sound ${if (game.muted) "off" else "on"}    N  Motion ${if (game.reducedMotion) "reduced" else "full"}",
+            26f,
+            61f,
             small,
             muted,
         )
-        text("F11  Fullscreen                 Esc  Quit", 38f, 52f, small, muted)
+        text("F11  Fullscreen              Esc  Quit", 26f, 31f, small, muted)
 
-        rect(544f, 32f, 688f, 149f, Color(ink.r, ink.g, ink.b, 0.94f))
-        text("Take the wheel", 566f, 159f, heading)
-        text("W / Up   Accelerate       S / Down   Brake", 568f, 115f, small)
-        text("A / D   Steer       Space + steer   Drift       Shift   Nitro", 568f, 84f, small)
-        text("Drifting fills nitro. Mint strips give a free boost.", 568f, 54f, small, mint)
+        rect(406f, 657f, 850f, 119f, Color(ink.r, ink.g, ink.b, 0.94f))
+        text(game.circuit.title, 428f, 758f, heading)
+        text(game.circuit.route, 429f, 711f, body, color(game.circuit.accent))
+        text(game.circuit.description, 429f, 680f, small, muted)
+        val track = game.race.track
+        text("${track.length.roundToInt()} m lap", 1035f, 752f, small)
+        text("${track.elevation.roundToInt()} m elevation range", 1035f, 722f, small, muted)
+        button(if (game.overview) "P  View starting grid" else "P  View whole circuit", 406f, 590f, 280f, { game.togglePreview() }, h = 45f)
+
+        rect(406f, 24f, 850f, 134f, Color(ink.r, ink.g, ink.b, 0.94f))
+        text("Three laps · Best ${formatTime(game.bestTime())}", 428f, 139f, body)
+        text("W / Up   Accelerate      S / Down   Brake      A / D or Left / Right   Steer", 429f, 102f, small)
+        text("Space + steer   Drift       Shift   Nitro       C   Rear view", 429f, 72f, small)
+        text("Release a drift to earn nitro. Mint strips give a free boost.", 429f, 42f, small, mint)
+        rect(1086f, 178f, 170f, 144f, Color(ink.r, ink.g, ink.b, 0.9f))
+        drawMap(track, 1098f, 190f, 146f, 120f)
         batch.begin()
-        batch.draw(portrait, 1155f, 665f, 48f, 60f)
+        batch.draw(portrait, 1201f, 120f, 24f, 30f)
         batch.end()
-        text("Phippy's pit crew", 1060f, 647f, small, ink)
     }
 
     private fun raceHud(game: Game) {
@@ -187,6 +200,10 @@ class Hud : Disposable {
         text("Lap ${race.lap} / ${Race.LAPS}", 1032f, 756f, heading)
         text(formatTime(race.elapsed), 1033f, 708f, body, mint)
         centered(game.circuit.title, 769f, body, ink)
+        if (race.phase == Phase.RACING && Gdx.input.isKeyPressed(Input.Keys.C)) {
+            rect(419f, 705f, 442f, 37f, Color(ink.r, ink.g, ink.b, 0.94f))
+            centered("Rear view · steering stays with the car", 731f, small)
+        }
         if (race.phase == Phase.RACING) {
             rect(464f, 18f, 368f, 33f, Color(ink.r, ink.g, ink.b, 0.94f))
             text("Esc  Pause     R  Restart     M  Sound", 480f, 39f, small)
@@ -223,21 +240,31 @@ class Hud : Disposable {
 
     private fun minimap(race: Race) {
         rect(24f, 24f, 242f, 188f, Color(ink.r, ink.g, ink.b, 0.9f))
+        drawMap(race.track, 42f, 53f, 205f, 145f, race)
+        text("You", 37f, 53f, small, orange)
+    }
+
+    private fun drawMap(track: Track, x: Float, y: Float, width: Float, height: Float, race: Race? = null) {
         shapes.begin(ShapeRenderer.ShapeType.Filled)
         shapes.color = color("6a8588")
-        fun map(p: Point3) = Vector2(142f + p.x * 0.49f, 117f + p.z * 0.49f)
+        val scale = min(width / (track.maxX - track.minX), height / (track.maxZ - track.minZ))
+        fun map(p: Point3) = Vector2(x + width / 2 + (p.x - track.center.x) * scale, y + height / 2 + (p.z - track.center.z) * scale)
         for (i in 0 until 120) {
-            val a = map(race.track.frame(i / 120f * race.track.length).center)
-            val b = map(race.track.frame((i + 1) / 120f * race.track.length).center)
+            val a = map(track.frame(i / 120f * track.length).center)
+            val b = map(track.frame((i + 1) / 120f * track.length).center)
             shapes.rectLine(a, b, 4f)
         }
-        for (racer in race.rivals + race.player) {
-            val p = map(race.track.frame(racer.distance).center)
-            shapes.color = if (racer == race.player) orange else cream
-            shapes.circle(p.x, p.y, if (racer == race.player) 5.8f else 3f, 12)
+        val start = map(track.frame(0f).center)
+        shapes.color = cream
+        shapes.rect(start.x - 3f, start.y - 3f, 6f, 6f)
+        if (race != null) {
+            for (racer in race.rivals.filter { it.finishTime == null } + race.player) {
+                val p = map(track.frame(racer.distance).center)
+                shapes.color = if (racer == race.player) orange else cream
+                shapes.circle(p.x, p.y, if (racer == race.player) 5.8f else 3f, 12)
+            }
         }
         shapes.end()
-        text("You", 37f, 53f, small, orange)
     }
 
     private fun pause(game: Game) {
@@ -283,27 +310,45 @@ class Hud : Disposable {
         if (game.saveError) text("Record could not be saved on this computer.", 370f, 128f, small, orange)
     }
 
-    private fun menuInput() {
+    private fun menuInput(game: Game) {
         if (actions.isEmpty()) return
         if (!mouse.epsilonEquals(lastMouse, 0.1f)) {
             val hovered = actions.indexOfFirst { it.rect.contains(mouse) }
             if (hovered >= 0) focus = hovered
         }
         lastMouse.set(mouse)
-        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.TAB)) focus = (focus + 1) % actions.size
+        val garage = lastPhase == Phase.GARAGE
+        val oldFocus = focus
+        if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
+            val direction = if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) -1 else 1
+            focus = Math.floorMod(focus + direction, actions.size)
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) focus = (focus + 1) % actions.size
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) focus = (focus - 1 + actions.size) % actions.size
         focus = focus.coerceIn(0, actions.lastIndex)
+        if (garage && focus < Circuit.entries.size && focus != oldFocus) game.selectCircuit(Circuit.entries[focus])
         val left = Gdx.input.isKeyJustPressed(Input.Keys.LEFT)
         val right = Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)
         if (left || right) {
-            if (lastPhase == Phase.GARAGE && focus < 3) {
+            if (garage && (focus < Circuit.entries.size || focus == 8)) {
+                if (focus < Circuit.entries.size) game.selectCircuit(Circuit.entries[focus])
+                game.changeCircuit(if (left) -1 else 1)
+                if (focus < Circuit.entries.size) focus = game.circuit.ordinal
+            } else if (garage) {
                 actions[focus].action(if (left) -1 else 1)
             } else {
                 focus = (focus + (if (left) -1 else 1) + actions.size) % actions.size
             }
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) actions[focus].action(1)
-        if (Gdx.input.justTouched()) actions.firstOrNull { it.rect.contains(mouse) }?.action?.invoke(1)
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            if (garage && focus < Circuit.entries.size) {
+                game.selectCircuit(Circuit.entries[focus])
+                game.startRace()
+            } else {
+                actions[focus].action(1)
+            }
+        }
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) actions.firstOrNull { it.rect.contains(mouse) }?.action?.invoke(1)
     }
 
     override fun dispose() {

@@ -23,7 +23,7 @@ class RaceTest {
         }
 
     private fun autopilot(race: Race): Controls {
-        val corner = -race.track.curvature(race.player.distance) * race.player.speed.pow(2) * 0.065f
+        val corner = race.cornerForce()
         return Controls(throttle = true, steer = ((-race.player.lane * 3f - corner) / 11f).coerceIn(-1f, 1f), boost = true)
     }
 
@@ -119,6 +119,7 @@ class RaceTest {
         val race = racing()
         race.player.distance = race.track.padDistance(0) - 2f
         race.player.lane = race.track.padLane(0)
+        race.player.speed = 10f
         runFor(race, 0.5f)
         assertEquals(1, race.pads)
         val fuel = race.nitro
@@ -127,21 +128,90 @@ class RaceTest {
         assertTrue(race.nitro >= 0)
     }
 
-    @Test fun `both circuits can be won by driving three complete laps`() {
+    @Test fun `every circuit can be won by driving three complete laps`() {
         for (circuit in Circuit.entries) {
-            val race = racing(circuit)
-            repeat(180 * 120) {
-                if (race.phase == Phase.RACING) race.advance(Race.STEP, autopilot(race))
+            for (difficulty in Difficulty.entries) {
+                val race = racing(circuit, difficulty)
+                repeat(180 * 120) {
+                    if (race.phase == Phase.RACING) race.advance(Race.STEP, autopilot(race))
+                }
+                assertEquals(Phase.FINISHED, race.phase, circuit.title)
+                assertEquals(3, race.lap)
+                assertEquals(1, race.position, circuit.title)
+                assertTrue(race.bestLap!! > 10)
+                assertEquals(race.elapsed, race.player.finishTime)
+                val time = race.elapsed
+                runFor(race, 5f, Controls(throttle = true))
+                assertEquals(time, race.elapsed)
             }
-            assertEquals(Phase.FINISHED, race.phase, circuit.title)
-            assertEquals(3, race.lap)
-            assertEquals(1, race.position, circuit.title)
-            assertTrue(race.bestLap!! > 10)
-            assertEquals(race.elapsed, race.player.finishTime)
-            val time = race.elapsed
-            runFor(race, 5f, Controls(throttle = true))
-            assertEquals(time, race.elapsed)
         }
+    }
+
+    @Test fun `left and right steer in the requested direction through every bend even with nitro`() {
+        for (circuit in Circuit.entries) {
+            for (direction in listOf(-1f, 1f)) {
+                repeat(32) { sample ->
+                    val race = racing(circuit)
+                    race.player.distance = race.track.length * sample / 32f
+                    race.player.lane = 0f
+                    race.player.speed = 80f
+                    race.rivals.forEach { it.finishTime = 1f }
+                    runFor(race, 0.4f, Controls(throttle = true, steer = direction, boost = true))
+                    assertTrue(race.player.lane * direction > 1f, "$circuit steering $direction failed at $sample")
+                }
+            }
+        }
+    }
+
+    @Test fun `stopped steering cannot move the car and brake wins over throttle`() {
+        val race = racing()
+        runFor(race, 3f, Controls(steer = 1f, drift = true, boost = true))
+        assertEquals(-3f, race.player.lane)
+        assertEquals(0f, race.player.distance)
+        assertFalse(race.boosting)
+        race.player.speed = 60f
+        runFor(race, 2f, Controls(throttle = true, brake = true, boost = true))
+        assertEquals(0f, race.player.speed)
+        assertFalse(race.boosting)
+    }
+
+    @Test fun `pad cannot be farmed while parked or revisited but resets next lap and race`() {
+        val race = racing()
+        fun place(lap: Int, speed: Float) {
+            race.player.distance = race.track.padDistance(0) + lap * race.track.length
+            race.player.lane = race.track.padLane(0)
+            race.player.lateralSpeed = 0f
+            race.player.speed = speed
+        }
+        place(0, 0f)
+        runFor(race, 4f)
+        assertEquals(0, race.pads)
+        place(0, 2f)
+        runFor(race, 4f, Controls(brake = true))
+        assertEquals(1, race.pads)
+        place(0, 2f)
+        runFor(race, 0.1f)
+        assertEquals(1, race.pads)
+        place(1, 2f)
+        runFor(race, 0.1f)
+        assertEquals(2, race.pads)
+        val retry = racing()
+        retry.player.distance = retry.track.padDistance(0)
+        retry.player.lane = retry.track.padLane(0)
+        retry.player.speed = 2f
+        runFor(retry, 0.1f)
+        assertEquals(1, retry.pads)
+    }
+
+    @Test fun `finished rivals cannot block a later finisher`() {
+        val race = racing()
+        race.rivals.forEach {
+            it.distance = race.player.distance
+            it.lane = race.player.lane
+            it.finishTime = 1f
+        }
+        runFor(race, 0.5f, Controls(throttle = true))
+        assertEquals(0, race.bumps)
     }
 
     @Test fun `waiting loses race and restarting creates clean state`() {

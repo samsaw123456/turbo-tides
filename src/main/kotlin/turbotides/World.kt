@@ -23,7 +23,7 @@ class World(var track: Track) : Disposable {
     private val batch = ModelBatch()
     private val environment = Environment()
     private val models = mutableListOf<Model>()
-    private var scenery: ModelInstance
+    private val scenery: List<ModelInstance>
     private val carModels = PAINTS.map { createCar(color(it)) }
     private val cars = List(5) { ModelInstance(carModels[(it + 1) % carModels.size]) }
     private var playerCar = ModelInstance(carModels[0])
@@ -46,21 +46,31 @@ class World(var track: Track) : Disposable {
         },
     )
     private var cameraReady = false
+    private var wasRearView = false
     private var clock = 0f
     private var paintIndex = -1
     private val target = Vector3()
     private val cameraTarget = Vector3()
     private val previousPlayerPosition = Vector3()
-    private val up = Vector3.Y
-    private val sky get() = if (track.circuit == Circuit.SUNSET) color("edc7a2") else color("d8b79b")
+    private val sky get() = color(
+        when (track.circuit) {
+            Circuit.SUNSET -> "edc7a2"
+            Circuit.CINDER -> "d8b79b"
+            Circuit.SAN_FRANCISCO -> "c8d6cf"
+            Circuit.SILICON_VALLEY -> "d2dfce"
+            Circuit.NEW_YORK -> "ced7d6"
+            Circuit.CHICAGO -> "c2d8df"
+        },
+    )
 
     init {
         environment.set(ColorAttribute(ColorAttribute.AmbientLight, 0.48f, 0.5f, 0.54f, 1f))
         environment.add(DirectionalLight().set(0.68f, 0.63f, 0.55f, -0.5f, -1f, 0.3f))
         environment.set(ColorAttribute(ColorAttribute.Fog, sky))
         camera.near = 0.2f
-        camera.far = 920f
-        scenery = ModelInstance(createCircuit())
+        camera.far = 1400f
+        // Separate city meshes from road meshes to stay below index limits.
+        scenery = listOf(ModelInstance(createCircuit()), ModelInstance(solidModel { CityScenery(track).build(it) }))
     }
 
     private fun solidModel(build: (MeshPartBuilder) -> Unit): Model {
@@ -77,19 +87,22 @@ class World(var track: Track) : Disposable {
     }
 
     private fun box(part: MeshPartBuilder, shade: String, x: Float, y: Float, z: Float, w: Float, h: Float, d: Float, yaw: Float = 0f) {
-        part.setColor(color(shade))
-        part.setVertexTransform(Matrix4().translate(x, y, z).rotate(Vector3.Y, yaw))
-        part.box(w, h, d)
+        Geometry(part).box(shade, Point3(x, y, z), w, h, d, yaw)
     }
 
     private fun quad(part: MeshPartBuilder, a: Point3, b: Point3, c: Point3, d: Point3, shade: String) {
-        part.setVertexTransform(Matrix4())
-        part.setColor(color(shade))
-        part.rect(a.vector(), b.vector(), c.vector(), d.vector(), up)
+        Geometry(part).quad(a, b, c, d, shade)
     }
 
     private fun createCircuit(): Model = solidModel { part ->
         val sunset = track.circuit == Circuit.SUNSET
+        val natural = track.circuit == Circuit.SUNSET || track.circuit == Circuit.CINDER
+        val land = when (track.circuit) {
+            Circuit.CINDER -> "bc805e"
+            Circuit.NEW_YORK -> "b1b3a2"
+            Circuit.SAN_FRANCISCO -> "b3bd94"
+            else -> "91ab78"
+        }
         // Fog is evaluated at vertices. Subdivide the sea so its near surface
         // keeps its colour instead of inheriting fog from far-away corners.
         for (x in -10 until 10) {
@@ -101,7 +114,13 @@ class World(var track: Track) : Disposable {
                     a + Point3(0f, 0f, 100f),
                     a + Point3(100f, 0f, 100f),
                     a + Point3(100f, 0f, 0f),
-                    if (sunset) "329f9d" else "467e86",
+                    if (sunset) {
+                        "329f9d"
+                    } else if (track.circuit == Circuit.CHICAGO) {
+                        "428fa7"
+                    } else {
+                        "568d91"
+                    },
                 )
             }
         }
@@ -115,9 +134,9 @@ class World(var track: Track) : Disposable {
                 val edge = 9f * side
                 val curb = 10f * side
                 val shoulder = 13.4f * side
-                val shore = 38f * side
+                val shore = (if (natural || track.circuit == Circuit.CHICAGO) 38f else 95f) * side
                 val curbColor = if (i % 4 < 2) "fff0cd" else "e77850"
-                if (side > 0) {
+                if (side < 0) {
                     quad(part, a.at(edge, 0.04f), b.at(edge, 0.04f), b.at(curb, 0.04f), a.at(curb, 0.04f), curbColor)
                     quad(
                         part,
@@ -125,7 +144,7 @@ class World(var track: Track) : Disposable {
                         b.at(curb, -0.05f),
                         b.at(shoulder, -0.05f),
                         a.at(shoulder, -0.05f),
-                        if (sunset) "b6bc76" else "bf805e",
+                        land,
                     )
                     quad(
                         part,
@@ -133,7 +152,11 @@ class World(var track: Track) : Disposable {
                         b.at(shoulder, -0.1f),
                         b.at(shore).copy(y = -3f),
                         a.at(shore).copy(y = -3f),
-                        if (sunset) "d7ab79" else "b57356",
+                        if (natural) {
+                            if (sunset) "d7ab79" else "b57356"
+                        } else {
+                            land
+                        },
                     )
                 } else {
                     quad(part, a.at(curb, 0.04f), b.at(curb, 0.04f), b.at(edge, 0.04f), a.at(edge, 0.04f), curbColor)
@@ -143,7 +166,7 @@ class World(var track: Track) : Disposable {
                         b.at(shoulder, -0.05f),
                         b.at(curb, -0.05f),
                         a.at(curb, -0.05f),
-                        if (sunset) "a8b978" else "bf805e",
+                        land,
                     )
                     quad(
                         part,
@@ -151,7 +174,7 @@ class World(var track: Track) : Disposable {
                         b.at(shoulder, -0.1f),
                         a.at(shoulder, -0.1f),
                         Point3(0f, 1f, 0f),
-                        if (sunset) "8faa75" else "bc805e",
+                        land,
                     )
                 }
                 if (i % 2 == 0) {
@@ -215,22 +238,24 @@ class World(var track: Track) : Disposable {
             box(part, if (i % 2 == 0) "fff0cd" else "273b43", p.x, p.y, p.z, 1.5f, 0.7f, 0.74f, start.heading)
         }
         val random = Random(if (sunset) 32 else 71)
-        for (i in 0 until 95) {
-            val frame = track.frame(i / 95f * track.length + 12f)
-            val p = frame.at(if (i % 3 == 0) -18f - random.nextFloat() * 13f else 19f + random.nextFloat() * 5f, -1.5f)
-            if (sunset) {
-                palm(part, p, 6f + random.nextFloat() * 5f, random.nextFloat() * 360f)
-            } else {
-                rock(part, p, 3f + random.nextFloat() * 8f, random.nextFloat() * 360f)
+        if (natural) {
+            for (i in 0 until 95) {
+                val frame = track.frame(i / 95f * track.length + 12f)
+                val p = frame.at(if (i % 3 == 0) 18f + random.nextFloat() * 13f else -19f - random.nextFloat() * 5f, -1.5f)
+                if (sunset) {
+                    palm(part, p, 6f + random.nextFloat() * 5f, random.nextFloat() * 360f)
+                } else {
+                    rock(part, p, 3f + random.nextFloat() * 8f, random.nextFloat() * 360f)
+                }
             }
-        }
-        for (i in 0..13) {
-            val angle = i * 2.4f
-            val p = Point3(cos(angle) * 50f, 0f, sin(angle) * 45f)
-            val height = 23f + random.nextFloat() * 39f
-            part.setColor(color(if (sunset) "779479" else "aa6c54"))
-            part.setVertexTransform(Matrix4().translate(p.x, height / 2f, p.z).rotate(Vector3.Y, i * 31f))
-            part.cone(42f, height, 44f, 5)
+            for (i in 0..13) {
+                val angle = i * 2.4f
+                val p = Point3(cos(angle) * 50f, 0f, sin(angle) * 45f)
+                val height = 23f + random.nextFloat() * 39f
+                part.setColor(color(if (sunset) "779479" else "aa6c54"))
+                part.setVertexTransform(Matrix4().translate(p.x, height / 2f, p.z).rotate(Vector3.Y, i * 31f))
+                part.cone(42f, height, 44f, 5)
+            }
         }
         for (i in 0..18) {
             val angle = i * 0.71f
@@ -297,22 +322,38 @@ class World(var track: Track) : Disposable {
         cameraReady = false
     }
 
-    fun render(race: Race, delta: Float, reducedMotion: Boolean, rearView: Boolean) {
+    fun render(race: Race, delta: Float, reducedMotion: Boolean, rearView: Boolean, overview: Boolean = true) {
         clock += delta
         val player = race.player
         val frame = track.frame(player.distance)
         val p = frame.at(player.lane, 0.1f)
         val inGarage = race.phase == Phase.GARAGE
         val direction = frame.forward
-        val cameraPosition = if (inGarage) {
-            p + frame.right * (10f + if (reducedMotion) 0f else sin(clock * 0.16f) * 2f) + direction * 12f + Point3(0f, 6f, 0f)
+        val touring = inGarage && overview
+        val angle = track.circuit.previewAngle + if (reducedMotion) 0f else sin(clock * 0.055f) * 0.27f
+        val tourEye = track.center + Point3(cos(angle) * track.radius * 2.05f, track.radius * 1.55f, sin(angle) * track.radius * 2.05f)
+        val tourRight = RoadFrame(track.center, (track.center - tourEye).normal()).right
+        // Offset both eye and target so the circuit sits beside the selector.
+        val tourOffset = tourRight * (-track.radius * 0.73f)
+        val gridEye = p + frame.right * (10f + if (reducedMotion) 0f else sin(clock * 0.16f) * 2f) + direction * 12f + Point3(0f, 6f, 0f)
+        val gridOffset = RoadFrame(p, (p - gridEye).normal()).right * -4.8f
+        val cameraPosition = if (touring) {
+            tourEye + tourOffset
+        } else if (inGarage) {
+            gridEye + gridOffset
         } else {
             p + direction * (if (rearView) 12f else -12f) + Point3(0f, 5.8f, 0f)
         }
-        val look = if (inGarage) p + frame.right * -4f else p + direction * (if (rearView) -14f else 17f) + Point3(0f, 1.5f, 0f)
+        val look = if (touring) {
+            track.center + tourOffset
+        } else if (inGarage) {
+            p + gridOffset
+        } else {
+            p + direction * (if (rearView) -14f else 17f) + Point3(0f, 1.5f, 0f)
+        }
         target.set(cameraPosition.vector())
         val smoothing = if (reducedMotion) 16f else 8f
-        if (!cameraReady || inGarage || rearView) {
+        if (!cameraReady || inGarage || rearView || rearView != wasRearView) {
             camera.position.set(target)
             cameraTarget.set(look.vector())
             cameraReady = true
@@ -326,6 +367,7 @@ class World(var track: Track) : Disposable {
             cameraTarget.lerp(look.vector(), 1f - exp(-delta * 12f))
         }
         previousPlayerPosition.set(p.vector())
+        wasRearView = rearView
         camera.up.set(Vector3.Y)
         camera.lookAt(cameraTarget)
         camera.fieldOfView += ((if (race.boosting && !reducedMotion) 76f else 67f) - camera.fieldOfView) * min(1f, delta * 4f)
@@ -342,7 +384,7 @@ class World(var track: Track) : Disposable {
             paintIndex = player.paint
         }
         renderCar(playerCar, player, race.drifting)
-        if (!inGarage) race.rivals.forEachIndexed { index, rival -> renderCar(cars[index], rival, false) }
+        if (!inGarage) race.rivals.forEachIndexed { index, rival -> if (rival.finishTime == null) renderCar(cars[index], rival, false) }
         if (race.boosting) {
             for (i in 0..1) {
                 val flame = flames[i]
@@ -362,8 +404,8 @@ class World(var track: Track) : Disposable {
             -atan2(frame.forward.y, sqrt(frame.forward.x * frame.forward.x + frame.forward.z * frame.forward.z)) * 180f / PI.toFloat()
         shadow.transform.setToTranslation(frame.at(racer.lane, 0.05f).vector()).rotate(Vector3.Y, frame.heading)
         batch.render(shadow, environment)
-        instance.transform.setToTranslation(p.vector()).rotate(Vector3.Y, frame.heading + racer.lateralSpeed * if (drift) 2.7f else 0.7f)
-            .rotate(Vector3.X, pitch).rotate(Vector3.Z, -racer.lateralSpeed * 0.25f)
+        instance.transform.setToTranslation(p.vector()).rotate(Vector3.Y, frame.heading - racer.lateralSpeed * if (drift) 2.7f else 0.7f)
+            .rotate(Vector3.X, pitch).rotate(Vector3.Z, racer.lateralSpeed * 0.25f)
         batch.render(instance, environment)
     }
 

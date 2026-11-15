@@ -1,0 +1,746 @@
+{
+  "version": "1.1.0",
+  "jarSha256": "2d4325bcfff4bd4a2ed0430d7afe69c4657f4ba0fa59225c151d386895bc01fe",
+  "platform": "Linux x86-64; X11/Xvfb and XWayland; Mesa Intel UHD Graphics (CML GT2)",
+  "methods": {
+    "keyboard": "XTest native key events",
+    "pointer": "XTest on Xvfb; X11 native window events on XWayland",
+    "presentation": "Captured game-window frames inspected; no simulation state injection",
+    "audio": "Direct game-process PipeWire PCM capture, 48000 frames per sample; no microphone or system mix"
+  },
+  "checks": {
+    "gradle": "./gradlew ktlintFormat && ./gradlew check fatJar",
+    "kotlinTests": 20,
+    "kotlinFailures": 0,
+    "python": "ruff check tools; ruff format --check tools; python3 -m py_compile tools/*.py",
+    "packagingTests": 2,
+    "packagingFailures": 0,
+    "launcherSyntax": "bash -n turbo-tides"
+  },
+  "controls": [
+    {
+      "binding": "W",
+      "expected": "Racing: speed and travel rise; release coasts; disabled before GO/after finish",
+      "observed": "Car accelerated from rest; visible speed fell 138\u219286 km/h after release; countdown/result gating passed.",
+      "status": "Passed",
+      "evidence": "`control-w-*`"
+    },
+    {
+      "binding": "Up",
+      "expected": "Racing: accelerate; menus: focus moves up; countdown gates driving",
+      "observed": "Accelerated from rest and coasted 146\u219292 km/h; menu focus moved upward.",
+      "status": "Passed",
+      "evidence": "`control-Up-*`, menu/result focus frames"
+    },
+    {
+      "binding": "S",
+      "expected": "Racing: brake to zero without reversing; wins over W",
+      "observed": "Speed reached 0 km/h despite W held; car stayed stopped without reversing.",
+      "status": "Passed",
+      "evidence": "`control-s-stopped`, opposing-inputs"
+    },
+    {
+      "binding": "Down",
+      "expected": "Racing: brake; menus: focus moves down; countdown gates driving",
+      "observed": "Speed reached 0 km/h; menu focus advanced downward.",
+      "status": "Passed",
+      "evidence": "`control-Down-stopped`, menu/result focus frames"
+    },
+    {
+      "binding": "A",
+      "expected": "Racing: move screen-left; release removes steering; stopped input cannot move car",
+      "observed": "Car moved to the visible left edge; neutral steering recovered; stopped car stayed still.",
+      "status": "Passed",
+      "evidence": "steering-a, city-mechanics JSON"
+    },
+    {
+      "binding": "Left",
+      "expected": "Racing: move screen-left; garage: previous track/setting; pause/results: previous action",
+      "observed": "Same visible left motion; previous route/setting/action received focus.",
+      "status": "Passed",
+      "evidence": "steering-left, city-menu, focus frames"
+    },
+    {
+      "binding": "D",
+      "expected": "Racing: move screen-right; release removes steering",
+      "observed": "Car moved right across the road center; release removed steering.",
+      "status": "Passed",
+      "evidence": "steering-d, city-mechanics JSON"
+    },
+    {
+      "binding": "Right",
+      "expected": "Racing: move screen-right; garage: next track/setting; pause/results: next action",
+      "observed": "Same visible right motion; next route/setting/action received focus.",
+      "status": "Passed",
+      "evidence": "steering-right, city-menu, focus frames"
+    },
+    {
+      "binding": "W + S",
+      "expected": "Racing: brake takes priority over throttle",
+      "observed": "Car stopped while both were held.",
+      "status": "Passed",
+      "evidence": "opposing-inputs, control-s-stopped"
+    },
+    {
+      "binding": "Up + Down + Left Shift",
+      "expected": "Racing: brake stops the car and prevents boost",
+      "observed": "Car stopped at 0 km/h with no boost exhaust or nitro consumption.",
+      "status": "Passed",
+      "evidence": "control-up-down-brake-priority"
+    },
+    {
+      "binding": "A + D",
+      "expected": "Racing: opposing steering cancels",
+      "observed": "Car continued its line without a commanded turn; release remained neutral.",
+      "status": "Passed",
+      "evidence": "control-opposed-a-d-*"
+    },
+    {
+      "binding": "Left + Right",
+      "expected": "Racing: opposing steering cancels",
+      "observed": "Car continued its line without a commanded turn; release remained neutral.",
+      "status": "Passed",
+      "evidence": "control-opposed-Left-Right-*"
+    },
+    {
+      "binding": "A + Right",
+      "expected": "Racing: mixed alternate bindings cancel",
+      "observed": "Car continued its line without a commanded turn; release remained neutral.",
+      "status": "Passed",
+      "evidence": "control-opposed-a-Right-*"
+    },
+    {
+      "binding": "Left + D",
+      "expected": "Racing: mixed alternate bindings cancel",
+      "observed": "Car continued its line without a commanded turn; release remained neutral.",
+      "status": "Passed",
+      "evidence": "control-opposed-Left-d-*"
+    },
+    {
+      "binding": "Space alone",
+      "expected": "Racing: no drift without moving steering",
+      "observed": "No drift yaw, drift feedback or bonus without moving steering.",
+      "status": "Passed",
+      "evidence": "drift preconditions"
+    },
+    {
+      "binding": "Space + A",
+      "expected": "Moving left drift, visible yaw/feedback; release banks one bonus",
+      "observed": "Visible left drift; releasing Space while A stayed held showed one bonus and increased nitro.",
+      "status": "Passed",
+      "evidence": "control-drift-a-*"
+    },
+    {
+      "binding": "Space + Left",
+      "expected": "Moving left drift using alternate key; release banks bonus",
+      "observed": "Visible left drift; Space release alone showed one bonus and increased nitro.",
+      "status": "Passed",
+      "evidence": "control-drift-Left-*"
+    },
+    {
+      "binding": "Space + D",
+      "expected": "Moving right drift; release banks bonus",
+      "observed": "Visible right drift; Space release alone showed one bonus and increased nitro.",
+      "status": "Passed",
+      "evidence": "control-drift-d-*"
+    },
+    {
+      "binding": "Space + Right",
+      "expected": "Moving right drift using alternate key; release banks bonus",
+      "observed": "Visible right drift; Space release alone showed one bonus and increased nitro.",
+      "status": "Passed",
+      "evidence": "control-drift-Right-*"
+    },
+    {
+      "binding": "Left Shift",
+      "expected": "With throttle: faster travel, exhaust, nitro use; release ends boost",
+      "observed": "Exhaust flames and speed rose to 313 km/h; nitro fell; release removed flames and slowed the car.",
+      "status": "Passed",
+      "evidence": "control-Shift_L-*"
+    },
+    {
+      "binding": "Right Shift",
+      "expected": "Same boost action through separate binding",
+      "observed": "Exhaust flames and increased speed appeared; release removed flames and ended nitro use.",
+      "status": "Passed",
+      "evidence": "control-Shift_R-*"
+    },
+    {
+      "binding": "C",
+      "expected": "Hold to look behind; release or pause restores forward chase view",
+      "observed": "Camera showed the car front and road behind; release and pause both restored the forward view.",
+      "status": "Passed",
+      "evidence": "control-rear-*-released"
+    },
+    {
+      "binding": "C + A",
+      "expected": "Rear view retains car-relative steering: apparent screen direction mirrors, as documented and shown in HUD",
+      "observed": "Car moved toward the rear view\u2019s right side; release restored forward view at the road\u2019s left edge.",
+      "status": "Passed",
+      "evidence": "control-rear-a-before/held/released"
+    },
+    {
+      "binding": "C + Left",
+      "expected": "Rear view retains car-relative steering: apparent screen direction mirrors, as documented and shown in HUD",
+      "observed": "Same mirrored left-steer effect and forward-view recovery.",
+      "status": "Passed",
+      "evidence": "control-rear-Left-before/held/released"
+    },
+    {
+      "binding": "C + D",
+      "expected": "Rear view retains car-relative steering: apparent screen direction mirrors, as documented and shown in HUD",
+      "observed": "Car moved toward the rear view\u2019s left side; release restored forward view on the right.",
+      "status": "Passed",
+      "evidence": "control-rear-d-before/held/released"
+    },
+    {
+      "binding": "C + Right",
+      "expected": "Rear view retains car-relative steering: apparent screen direction mirrors, as documented and shown in HUD",
+      "observed": "Same mirrored right-steer effect and forward-view recovery.",
+      "status": "Passed",
+      "evidence": "control-rear-Right-before/held/released"
+    },
+    {
+      "binding": "P",
+      "expected": "Garage: toggle actual circuit/grid views; ignored during race/countdown/pause/finish",
+      "observed": "All six scenes switched between whole-circuit and car/grid views; other states stayed unchanged.",
+      "status": "Passed",
+      "evidence": "preview/grid frames, disabled-state checks"
+    },
+    {
+      "binding": "M",
+      "expected": "Menu/race: captured sound \u2192 silence \u2192 sound; mute survives pause/resume",
+      "observed": "Game-only PCM became all-zero when muted and audible-level PCM returned when unmuted; pause/resume preserved mute.",
+      "status": "Passed",
+      "evidence": "audio-*.wav and RMS/peak measurements"
+    },
+    {
+      "binding": "N",
+      "expected": "Garage orbit stops; racing nitro zoom reduces while boost remains active; toggle restores behavior",
+      "observed": "Preview pixels stopped changing; reduced-motion boost retained flames/speed without zoom; toggling back restored motion.",
+      "status": "Passed",
+      "evidence": "identical/different scene crops, FOV and boost frames"
+    },
+    {
+      "binding": "F11",
+      "expected": "Window expands to fullscreen and returns to original dimensions",
+      "observed": "Native window dimensions expanded and returned; held key caused only one transition.",
+      "status": "Passed",
+      "evidence": "fullscreen/window-restored frames and sizes"
+    },
+    {
+      "binding": "Esc during countdown",
+      "expected": "Pause/resume freezes/restores countdown without moving cars",
+      "observed": "Countdown and cars froze under pause; countdown continued after resume.",
+      "status": "Passed",
+      "evidence": "city-mechanics and countdown-disabled"
+    },
+    {
+      "binding": "Esc during racing/paused",
+      "expected": "Pause freezes state; resume continues the same race",
+      "observed": "Pause overlay appeared, race state froze, and the same race resumed.",
+      "status": "Passed",
+      "evidence": "city-mechanics, pause/recovery frames"
+    },
+    {
+      "binding": "Esc after finish",
+      "expected": "Return to garage",
+      "observed": "Result screen returned to the circuit selector.",
+      "status": "Passed",
+      "evidence": "final circuit result actions"
+    },
+    {
+      "binding": "Esc in garage",
+      "expected": "Exit actual application",
+      "observed": "Actual native window closed and application exited normally.",
+      "status": "Passed",
+      "evidence": "process/window disappearance"
+    },
+    {
+      "binding": "R during countdown/racing/paused/finished",
+      "expected": "Fresh countdown; reset time, distance, fuel, contacts and rewards",
+      "observed": "New countdown showed lap 1, time/distance/rewards 0 and nitro 65; held R did not repeatedly reset.",
+      "status": "Passed",
+      "evidence": "city-mechanics, result action checks"
+    },
+    {
+      "binding": "R in garage",
+      "expected": "No action",
+      "observed": "Selector remained open with no race started.",
+      "status": "Passed",
+      "evidence": "garage-disabled"
+    },
+    {
+      "binding": "Enter in garage",
+      "expected": "Start focused circuit; focused setting instead activates its action",
+      "observed": "Focused San Francisco launched after hovering from Sunset; focused settings activated correctly.",
+      "status": "Passed",
+      "evidence": "city-menu and selected-track launch"
+    },
+    {
+      "binding": "Enter in pause",
+      "expected": "Activate focused Resume/Restart/Garage",
+      "observed": "Focused Resume, Restart and Garage each reached their intended screen/state.",
+      "status": "Passed",
+      "evidence": "pause focus pairs and activation"
+    },
+    {
+      "binding": "Enter in results",
+      "expected": "Activate focused Race again or Garage",
+      "observed": "Race again started a fresh countdown; Garage returned to the selector.",
+      "status": "Passed",
+      "evidence": "final circuit result actions"
+    },
+    {
+      "binding": "Enter during countdown/racing",
+      "expected": "No menu action or unintended transition",
+      "observed": "Countdown/race continued without menu activation.",
+      "status": "Passed",
+      "evidence": "control-state-countdown-Return, control-state-racing-Return"
+    },
+    {
+      "binding": "Tab during countdown/racing",
+      "expected": "No focus action or unintended transition",
+      "observed": "Countdown/race continued without changing screens or driving.",
+      "status": "Passed",
+      "evidence": "control-state-countdown-Tab, control-state-racing-Tab"
+    },
+    {
+      "binding": "Tab",
+      "expected": "Move menu focus forward, including wraparound",
+      "observed": "Visible focus advanced and wrapped through menu actions.",
+      "status": "Passed",
+      "evidence": "garage/pause/result focus sequences"
+    },
+    {
+      "binding": "Left Shift + Tab",
+      "expected": "Move menu focus backward",
+      "observed": "Visible focus moved backward in garage, pause and results.",
+      "status": "Passed",
+      "evidence": "pause/result focus sequences"
+    },
+    {
+      "binding": "Right Shift + Tab",
+      "expected": "Same reverse-focus action through separate Shift binding",
+      "observed": "The alternate Shift produced the same backward focus movement.",
+      "status": "Passed",
+      "evidence": "pause/result focus sequences"
+    },
+    {
+      "binding": "Mouse movement",
+      "expected": "Menus: move focus without activation; arrows and Enter follow the focused item",
+      "observed": "Hover underlined the target without activating it; arrows and Enter then used that focused route.",
+      "status": "Passed",
+      "evidence": "control-hover-route-before-enter/after-enter, control-hover-route-Left/Right"
+    },
+    {
+      "binding": "Primary mouse click",
+      "expected": "Select each circuit, all paints, both paces, preview; start/resume/retry/garage buttons",
+      "observed": "Each named route changed the scene/map; all five paints changed the car; pace/preview and race/pause/result buttons worked.",
+      "status": "Passed",
+      "evidence": "city-menu, all paint frames, result/pause actions"
+    },
+    {
+      "binding": "Middle mouse click",
+      "expected": "No menu activation",
+      "observed": "Menu action stayed unactivated.",
+      "status": "Passed",
+      "evidence": "nonprimary click assertions"
+    },
+    {
+      "binding": "Right mouse click",
+      "expected": "No menu activation",
+      "observed": "Menu action stayed unactivated.",
+      "status": "Passed",
+      "evidence": "nonprimary click assertions"
+    },
+    {
+      "binding": "Release while unfocused",
+      "expected": "Entire driving chord clears; automatic pause; resume has no stuck throttle, steering, drift, boost or rear view",
+      "observed": "All 12 driving keys cleared; normal acceleration/steering after resume showed no latent brake, drift, boost or rear view.",
+      "status": "Passed",
+      "evidence": "control-focus-all-recovered, control-focus-normal-driving; focus-release-audit.json"
+    }
+  ],
+  "races": [
+    {
+      "phase": "FINISHED",
+      "time": 40.80981,
+      "countdown": -1.691468e-05,
+      "distance": 2976.3137,
+      "lane": 0.73308593,
+      "speed": 87.0,
+      "lateralSpeed": 1.6235036,
+      "curvature": -0.013976733,
+      "cornerForce": -4.5,
+      "screenRight": 126.651245,
+      "cameraFov": 75.37617,
+      "inputSteer": 1.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "CRUISE",
+      "length": 992.04047,
+      "lap": 3,
+      "position": 1,
+      "nitro": 13.633193,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 120,
+      "circuit": "SUNSET",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": false,
+      "best": 40.80981,
+      "saveError": false
+    },
+    {
+      "phase": "FINISHED",
+      "time": 38.684357,
+      "countdown": -1.691468e-05,
+      "distance": 2830.1218,
+      "lane": 0.015588915,
+      "speed": 79.00011,
+      "lateralSpeed": -2.4595942,
+      "curvature": -0.008540388,
+      "cornerForce": -3.4645457,
+      "screenRight": 137.17871,
+      "cameraFov": 72.93639,
+      "inputSteer": 1.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "RACE",
+      "length": 943.3132,
+      "lap": 3,
+      "position": 1,
+      "nitro": 24.174553,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 121,
+      "circuit": "CINDER",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": false,
+      "best": 38.684357,
+      "saveError": false
+    },
+    {
+      "phase": "FINISHED",
+      "time": 43.410366,
+      "countdown": -1.691468e-05,
+      "distance": 3156.5635,
+      "lane": 0.99190533,
+      "speed": 84.450005,
+      "lateralSpeed": -0.4530944,
+      "curvature": -0.008492281,
+      "cornerForce": -3.9367428,
+      "screenRight": 129.48096,
+      "cameraFov": 72.37216,
+      "inputSteer": 0.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "CRUISE",
+      "length": 1052.1007,
+      "lap": 3,
+      "position": 1,
+      "nitro": 3.0666232,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 121,
+      "circuit": "SAN_FRANCISCO",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": false,
+      "best": 43.410366,
+      "saveError": false
+    },
+    {
+      "phase": "FINISHED",
+      "time": 45.135735,
+      "countdown": -1.691468e-05,
+      "distance": 3282.214,
+      "lane": 0.8207658,
+      "speed": 62.0,
+      "lateralSpeed": -1.4037466,
+      "curvature": -0.011825025,
+      "cornerForce": -2.9546006,
+      "screenRight": 145.69379,
+      "cameraFov": 67.00004,
+      "inputSteer": 0.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "RACE",
+      "length": 1093.9545,
+      "lap": 3,
+      "position": 1,
+      "nitro": 15.73302,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 120,
+      "circuit": "SILICON_VALLEY",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": false,
+      "best": 45.135735,
+      "saveError": false
+    },
+    {
+      "phase": "FINISHED",
+      "time": 45.252426,
+      "countdown": -1.691468e-05,
+      "distance": 3293.156,
+      "lane": -0.05584213,
+      "speed": 62.0,
+      "lateralSpeed": 3.2904665,
+      "curvature": -0.0007966657,
+      "cornerForce": -0.19905488,
+      "screenRight": 152.7326,
+      "cameraFov": 67.0,
+      "inputSteer": 0.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "CRUISE",
+      "length": 1097.6035,
+      "lap": 3,
+      "position": 1,
+      "nitro": 12.941364,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 120,
+      "circuit": "NEW_YORK",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": true,
+      "best": 45.252426,
+      "saveError": false
+    },
+    {
+      "phase": "FINISHED",
+      "time": 45.09406,
+      "countdown": -1.691468e-05,
+      "distance": 3288.7646,
+      "lane": 0.25060695,
+      "speed": 62.0,
+      "lateralSpeed": 1.9264436,
+      "curvature": -0.0058385856,
+      "cornerForce": -1.4588289,
+      "screenRight": 144.54047,
+      "cameraFov": 67.00003,
+      "inputSteer": -1.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "RACE",
+      "length": 1096.1337,
+      "lap": 3,
+      "position": 1,
+      "nitro": 5.216689,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 120,
+      "circuit": "CHICAGO",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": true,
+      "best": 45.09406,
+      "saveError": false
+    }
+  ],
+  "loss": {
+    "phase": "FINISHED",
+    "time": 131.92319,
+    "countdown": -1.691468e-05,
+    "distance": 3288.579,
+    "lane": 0.09439253,
+    "speed": 62.0,
+    "lateralSpeed": -1.1105387,
+    "curvature": -0.0058555254,
+    "cornerForce": -1.4630615,
+    "screenRight": 154.35175,
+    "cameraFov": 67.00003,
+    "inputSteer": 1.0,
+    "inputThrottle": true,
+    "inputBrake": false,
+    "overview": true,
+    "difficulty": "RACE",
+    "length": 1096.1337,
+    "lap": 3,
+    "position": 6,
+    "nitro": 15.065976,
+    "drifting": false,
+    "boosting": false,
+    "pads": 9,
+    "bumps": 2,
+    "driftBonuses": 0,
+    "fps": 121,
+    "circuit": "CHICAGO",
+    "paint": 0,
+    "muted": false,
+    "reducedMotion": true,
+    "best": 45.09406,
+    "saveError": false
+  },
+  "hardwareRaces": [
+    {
+      "phase": "FINISHED",
+      "time": 44.977367,
+      "countdown": -1.691468e-05,
+      "distance": 3293.1436,
+      "lane": -0.17908573,
+      "speed": 62.0,
+      "lateralSpeed": -0.21170957,
+      "curvature": -0.00079666567,
+      "cornerForce": -0.19905487,
+      "screenRight": 143.2514,
+      "cameraFov": 67.00589,
+      "inputSteer": 0.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "RACE",
+      "length": 1097.6035,
+      "lap": 3,
+      "position": 1,
+      "nitro": 7.525102,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 120,
+      "circuit": "NEW_YORK",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": false,
+      "best": 44.977367,
+      "saveError": false,
+      "wallSecondsIncludingCountdown": 48.28338919299949,
+      "fpsMinimum": 120,
+      "fpsMedian": 121,
+      "fpsMaximum": 121,
+      "allSixScenesCached": true
+    },
+    {
+      "phase": "FINISHED",
+      "time": 40.85982,
+      "countdown": -1.691468e-05,
+      "distance": 2976.5366,
+      "lane": 0.572498,
+      "speed": 87.0,
+      "lateralSpeed": -0.15111771,
+      "curvature": -0.013767876,
+      "cornerForce": -4.5,
+      "screenRight": 128.73346,
+      "cameraFov": 74.58148,
+      "inputSteer": 1.0,
+      "inputThrottle": true,
+      "inputBrake": false,
+      "overview": true,
+      "difficulty": "RACE",
+      "length": 992.04047,
+      "lap": 3,
+      "position": 1,
+      "nitro": 13.782802,
+      "drifting": false,
+      "boosting": false,
+      "pads": 9,
+      "bumps": 0,
+      "driftBonuses": 0,
+      "fps": 120,
+      "circuit": "SUNSET",
+      "paint": 0,
+      "muted": false,
+      "reducedMotion": false,
+      "best": 40.85982,
+      "saveError": false,
+      "wallSecondsIncludingCountdown": 44.15097869800047,
+      "fpsMinimum": 120,
+      "fpsMedian": 121.0,
+      "fpsMaximum": 121,
+      "allSixScenesCached": true
+    }
+  ],
+  "audio": {
+    "M-menu-on": {
+      "rms": 200.6916449535622,
+      "peak": 1121,
+      "frames": 48000
+    },
+    "M-menu-off": {
+      "rms": 0.0,
+      "peak": 0,
+      "frames": 48000
+    },
+    "M-menu-restored": {
+      "rms": 173.6031188215907,
+      "peak": 747,
+      "frames": 48000
+    },
+    "M-race-on": {
+      "rms": 302.7445472430786,
+      "peak": 843,
+      "frames": 48000
+    },
+    "M-race-off": {
+      "rms": 0.0,
+      "peak": 0,
+      "frames": 48000
+    },
+    "M-race-restored": {
+      "rms": 310.3854825891239,
+      "peak": 936,
+      "frames": 48000
+    },
+    "paused-audio": {
+      "rms": 0.0,
+      "peak": 0,
+      "frames": 48000
+    },
+    "M-muted-through-resume": {
+      "rms": 0.0,
+      "peak": 0,
+      "frames": 48000
+    }
+  },
+  "persistence": {
+    "allTwelveSlotsMatchAfterRelaunch": true,
+    "settingsMatchAfterRelaunch": true,
+    "populatedSlots": 9,
+    "productionPreferencesUnchanged": true
+  },
+  "desktopEntry": {
+    "entryLoaded": true,
+    "bundledRuntimeLoaded": true,
+    "normalMode": true,
+    "windowClosed": true,
+    "productionPreferencesUnchanged": true
+  },
+  "limits": [
+    "Linux desktop only; no Android, touch or gamepad implementation",
+    "Windows and macOS runtimes included in JAR but untested",
+    "PCM verifies mute output, not subjective sound quality",
+    "FPS is a measurement on one machine, not a guarantee"
+  ]
+}

@@ -11,14 +11,20 @@ data class Point3(val x: Float, val y: Float, val z: Float) {
 }
 
 data class RoadFrame(val center: Point3, val forward: Point3) {
-    val right = Point3(forward.z, 0f, -forward.x).normal()
+    // Camera-right is forward cross world-up. This convention is shared by
+    // steering, road geometry, turbo pads and the chase camera.
+    val right = Point3(-forward.z, 0f, forward.x).normal()
     val heading = atan2(forward.x, forward.z) * 180f / PI.toFloat()
     fun at(lane: Float, height: Float = 0f) = center + right * lane + Point3(0f, height, 0f)
 }
 
-enum class Circuit(val title: String, val description: String) {
-    SUNSET("Sunset Run", "Ocean air. Wide corners. Full throttle."),
-    CINDER("Cinder Ring", "Red rock. Rolling hills. Tighter turns."),
+enum class Circuit(val title: String, val route: String, val description: String, val accent: String, val previewAngle: Float) {
+    SUNSET("Sunset Run", "Coastal circuit", "Palm-lined bends above a warm turquoise sea.", "ff9c6a", 0.4f),
+    CINDER("Cinder Ring", "Canyon circuit", "Rolling red-rock climbs and tightening corners.", "e7b27b", 0.5f),
+    SAN_FRANCISCO("San Francisco", "Golden Gate Run", "Cross the orange bridge, then climb the city hills.", "ff8963", 0.15f),
+    SILICON_VALLEY("Silicon Valley", "Campus Sprint", "Sweep past solar roofs and the circular campus.", "a3d788", 0.6f),
+    NEW_YORK("New York City", "Midtown Mile", "Four city blocks, a green park and a towering skyline.", "f1cf65", 0.8f),
+    CHICAGO("Chicago", "Lakeshore Loop", "Race beneath the elevated train beside Lake Michigan.", "8ed3e6", 0.15f),
 }
 
 class Track(val circuit: Circuit) {
@@ -27,6 +33,13 @@ class Track(val circuit: Circuit) {
     private val points: List<Point3>
     private val distances: FloatArray
     val length: Float
+    val minX: Float
+    val maxX: Float
+    val minZ: Float
+    val maxZ: Float
+    val elevation: Float
+    val center: Point3
+    val radius: Float
 
     init {
         // Dense source samples are indexed by distance, not angle: speed stays
@@ -44,11 +57,38 @@ class Track(val circuit: Circuit) {
                     12f + 8f * sin(3f * angle),
                     133f * sin(angle) + 24f * sin(2f * angle),
                 )
+                Circuit.SAN_FRANCISCO -> Point3(
+                    182f * cos(angle) + 20f * cos(2f * angle),
+                    12f + 30f * ((1f - cos(angle)) / 2f).pow(2),
+                    146f * sin(angle) + 10f * sin(3f * angle),
+                )
+                Circuit.SILICON_VALLEY -> Point3(
+                    207f * cos(angle) + 22f * cos(2f * angle),
+                    8f + 3f * sin(2f * angle),
+                    131f * sin(angle) + 9f * sin(3f * angle),
+                )
+                Circuit.NEW_YORK -> Point3(
+                    180f * (cos(angle) - 0.09f * cos(3f * angle)),
+                    7f + 1.2f * sin(2f * angle),
+                    163f * (sin(angle) + 0.09f * sin(3f * angle)),
+                )
+                Circuit.CHICAGO -> Point3(
+                    141f * cos(angle) + 12f * cos(3f * angle),
+                    9f + 3f * sin(2f * angle),
+                    206f * sin(angle),
+                )
             }
         }
         distances = FloatArray(points.size)
         for (i in 1..points.lastIndex) distances[i] = distances[i - 1] + (points[i] - points[i - 1]).length()
         length = distances.last()
+        minX = points.minOf { it.x }
+        maxX = points.maxOf { it.x }
+        minZ = points.minOf { it.z }
+        maxZ = points.maxOf { it.z }
+        elevation = points.maxOf { it.y } - points.minOf { it.y }
+        center = Point3((minX + maxX) / 2f, points.map { it.y }.average().toFloat(), (minZ + maxZ) / 2f)
+        radius = max(maxX - minX, maxZ - minZ) / 2f
     }
 
     fun wrap(distance: Float): Float = ((distance % length) + length) % length

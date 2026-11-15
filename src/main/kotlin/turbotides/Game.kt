@@ -17,6 +17,8 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         private set
     var reducedMotion = false
         private set
+    var overview = true
+        private set
     var newBest = false
         private set
     var saveError = false
@@ -24,6 +26,7 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
     lateinit var race: Race
         private set
     private lateinit var world: World
+    private val worlds = mutableMapOf<Circuit, World>()
     private lateinit var hud: Hud
     private lateinit var audio: Audio
     private lateinit var preferences: Preferences
@@ -44,15 +47,22 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
         difficulty = Difficulty.entries.getOrElse(preferences.getInteger("difficulty", 0)) { Difficulty.CRUISE }
         race = Race(Track(circuit), difficulty, paint)
         world = World(race.track)
+        worlds[circuit] = world
         hud = Hud()
         audio = Audio()
     }
 
     fun changeCircuit(direction: Int) {
-        circuit = Circuit.entries[(circuit.ordinal + direction + Circuit.entries.size) % Circuit.entries.size]
-        world.dispose()
-        race = Race(Track(circuit), difficulty, paint)
-        world = World(race.track)
+        selectCircuit(Circuit.entries[Math.floorMod(circuit.ordinal + direction, Circuit.entries.size)])
+    }
+
+    fun selectCircuit(selected: Circuit) {
+        if (race.phase != Phase.GARAGE || selected == circuit) return
+        circuit = selected
+        overview = true
+        world = worlds.getOrPut(circuit) { World(Track(circuit)) }
+        race = Race(world.track, difficulty, paint)
+        world.resetCamera()
         world.resize(Gdx.graphics.width, Gdx.graphics.height)
         saveSettings()
     }
@@ -60,7 +70,13 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
     fun changePaint(direction: Int) {
         paint = (paint + direction + PAINTS.size) % PAINTS.size
         race = Race(race.track, difficulty, paint)
+        overview = false
         saveSettings()
+    }
+
+    fun togglePreview() {
+        overview = !overview
+        world.resetCamera()
     }
 
     fun changeDifficulty() {
@@ -129,6 +145,7 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
             }
         }
         if (pressed(Input.Keys.R) && race.phase != Phase.GARAGE) startRace()
+        if (pressed(Input.Keys.P) && race.phase == Phase.GARAGE) togglePreview()
     }
 
     private fun controls(): Controls {
@@ -175,6 +192,7 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
             },
             reducedMotion,
             Gdx.input.isKeyPressed(Input.Keys.C) && race.phase == Phase.RACING,
+            overview,
         )
         hud.draw(this)
         if (telemetry != null) {
@@ -188,9 +206,13 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
 
     private fun writeTelemetry() {
         val player = race.player
+        val input = controls()
+        val frame = race.track.frame(player.distance)
+        val middle = world.camera.project(frame.at(0f).vector(), 0f, 0f, 1280f, 800f)
+        val right = world.camera.project(frame.at(3f).vector(), 0f, 0f, 1280f, 800f)
         val contents = """{"phase":"${race.phase}","time":${race.elapsed},"countdown":${race.countdown},"distance":${player.distance},"lane":${player.lane},"speed":${player.speed},"lateralSpeed":${player.lateralSpeed},"curvature":${race.track.curvature(
             player.distance,
-        )},"length":${race.track.length},"lap":${race.lap},"position":${race.position},"nitro":${race.nitro},"drifting":${race.drifting},"boosting":${race.boosting},"pads":${race.pads},"bumps":${race.bumps},"driftBonuses":${race.driftBonuses},"fps":${Gdx.graphics.framesPerSecond},"circuit":"$circuit","paint":$paint,"muted":$muted,"reducedMotion":$reducedMotion,"best":${bestTime()},"saveError":$saveError}"""
+        )},"cornerForce":${race.cornerForce()},"screenRight":${right.x - middle.x},"cameraFov":${world.camera.fieldOfView},"inputSteer":${input.steer},"inputThrottle":${input.throttle},"inputBrake":${input.brake},"overview":$overview,"difficulty":"$difficulty","length":${race.track.length},"lap":${race.lap},"position":${race.position},"nitro":${race.nitro},"drifting":${race.drifting},"boosting":${race.boosting},"pads":${race.pads},"bumps":${race.bumps},"driftBonuses":${race.driftBonuses},"fps":${Gdx.graphics.framesPerSecond},"circuit":"$circuit","paint":$paint,"muted":$muted,"reducedMotion":$reducedMotion,"best":${bestTime()},"saveError":$saveError}"""
         try {
             telemetry?.writeText(contents)
         } catch (exception: Exception) {
@@ -210,6 +232,6 @@ class Game(private val telemetry: File? = null) : ApplicationAdapter() {
     override fun dispose() {
         audio.dispose()
         hud.dispose()
-        world.dispose()
+        worlds.values.forEach { it.dispose() }
     }
 }

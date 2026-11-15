@@ -17,7 +17,9 @@ fun main(args: Array<String>) {
         setForegroundFPS(120)
         setBackBufferConfig(8, 8, 8, 8, 24, 0, 4)
         setIdleFPS(30)
-        useVsync(true)
+        // Keep input/rendering responsive when desktop buffer synchronization
+        // stalls; the foreground FPS cap above still bounds rendering work.
+        useVsync(false)
         setAudioConfig(32, 512, 9)
         setWindowListener(object : Lwjgl3WindowAdapter() {
             override fun focusLost() {

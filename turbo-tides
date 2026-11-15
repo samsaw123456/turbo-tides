@@ -1,5 +1,5 @@
 #!/bin/sh
-# Turbo Tides: two 3D circuits, drifting, nitro, five rivals and local records.
+# Turbo Tides: six 3D circuits, four cities, live previews, drifting and nitro.
 set -eu
 project_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 if [ -x "$project_dir/dist/TurboTides/bin/TurboTides" ]; then

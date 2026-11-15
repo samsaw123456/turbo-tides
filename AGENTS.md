@@ -10,6 +10,11 @@ project untouched. Follow applicable parent contributor instructions.
 - Run the native game and verify changed interactions. The telemetry mode and
   `tools/playtest.py` drive real keyboard events on X11/XWayland/Xvfb; telemetry
   must not alter race rules or user records.
+- Check directional controls against the visible result: a positive lane value
+  is not evidence of screen-right movement. Exercise both key bindings and
+  inspect road-relative motion, car yaw, camera orientation and recovery.
+- Keep verification claims tied to recorded assertions and inspected frames.
+  A complete automated race does not prove that each individual control works.
 - Revisit the game checklist in `docs/DESIGN.md` and record evidence in `docs/PLAYTEST.md`.
 - Preserve the orange/cream/teal visual identity, original editable SVG icon,
   legible UI, keyboard focus, alternative controls, mute and reduced motion.

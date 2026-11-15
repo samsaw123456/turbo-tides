@@ -60,7 +60,7 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
     private var lapStart = 0f
     private var completedLaps = 0
     private var contactCooldown = 0f
-    private var padCooldown = 0f
+    private val padLap = IntArray(3) { -1 }
     private var padBoost = 0f
     private var accumulator = 0f
     val lap get() = (floor(player.distance / track.length).toInt() + 1).coerceIn(1, LAPS)
@@ -107,7 +107,6 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
         elapsed += STEP
         messageTime = (messageTime - STEP).coerceAtLeast(0f)
         contactCooldown -= STEP
-        padCooldown -= STEP
         padBoost -= STEP
         updatePlayer(controls)
         rivals.forEachIndexed { index, rival -> updateRival(rival, index) }
@@ -161,7 +160,7 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
             driftCharge = 0f
         }
         val steering = input.steer.coerceIn(-1f, 1f) * (if (drifting) 14f else 11f) * (player.speed / 28f).coerceIn(0f, 1f)
-        val cornerForce = -track.curvature(player.distance) * player.speed * player.speed * 0.065f
+        val cornerForce = cornerForce()
         val targetLateral = steering + cornerForce
         player.lateralSpeed += (targetLateral - player.lateralSpeed) * min(1f, STEP * if (drifting) 3f else 8f)
         player.lane += player.lateralSpeed * STEP
@@ -177,18 +176,23 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
         }
         player.distance += player.speed * STEP
         for (i in 0..2) {
-            if (padCooldown <= 0f &&
+            val currentLap = floor(player.distance / track.length).toInt()
+            if (player.speed > 1f &&
+                padLap[i] != currentLap &&
                 abs(track.relativeDistance(player.distance, track.padDistance(i))) < 3f &&
                 abs(player.lane - track.padLane(i)) < 2.2f
             ) {
                 padBoost = 1.6f
-                padCooldown = 2f
+                padLap[i] = currentLap
                 nitro = min(100f, nitro + 16f)
                 pads++
                 say("Turbo pad!", 1f)
             }
         }
     }
+
+    // Keep full steering effective even in the sharpest bend while boosting.
+    fun cornerForce(): Float = (track.curvature(player.distance) * player.speed * player.speed * 0.065f).coerceIn(-4.5f, 4.5f)
 
     private fun updateRival(rival: Racer, index: Int) {
         if (rival.finishTime != null) return
@@ -205,6 +209,7 @@ class Race(val track: Track, val difficulty: Difficulty = Difficulty.CRUISE, pai
     private fun resolveContacts() {
         if (contactCooldown > 0f) return
         for (rival in rivals) {
+            if (rival.finishTime != null) continue
             if (abs(track.relativeDistance(rival.distance, player.distance)) < 3.5f && abs(rival.lane - player.lane) < 2f) {
                 player.speed *= 0.8f
                 player.lateralSpeed += if (player.lane < rival.lane) -5f else 5f

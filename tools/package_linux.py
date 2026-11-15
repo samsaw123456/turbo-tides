@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
 NAME = "TurboTides"
 MARKER = ".turbo-tides-managed"
+VERSION = (ROOT / "VERSION").read_text().strip()
 
 
 def jpackage():
@@ -69,7 +70,7 @@ def install(app):
     entry = applications / "turbo-tides.desktop"
     entry.write_text(
         "[Desktop Entry]\nType=Application\nName=Turbo Tides\n"
-        "Comment=Drift, boost and race across two sunlit islands\n"
+        "Comment=Drift and boost through six coastal and city circuits\n"
         f"Exec={quoted(destination / 'bin/TurboTides')}\n"
         f"Icon={icon}\nTerminal=false\nCategories=Game;SportsGame;\n"
         "StartupWMClass=Turbo Tides\nStartupNotify=true\n"
@@ -116,7 +117,7 @@ def main():
             "--name",
             NAME,
             "--app-version",
-            "1.0.0",
+            VERSION,
             "--description",
             "Turbo Tides 3D arcade racing",
             "--vendor",
@@ -138,7 +139,7 @@ def main():
         ],
         check=True,
     )
-    for name in ("README.md", "LICENSE", "THIRD_PARTY.md"):
+    for name in ("README.md", "LICENSE", "THIRD_PARTY.md", "VERSION"):
         shutil.copy2(ROOT / name, app / name)
     shutil.copytree(ROOT / "src/main/resources", app / "src/main/resources")
     shutil.copytree(ROOT / "docs", app / "docs")
@@ -149,7 +150,7 @@ def main():
         '#!/bin/sh\nset -eu\napp_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)\nexec "$app_dir/bin/TurboTides" "$@"\n'
     )
     play.chmod(0o755)
-    archive = DIST / f"turbo-tides-1.0.0-linux-{platform.machine()}.tar.gz"
+    archive = DIST / f"turbo-tides-{VERSION}-linux-{platform.machine()}.tar.gz"
     with tarfile.open(archive, "w:gz") as output:
         output.add(app, arcname=NAME)
     checksum = hashlib.sha256(archive.read_bytes()).hexdigest()

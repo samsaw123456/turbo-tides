@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "turbotides"
-version = "1.0.0"
+version = file("VERSION").readText().trim()
 
 repositories { mavenCentral() }
 
